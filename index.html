@@ -1,0 +1,3205 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor Universal de Unidades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d0d0f;--surface:#18181c;--surface2:#222228;--border:#2e2e38;--accent:#c8f264;--accent2:#7ef4c8;--text:#f0efe8;--muted:#7a7a8a;--muted2:#4a4a58;--radius:12px;--radius-sm:8px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,242,100,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,242,100,.03) 1px,transparent 1px);background-size:40px 40px;}
+  .wrapper{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:2rem 1rem 4rem;}
+  header{text-align:center;margin-bottom:2rem;animation:fadeUp .6s ease both;}
+  header h1{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:.5rem;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  header p.subtitle{color:var(--muted);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;}
+  .lang-bar{display:flex;justify-content:center;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;animation:fadeUp .6s .1s ease both;}
+  .lang-btn{padding:5px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.75rem;cursor:pointer;transition:all .2s;letter-spacing:.05em;}
+  .lang-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .lang-btn.active{background:var(--accent);color:#0d0d0f;border-color:var(--accent);font-weight:500;}
+  .cat-scroll{margin-bottom:1.5rem;animation:fadeUp .6s .15s ease both;}
+  .cat-tabs{display:flex;flex-wrap:wrap;gap:5px;}
+  .cat-btn{padding:5px 11px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--muted);flex-shrink:0;font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;transition:all .18s;white-space:nowrap;}
+  .cat-btn:hover{border-color:var(--muted);color:var(--text);}
+  .cat-btn.active{background:var(--surface2);border-color:var(--accent2);color:var(--accent2);}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;animation:fadeUp .6s .2s ease both;}
+  .convert-row{display:grid;grid-template-columns:1fr 48px 1fr;gap:12px;align-items:end;margin-bottom:1.25rem;}
+  .field-label{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .field-input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;transition:border-color .2s;-moz-appearance:textfield;}
+  .field-input::-webkit-outer-spin-button,.field-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+  .field-input:focus{outline:none;border-color:var(--accent);}
+  .field-input.readonly{border-color:var(--muted2);color:var(--accent);cursor:default;}
+  .field-select{width:100%;margin-top:8px;padding:8px 32px 8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:.78rem;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%237a7a8a' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .2s;}
+  .field-select:focus{outline:none;border-color:var(--accent2);}
+  .swap-btn{width:48px;height:48px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-bottom:2px;}
+  .swap-btn:hover{border-color:var(--accent);color:var(--accent);transform:rotate(180deg);}
+  .result-bar{background:var(--bg);border:1px solid var(--muted2);border-left:3px solid var(--accent);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .result-value{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--accent);}
+  .result-unit{font-size:.8rem;color:var(--muted);}
+  .all-label{font-size:.7rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin:1.5rem 0 .75rem;animation:fadeUp .6s .25s ease both;}
+  .all-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:8px;animation:fadeUp .6s .3s ease both;}
+  .res-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;cursor:pointer;transition:all .18s;}
+  .res-chip:hover{border-color:var(--accent2);background:var(--surface2);}
+  .res-chip .rv{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:400;color:var(--text);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .res-chip .ru{font-size:.63rem;color:var(--muted);line-height:1.3;}
+  .support-banner{margin-top:3rem;background:linear-gradient(135deg,rgba(200,242,100,.08) 0%,rgba(126,244,200,.08) 100%);border:1px solid rgba(200,242,100,.25);border-radius:var(--radius);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;animation:fadeUp .6s .4s ease both;}
+  .support-text h3{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--accent);margin-bottom:4px;}
+  .support-text p{font-size:.78rem;color:var(--muted);line-height:1.5;max-width:420px;}
+  .pay-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--accent);color:#0d0d0f;border:none;border-radius:var(--radius-sm);font-family:'DM Mono',monospace;font-size:.82rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap;letter-spacing:.04em;}
+  .pay-btn:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,242,100,.2);}
+  .pay-icon{width:16px;height:16px;}
+  footer{text-align:center;margin-top:2rem;font-size:.72rem;color:var(--muted2);animation:fadeUp .6s .5s ease both;}
+
+  /* ── DEV NOTICE ── */
+  .dev-notice{
+    margin-top:1.5rem;
+    display:flex;align-items:flex-start;gap:1rem;
+    background:rgba(200,242,100,.04);
+    border:1px solid rgba(200,242,100,.15);
+    border-left:3px solid rgba(200,242,100,.4);
+    border-radius:var(--radius-sm);
+    padding:1rem 1.25rem;
+    flex-wrap:wrap;
+    animation:fadeUp .6s .45s ease both;
+  }
+  .dev-notice-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+  .dev-notice-text{flex:1;min-width:200px;font-size:.75rem;line-height:1.6;color:var(--muted);}
+  .dev-notice-text strong{display:block;color:var(--accent);font-weight:500;font-size:.78rem;margin-bottom:3px;letter-spacing:.02em;}
+  .dev-contact-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;
+    background:transparent;
+    border:1px solid rgba(200,242,100,.3);
+    border-radius:var(--radius-sm);
+    color:var(--accent);
+    font-family:'DM Mono',monospace;
+    font-size:.72rem;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:all .2s;
+    flex-shrink:0;
+    align-self:center;
+  }
+  .dev-contact-btn:hover{background:rgba(200,242,100,.08);border-color:var(--accent);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:600px){.convert-row{grid-template-columns:1fr 40px 1fr;gap:8px;}.support-banner{flex-direction:column;text-align:center;}.support-text p{max-width:100%;}}
+
+  /* ── LOOKUP MODE ── */
+  .lookup-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;animation:fadeUp .6s .2s ease both;display:none;}
+  .lookup-card.active{display:block;}
+  .card.hidden{display:none;}
+  .lookup-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+  .lookup-badge{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);background:rgba(126,244,200,.1);border:1px solid rgba(126,244,200,.25);border-radius:20px;padding:3px 10px;}
+  .lookup-select{width:100%;padding:12px 36px 12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Mono',monospace;font-size:.85rem;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%237a7a8a' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;transition:border-color .2s;}
+  .lookup-select:focus{outline:none;border-color:var(--accent);}
+  .lookup-result-bar{background:var(--bg);border:1px solid var(--muted2);border-left:3px solid var(--accent2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:1rem;}
+  .lookup-result-bar .lrv{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--accent2);margin-bottom:3px;}
+  .lookup-result-bar .lrl{font-size:.75rem;color:var(--muted);line-height:1.6;}
+  .lk-section-title{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:1.4rem 0 .6rem;}
+  .lk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:7px;}
+  .lk-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;cursor:pointer;transition:all .18s;}
+  .lk-chip:hover{border-color:var(--accent);background:var(--surface2);}
+  .lk-chip.match{border-color:var(--accent2);background:rgba(126,244,200,.05);}
+  .lk-chip.exact{border-color:var(--accent);background:rgba(200,242,100,.08);}
+  .lk-chip .lk-name{font-size:.78rem;color:var(--text);font-weight:500;line-height:1.3;margin-bottom:3px;}
+  .lk-chip .lk-val{font-size:.65rem;color:var(--muted);line-height:1.3;}
+  .lk-chip .lk-badge{display:inline-block;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:10px;margin-bottom:4px;}
+  .lk-chip .lk-badge.exact{background:rgba(200,242,100,.15);color:var(--accent);}
+  .lk-chip .lk-badge.close{background:rgba(126,244,200,.12);color:var(--accent2);}
+  .lk-chip .lk-primary{font-family:'Fraunces',serif;font-size:.95rem;font-weight:500;color:var(--text);margin-top:4px;}
+  .lk-chip .lk-secondary{font-size:.68rem;color:var(--muted);margin-top:2px;}
+  .paper-chip{grid-column:span 1;}
+  .paper-chip .lk-name{font-size:.82rem;font-weight:500;}
+  .paper-chip .lk-val{font-size:.68rem;color:var(--muted);margin-top:2px;}
+  .paper-dims{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:400;color:var(--accent2);margin-bottom:2px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <h1 id="h-title">Conversor Universal</h1>
+    <p class="subtitle" id="h-subtitle">+1300 unidades · 127 categorias</p>
+  </header>
+  <div class="lang-bar" id="langBar"></div>
+  <div class="cat-scroll"><div class="cat-tabs" id="catTabs"></div></div>
+  <div class="card" id="mainCard">
+    <div class="convert-row">
+      <div>
+        <div class="field-label" id="lbl-from">De</div>
+        <input type="number" class="field-input" id="fromVal" value="1">
+        <select class="field-select" id="fromUnit"></select>
+      </div>
+      <button class="swap-btn" id="swapBtn">&#x21C4;</button>
+      <div>
+        <div class="field-label" id="lbl-to">Para</div>
+        <input type="number" class="field-input readonly" id="toVal" readonly>
+        <select class="field-select" id="toUnit"></select>
+      </div>
+    </div>
+    <div class="result-bar">
+      <span class="result-value" id="resBig">&#x2014;</span>
+      <span class="result-unit" id="resUnit"></span>
+    </div>
+  </div>
+
+  <!-- LOOKUP CARD (fashion / paper / monitor) -->
+  <div class="lookup-card" id="lookupCard">
+    <div class="lookup-header">
+      <span class="lookup-badge" id="lk-badge">tabela de equivalências</span>
+    </div>
+    <div class="field-label" id="lk-lbl-select">Seleciona o tamanho / formato</div>
+    <select class="lookup-select" id="lkSelect"></select>
+    <div class="lookup-result-bar" id="lkResultBar" style="display:none;">
+      <div class="lrv" id="lkResMain"></div>
+      <div class="lrl" id="lkResSub"></div>
+    </div>
+  </div>
+
+  <!-- INTEREST CALCULATOR CARD -->
+  <div class="lookup-card" id="interestCard">
+    <div class="lookup-header">
+      <span class="lookup-badge">calculadora de juros</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.25rem;">
+      <div>
+        <div class="field-label">Capital inicial</div>
+        <input type="number" class="lookup-select" id="ic-capital" value="1000" min="0" step="100" style="padding:10px 14px;font-size:1.1rem;font-family:'Fraunces',serif;" oninput="calcInterest()">
+      </div>
+      <div>
+        <div class="field-label">Taxa anual (%)</div>
+        <input type="number" class="lookup-select" id="ic-rate" value="5" min="0" max="100" step="0.1" style="padding:10px 14px;font-size:1.1rem;font-family:'Fraunces',serif;" oninput="calcInterest()">
+      </div>
+      <div>
+        <div class="field-label">Período (anos)</div>
+        <input type="number" class="lookup-select" id="ic-years" value="10" min="1" max="100" step="1" style="padding:10px 14px;font-size:1.1rem;font-family:'Fraunces',serif;" oninput="calcInterest()">
+      </div>
+    </div>
+    <div id="ic-results" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;"></div>
+  </div>
+  <div class="all-label" id="lbl-all">Todas as conversões</div>
+  <div class="all-grid" id="allGrid"></div>
+  <div class="support-banner">
+    <div class="support-text">
+      <h3 id="sup-title">Gostou da ferramenta?</h3>
+      <p id="sup-desc">Esta ferramenta é gratuita e sem anúncios. Se te foi útil, considera apoiar o desenvolvimento com qualquer valor — mesmo 1€ faz diferença!</p>
+    </div>
+    <a href="https://buy.stripe.com/eVq00i49xemXgjJfVufIs00" target="_blank" class="pay-btn">
+      <svg class="pay-icon" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#0d0d0f" stroke-width="1.5"/><path d="M1 6h14" stroke="#0d0d0f" stroke-width="1.5"/><rect x="3" y="8.5" width="4" height="1.5" rx="0.5" fill="#0d0d0f"/></svg>
+      <span id="sup-btn">Apoiar · Pague o que quiser</span>
+    </a>
+  </div>
+  <div class="dev-notice">
+    <div class="dev-notice-icon">🚧</div>
+    <div class="dev-notice-text">
+      <strong id="dev-title">Em desenvolvimento ativo</strong>
+      <span id="dev-desc">Esta ferramenta está a ser construída de forma contínua. Novos campos, categorias e funcionalidades são adicionados regularmente. Alguns valores podem ainda estar incompletos ou a requerer validação. Se detetar alguma incorreção, por favor contacte o desenvolvedor.</span>
+    </div>
+    <a href="https://www.linkedin.com/in/americomateusrodrigues/" target="_blank" class="dev-contact-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <span id="dev-btn">Contactar desenvolvedor</span>
+    </a>
+  </div>
+  <footer id="footer-text">Feito com ♥ · Gratuito para sempre</footer>
+</div>
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────────────────────────
+const C={
+  "Comprimento":"Length|Longitud|Longueur|Länge|长度",
+  "Massa":"Mass|Masa|Masse|Masse|质量",
+  "Temperatura":"Temperature|Temperatura|Température|Temperatur|温度",
+  "Volume":"Volume|Volumen|Volume|Volumen|体积",
+  "Velocidade":"Speed|Velocidad|Vitesse|Geschwindigkeit|速度",
+  "Área":"Area|Área|Superficie|Fläche|面积",
+  "Tempo":"Time|Tiempo|Temps|Zeit|时间",
+  "Pressão":"Pressure|Presión|Pression|Druck|压力",
+  "Energia":"Energy|Energía|Énergie|Energie|能量",
+  "Potência":"Power|Potencia|Puissance|Leistung|功率",
+  "Dados":"Data Storage|Almac. Datos|Stockage|Datenspeicher|存储",
+  "Veloc. Dados":"Data Speed|Vel. Datos|Vit. Données|Datenrate|数据速率",
+  "Ângulo":"Angle|Ángulo|Angle|Winkel|角度",
+  "Frequência":"Frequency|Frecuencia|Fréquence|Frequenz|频率",
+  "Combustível":"Fuel Economy|Consumo|Carburant|Kraftstoff|油耗",
+  "Força":"Force|Fuerza|Force|Kraft|力",
+  "Torque":"Torque|Torque|Couple|Drehmoment|扭矩",
+  "Aceleração":"Acceleration|Aceleración|Accélération|Beschleunigung|加速度",
+  "Densidade":"Density|Densidad|Densité|Dichte|密度",
+  "Concentração":"Concentration|Concentración|Concentration|Konzentration|浓度",
+  "Fluxo Vol.":"Vol. Flow|Flujo Vol.|Débit Vol.|Volumenstrom|体积流量",
+  "Vazão Mássica":"Mass Flow|Flujo Más.|Débit Mas.|Massenstrom|质量流量",
+  "Tensão Elét.":"Voltage|Voltaje|Tension|Spannung|电压",
+  "Corrente":"Current|Corriente|Courant|Stromstärke|电流",
+  "Resistência":"Resistance|Resistencia|Résistance|Widerstand|电阻",
+  "Resistividade":"Resistivity|Resistividad|Résistivité|Widerstandsfähig.|电阻率",
+  "Condut. Elét.":"Conductivity|Conductividad|Conductivité|Leitfähigkeit|电导率",
+  "Capacitância":"Capacitance|Capacitancia|Capacitance|Kapazität|电容",
+  "Indutância":"Inductance|Inductancia|Inductance|Induktivität|电感",
+  "Carga Elét.":"Electric Charge|Carga Elét.|Charge Élec.|Ladung|电荷",
+  "Campo Elét.":"Electric Field|Campo Elét.|Champ Élec.|Elektrofeld|电场",
+  "Permitividade":"Permittivity|Permitividad|Permittivité|Permittivität|介电常数",
+  "Campo Magn.":"Magnetic Field|Campo Magn.|Champ Magn.|Magnetfeld|磁场",
+  "Fluxo Magn.":"Magnetic Flux|Flujo Magn.|Flux Magn.|Magnetfluss|磁通量",
+  "Permeab. Magn.":"Permeability|Permeabilidad|Perméabilité|Permeabilität|磁导率",
+  "Iluminância":"Illuminance|Iluminancia|Éclairement|Beleuchtung|照度",
+  "Luminosidade":"Luminosity|Luminosidad|Luminosité|Lichtstärke|发光强度",
+  "Radioatividade":"Radioactivity|Radiactividad|Radioactivité|Radioaktivität|放射性",
+  "Dose Rad.":"Radiation Dose|Dosis Rad.|Dose Rad.|Strahlendosis|辐射剂量",
+  "Viscosidade Din.":"Dyn. Viscosity|Visc. Din.|Visc. Dyn.|Dyn. Visk.|动态粘度",
+  "Viscosidade Cin.":"Kin. Viscosity|Visc. Cin.|Visc. Cin.|Kin. Visk.|运动粘度",
+  "Tensão Sup.":"Surface Tension|Tensión Sup.|Tension Sup.|Oberflächensp.|表面张力",
+  "Resolução":"Resolution|Resolución|Résolution|Auflösung|分辨率",
+  "Calor Espec.":"Specific Heat|Calor Espec.|Chaleur Spéc.|Spez. Wärme|比热",
+  "Condut. Térmica":"Thermal Cond.|Cond. Térm.|Cond. Therm.|Wärmeleitf.|导热系数",
+  "Resist. Térmica":"Thermal Resist.|Res. Térm.|Rés. Therm.|Wärmewid.|热阻",
+  "Irradiância":"Irradiance|Irradiancia|Irradiance|Bestrahlungsst.|辐照度",
+  "Dens. Energia":"Energy Density|Dens. Energía|Dens. Énergie|Energiedichte|能量密度",
+  "Dens. Potência":"Power Density|Dens. Potencia|Dens. Puissance|Leistungsdichte|功率密度",
+  "Momento Inércia":"Moment of Inertia|Mom. Inercia|Moment Inertie|Trägheitsmoment|转动惯量",
+  "Entropia":"Entropy|Entropía|Entropie|Entropie|熵",
+  "Dureza":"Hardness|Dureza|Dureté|Härte|硬度",
+  "Nível Sonoro":"Sound Level|Nivel Sonoro|Niveau Sonore|Schallpegel|声级",
+  "Qtd. Substância":"Amount Subst.|Cant. Sust.|Qté Subst.|Stoffmenge|物质的量",
+  "Proporção":"Proportion|Proporción|Proportion|Verhältnis|比例",
+  "Número de Onda":"Wavenumber|Núm. Onda|Nombre Onde|Wellenzahl|波数",
+  "Impulso Espec.":"Specific Impulse|Impulso Espec.|Impulsion Spéc.|Spez. Impuls|比冲",
+  "Dose Farmac.":"Pharma. Dose|Dosis Farm.|Dose Pharm.|Pharm. Dosis|药物剂量",
+  "Conc. Farmac.":"Pharma. Conc.|Conc. Farm.|Conc. Pharm.|Pharm. Konz.|药物浓度",
+  "Módulo Elástico":"Elastic Modulus|Módulo Elást.|Module Élast.|Elastizitätsmod.|弹性模量",
+  "👠 Calçado Fem.":"👠 Women's Shoes|👠 Zapatos Mujer|👠 Chaussures F.|👠 Damenschuhe|👠 女鞋",
+  "👟 Calçado Masc.":"👟 Men's Shoes|👟 Zapatos Homb.|👟 Chaussures H.|👟 Herrenschuhe|👟 男鞋",
+  "👶 Calçado Inf.":"👶 Kids' Shoes|👶 Zapatos Niño|👶 Chaussures Enf.|👶 Kinderschuhe|👶 童鞋",
+  "👗 Roupa Fem.":"👗 Women's Clothing|👗 Ropa Mujer|👗 Vêtements F.|👗 Damenkleidung|👗 女装",
+  "👔 Roupa Masc.":"👔 Men's Clothing|👔 Ropa Homb.|👔 Vêtements H.|👔 Herrenkleidung|👔 男装",
+  "🧒 Roupa Inf.":"🧒 Kids' Clothing|🧒 Ropa Niño|🧒 Vêtements Enf.|🧒 Kinderkleidung|🧒 童装",
+  "👖 Jeans/Cintos":"👖 Jeans/Belts|👖 Jeans/Cintur.|👖 Jeans/Ceintures|👖 Jeans/Gürtel|👖 牛仔/腰带",
+  "🎩 Chapéus":"🎩 Hats|🎩 Sombreros|🎩 Chapeaux|🎩 Hüte|🎩 帽子",
+  "💍 Anéis":"💍 Rings|💍 Anillos|💍 Bagues|💍 Ringe|💍 戒指",
+  "🧤 Luvas":"🧤 Gloves|🧤 Guantes|🧤 Gants|🧤 Handschuhe|🧤 手套",
+  "🖥️ Monitor / TV":"🖥️ Monitor / TV|🖥️ Monitor / TV|🖥️ Moniteur / TV|🖥️ Monitor / TV|🖥️ 显示器/电视",
+  "📄 Papel ISO (A/B/C)":"📄 ISO Paper (A/B/C)|📄 Papel ISO (A/B/C)|📄 Papier ISO (A/B/C)|📄 ISO-Papier (A/B/C)|📄 ISO纸张(A/B/C)",
+  "📋 Papel NA / JIS":"📋 NA / JIS Paper|📋 Papel NA / JIS|📋 Papier NA / JIS|📋 NA/JIS-Papier|📋 NA/JIS纸张",
+  "🍳 Culinária":"🍳 Cooking|🍳 Cocina|🍳 Cuisine|🍳 Küche|🍳 烹饪",
+  "🚗 Pneus":"🚗 Tyre Sizes|🚗 Neumáticos|🚗 Pneus|🚗 Reifengrößen|🚗 轮胎",
+  "🔩 Parafusos":"🔩 Screws/Bolts|🔩 Tornillos|🔩 Vis/Boulons|🔩 Schrauben|🔩 螺丝",
+  "⚡ Consumo Elét.":"⚡ Electricity Use|⚡ Cons. Eléct.|⚡ Cons. Élec.|⚡ Stromverbrauch|⚡ 用电",
+  "🧍 Corpo Humano":"🧍 Human Body|🧍 Cuerpo Humano|🧍 Corps Humain|🧍 Körpermaße|🧍 人体",
+  "🗺️ Escala Mapas":"🗺️ Map Scale|🗺️ Escala Mapas|🗺️ Échelle Cartes|🗺️ Kartenmaßstab|🗺️ 地图比例",
+  "📐 Tipografia":"📐 Typography|📐 Tipografía|📐 Typographie|📐 Typographie|📐 排版",
+  "🔌 Gauge Fio AWG":"🔌 Wire Gauge AWG|🔌 Calibre AWG|🔌 Calibre Fil AWG|🔌 Drahtquerschnitt|🔌 导线规格AWG",
+  "🪛 Brocas":"🪛 Drill Bits|🪛 Brocas|🪛 Forets|🪛 Bohrer|🪛 钻头",
+  "🍷 Garrafas Vinho":"🍷 Wine Bottles|🍷 Botellas Vino|🍷 Bouteilles Vin|🍷 Weinflaschen|🍷 葡萄酒瓶",
+  "🥇 Ouro / Metais":"🥇 Gold / Metals|🥇 Oro / Metales|🥇 Or / Métaux|🥇 Gold / Metalle|🥇 黄金/金属",
+  "⛽ Combust. Alt.":"⛽ Alt. Fuels|⛽ Combust. Alt.|⛽ Carb. Alt.|⛽ Alt. Kraftstoffe|⛽ 替代燃料",
+  "🎵 Música / BPM":"🎵 Music / BPM|🎵 Música / BPM|🎵 Musique / BPM|🎵 Musik / BPM|🎵 音乐/BPM",
+  "📸 Fotografia":"📸 Photography|📸 Fotografía|📸 Photographie|📸 Fotografie|📸 摄影",
+  "🔋 Baterias":"🔋 Batteries|🔋 Baterías|🔋 Batteries|🔋 Batterien|🔋 电池",
+  "🌾 Medidas Agrárias":"🌾 Agrarian Measures|🌾 Medidas Agrarias|🌾 Mesures Agraires|🌾 Agrarmaße|🌾 农业度量",
+  "🔢 Bases Numéricas":"🔢 Number Bases|🔢 Bases Numéricas|🔢 Bases Numériques|🔢 Zahlensysteme|🔢 数字进制",
+  "🔤 ASCII / Unicode":"🔤 ASCII / Unicode|🔤 ASCII / Unicode|🔤 ASCII / Unicode|🔤 ASCII / Unicode|🔤 ASCII/Unicode",
+  "📍 Coordenadas GPS":"📍 GPS Coordinates|📍 Coordenadas GPS|📍 Coordonnées GPS|📍 GPS-Koordinaten|📍 GPS坐标",
+  "🔧 Bitola Canos":"🔧 Pipe Sizes|🔧 Diámetro Tuberías|🔧 Calibre Tuyaux|🔧 Rohrdurchmesser|🔧 管道规格",
+  "🔨 Bitola Chapa":"🔨 Sheet Metal Gauge|🔨 Calibre Chapa|🔨 Calibre Tôle|🔨 Blechstärke|🔨 金属板规格",
+  "📐 Declividade":"📐 Slope/Grade|📐 Pendiente|📐 Pente|📐 Neigung|📐 坡度",
+  "🧪 pH":"🧪 pH|🧪 pH|🧪 pH|🧪 pH|🧪 pH值",
+  "💧 Dureza da Água":"💧 Water Hardness|💧 Dureza Agua|💧 Dureté Eau|💧 Wasserhärte|💧 水硬度",
+  "🌍 Escala Sísmica":"🌍 Seismic Scale|🌍 Escala Sísmica|🌍 Échelle Sismique|🌍 Erdbebenskala|🌍 地震等级",
+  "🌬️ Beaufort / Vento":"🌬️ Beaufort / Wind|🌬️ Beaufort / Viento|🌬️ Beaufort / Vent|🌬️ Beaufort / Wind|🌬️ 蒲福风力",
+  "☀️ Índice UV":"☀️ UV Index|☀️ Índice UV|☀️ Indice UV|☀️ UV-Index|☀️ 紫外线指数",
+  "🩸 Glicose":"🩸 Blood Glucose|🩸 Glucosa|🩸 Glycémie|🩸 Blutzucker|🩸 血糖",
+  "💉 Colesterol":"💉 Cholesterol|💉 Colesterol|💉 Cholestérol|💉 Cholesterin|💉 胆固醇",
+  "🩺 HbA1c":"🩺 HbA1c|🩺 HbA1c|🩺 HbA1c|🩺 HbA1c|🩺 糖化血红蛋白",
+  "❤️ Pressão Arterial":"❤️ Blood Pressure|❤️ Presión Arterial|❤️ Tension Artérielle|❤️ Blutdruck|❤️ 血压",
+  "🏃 Pace / Corrida":"🏃 Running Pace|🏃 Ritmo Carrera|🏃 Allure Course|🏃 Lauftempo|🏃 跑步配速",
+  "🫁 VO₂max":"🫁 VO₂max|🫁 VO₂max|🫁 VO₂max|🫁 VO₂max|🫁 最大摄氧量",
+  "❤️‍🔥 FC / Zonas Treino":"❤️‍🔥 HR / Training Zones|❤️‍🔥 FC / Zonas|❤️‍🔥 FC / Zones|❤️‍🔥 HF / Trainingszonen|❤️‍🔥 心率/训练区",
+  "✈️ Altitude / Pressão":"✈️ Altitude / Pressure|✈️ Altitud / Presión|✈️ Altitude / Pression|✈️ Höhe / Druck|✈️ 海拔/气压",
+  "⭐ Magnitude Estelar":"⭐ Stellar Magnitude|⭐ Magnitud Estelar|⭐ Magnitude Stellaire|⭐ Sternhelligkeit|⭐ 星等",
+  "💰 Juros":"💰 Interest|💰 Interés|💰 Intérêts|💰 Zinsen|💰 利息",
+  "🕐 Fuso Horário":"🕐 Time Zones|🕐 Zonas Horarias|🕐 Fuseaux Horaires|🕐 Zeitzonen|🕐 时区",
+  "🔢 Números Romanos":"🔢 Roman Numerals|🔢 Números Romanos|🔢 Chiffres Romains|🔢 Römische Zahlen|🔢 罗马数字",
+  "📊 Percentagens":"📊 Percentages|📊 Porcentajes|📊 Pourcentages|📊 Prozentrechnung|📊 百分比",
+  "📡 Onda ↔ Freq.":"📡 Wave ↔ Freq.|📡 Onda ↔ Frec.|📡 Onde ↔ Fréq.|📡 Welle ↔ Freq.|📡 波长↔频率",
+  "📶 dBm / RF":"📶 dBm / RF Power|📶 dBm / Potencia RF|📶 dBm / Puissance RF|📶 dBm / HF-Leistung|📶 dBm/射频功率",
+  "🎨 Cores RGB":"🎨 RGB Colors|🎨 Colores RGB|🎨 Couleurs RGB|🎨 RGB-Farben|🎨 RGB颜色",
+  "🌡️ Temperatura de Cor":"🌡️ Color Temperature|🌡️ Temperatura Color|🌡️ Température Couleur|🌡️ Farbtemperatur|🌡️ 色温",
+  "⚗️ Gases Ideais":"⚗️ Ideal Gases|⚗️ Gases Ideales|⚗️ Gaz Parfaits|⚗️ Ideale Gase|⚗️ 理想气体",
+  "🔬 Moles / Massa":"🔬 Moles / Mass|🔬 Moles / Masa|🔬 Moles / Masse|🔬 Mol / Masse|🔬 摩尔/质量",
+  "📉 Z-score":"📉 Z-score|📉 Z-score|📉 Z-score|📉 Z-Wert|📉 Z分数",
+  "🎲 Probabilidade":"🎲 Probability|🎲 Probabilidad|🎲 Probabilité|🎲 Wahrscheinlichkeit|🎲 概率",
+  "🌐 Redes IP / CIDR":"🌐 IP / CIDR|🌐 Redes IP / CIDR|🌐 Réseaux IP/CIDR|🌐 IP-Netzwerke|🌐 IP网络",
+  "📶 Banda / Transferência":"📶 Bandwidth|📶 Ancho de Banda|📶 Bande Passante|📶 Bandbreite|📶 带宽",
+  "🏗️ Betão / Resistência":"🏗️ Concrete Strength|🏗️ Resistencia Hormigón|🏗️ Résistance Béton|🏗️ Betonklassen|🏗️ 混凝土强度",
+  "⚓ Náutica":"⚓ Nautical|⚓ Náutica|⚓ Nautique|⚓ Nautisch|⚓ 航海"
+};
+
+function catName(key,lang){
+  const idx={pt:0,en:1,es:2,fr:3,de:4,zh:5}[lang]||0;
+  if(!C[key])return key;
+  const parts=C[key].split('|');
+  return idx===0?key:(parts[idx-1]||key);
+}
+
+const SUPTITLE={pt:"Gostou da ferramenta?",en:"Find this useful?",es:"¿Te fue útil?",fr:"Outil utile ?",de:"Nützlich gefunden?",zh:"觉得有用吗？"};
+const SUPDESC={pt:"Esta ferramenta é gratuita e sem anúncios. Se te foi útil, considera apoiar o desenvolvimento com qualquer valor — mesmo 1€ faz diferença!",en:"This tool is free and ad-free. If it helped you, consider supporting development with any amount — even $1 makes a difference!",es:"Esta herramienta es gratuita y sin anuncios. Si te ayudó, considera apoyar el desarrollo con cualquier cantidad.",fr:"Cet outil est gratuit et sans publicité. S'il vous a aidé, envisagez de soutenir son développement.",de:"Dieses Tool ist kostenlos und werbefrei. Wenn es geholfen hat, unterstützen Sie die Entwicklung.",zh:"此工具免费且无广告。如果对您有帮助，请考虑支持开发。"};
+const SUPBTN={pt:"Apoiar · Pague o que quiser",en:"Support · Pay what you want",es:"Apoyar · Paga lo que quieras",fr:"Soutenir · Payez ce que vous voulez",de:"Unterstützen · Zahlen Sie was Sie möchten",zh:"支持 · 随心付款"};
+const FOOTER={pt:"Feito com ♥ · Gratuito para sempre",en:"Made with ♥ · Free forever",es:"Hecho con ♥ · Gratis para siempre",fr:"Fait avec ♥ · Gratuit pour toujours",de:"Mit ♥ gemacht · Für immer kostenlos",zh:"用♥制作 · 永远免费"};
+const DEV_TITLE={
+  pt:"Em desenvolvimento ativo",
+  en:"Actively under development",
+  es:"En desarrollo activo",
+  fr:"En développement actif",
+  de:"Aktiv in Entwicklung",
+  zh:"积极开发中"
+};
+const DEV_DESC={
+  pt:"Esta ferramenta está a ser construída de forma contínua. Novos campos, categorias e funcionalidades são adicionados regularmente. Alguns valores podem ainda estar incompletos ou a requerer validação. Se detetar alguma incorreção, por favor contacte o desenvolvedor.",
+  en:"This tool is being built continuously. New fields, categories and features are added regularly. Some values may still be incomplete or require validation. If you spot any inaccuracy, please contact the developer.",
+  es:"Esta herramienta se está construyendo de forma continua. Se añaden regularmente nuevos campos, categorías y funcionalidades. Algunos valores pueden estar incompletos o requerir validación. Si detecta alguna inexactitud, contacte al desarrollador.",
+  fr:"Cet outil est en construction continue. De nouveaux champs, catégories et fonctionnalités sont ajoutés régulièrement. Certaines valeurs peuvent être incomplètes ou nécessiter une validation. Si vous détectez une inexactitude, veuillez contacter le développeur.",
+  de:"Dieses Tool wird kontinuierlich entwickelt. Neue Felder, Kategorien und Funktionen werden regelmäßig hinzugefügt. Einige Werte können noch unvollständig sein oder eine Überprüfung erfordern. Bei Unstimmigkeiten bitte den Entwickler kontaktieren.",
+  zh:"此工具正在持续开发中。新字段、类别和功能会定期添加。部分数值可能尚不完整或需要验证。如发现任何错误，请联系开发者。"
+};
+const DEV_BTN={
+  pt:"Contactar desenvolvedor",
+  en:"Contact developer",
+  es:"Contactar desarrollador",
+  fr:"Contacter le développeur",
+  de:"Entwickler kontaktieren",
+  zh:"联系开发者"
+};
+const SUBTITLE={pt:"+1300 unidades · 127 categorias",en:"+1300 units · 127 categories",es:"+1300 unidades · 127 categorías",fr:"+1300 unités · 127 catégories",de:"+1300 Einheiten · 127 Kategorien",zh:"+1300单位 · 127类别"};
+const TITLE={pt:"Conversor Universal",en:"Universal Converter",es:"Conversor Universal",fr:"Convertisseur Universel",de:"Universalumrechner",zh:"通用单位转换器"};
+const FROM={pt:"De",en:"From",es:"De",fr:"De",de:"Von",zh:"从"};
+const TO={pt:"Para",en:"To",es:"A",fr:"Vers",de:"Nach",zh:"到"};
+const ALLCONV={pt:"Todas as conversões",en:"All conversions",es:"Todas las conversiones",fr:"Toutes les conversions",de:"Alle Umrechnungen",zh:"所有转换"};
+
+// ── UNIT DATABASE ─────────────────────────────────────────────────────────────
+const CATEGORIES={
+
+"Comprimento":{u:{
+  "Metro (m)":1,"Quilômetro (km)":1000,"Centímetro (cm)":0.01,"Milímetro (mm)":0.001,
+  "Micrômetro (µm)":1e-6,"Nanômetro (nm)":1e-9,"Picômetro (pm)":1e-12,"Fentômetro (fm)":1e-15,
+  "Polegada (in)":0.0254,"Pé (ft)":0.3048,"Jarda (yd)":0.9144,"Milha (mi)":1609.344,
+  "Milha náutica (nmi)":1852,"Thou (mil)":2.54e-5,"Furlong":201.168,"Rod":5.0292,
+  "Chain":20.1168,"Braça (fathom)":1.8288,"Cúbito":0.4572,"Palmo":0.2286,
+  "Légua terrestre":4828.032,"Légua náutica":5556,"Ångström (Å)":1e-10,
+  "UA (au)":1.496e11,"Ano-luz (ly)":9.461e15,"Parsec (pc)":3.0857e16,"Kiloparsec (kpc)":3.0857e19
+}},
+
+"Massa":{u:{
+  "Quilograma (kg)":1,"Grama (g)":0.001,"Miligrama (mg)":1e-6,"Micrograma (µg)":1e-9,
+  "Nanograma (ng)":1e-12,"Tonelada métrica (t)":1000,"Libra (lb)":0.453592,
+  "Onça (oz)":0.0283495,"Onça troy (oz t)":0.0311035,"Libra troy":0.373242,
+  "Pennyweight (dwt)":0.00155517,"Pedra (st)":6.35029,"Quintal (q)":100,
+  "Quintal inglês (cwt)":50.8023,"Tonelada curta (US)":907.185,"Tonelada longa (UK)":1016.05,
+  "Quilate (ct)":0.0002,"Grão (gr)":6.4799e-5,"Slug":14.5939,"Arroba":14.6887,
+  "Dracma":0.0017718,"Escrupulo":0.00129598
+}},
+
+"Temperatura":{special:"temp",u:[
+  "Celsius (°C)","Fahrenheit (°F)","Kelvin (K)","Rankine (°R)",
+  "Réaumur (°Ré)","Delisle (°De)","Newton (°N)","Rømer (°Rø)"
+]},
+
+"Volume":{u:{
+  "Litro (L)":1,"Mililitro (mL)":0.001,"Microlitro (µL)":1e-6,"Nanolitro (nL)":1e-9,
+  "Metro cúbico (m³)":1000,"Centímetro cúbico (cm³)":0.001,"Milímetro cúbico (mm³)":1e-6,
+  "Decímetro cúbico (dm³)":1,"Galão US":3.78541,"Galão UK":4.54609,
+  "Quarto US (qt)":0.946353,"Quarto UK":1.13652,"Pinta US (pt)":0.473176,"Pinta UK":0.568261,
+  "Xícara US":0.236588,"Xícara UK":0.284131,"Xícara métrica":0.25,
+  "Fl oz US":0.0295735,"Fl oz UK":0.0284131,
+  "Colher sopa US (tbsp)":0.0147868,"Colher chá US (tsp)":0.00492892,
+  "Colher sopa UK":0.01420653,"Colher chá UK":0.00591939,"Dram (fl dr)":0.00369669,"Minim":6.1612e-5,
+  "Barril petróleo (bbl)":158.987,"Barril cerveja":117.348,
+  "Pé cúbico (ft³)":28.3168,"Polegada cúbica (in³)":0.016387,"Jarda cúbica (yd³)":764.555,
+  "Bushel US":35.2391,"Peck US":8.80977,"Cord":3624.56,"Board foot":2.35974
+}},
+
+"Velocidade":{u:{
+  "Metro/segundo (m/s)":1,"Quilômetro/hora (km/h)":0.277778,"Milha/hora (mph)":0.44704,
+  "Nó (kn)":0.514444,"Pé/segundo (ft/s)":0.3048,"Centímetro/segundo":0.01,
+  "Milímetro/segundo":0.001,"Quilômetro/segundo":1000,"Milha/minuto":26.8224,"Milha/segundo":1609.344,
+  "Mach (20°C, ar)":340.29,"Mach (11km altitude)":295,
+  "Velocidade do som (água)":1482,"Velocidade da luz (c)":2.99792458e8,
+  "1ª velocidade cósmica":7909,"2ª velocidade cósmica":11186
+}},
+
+"Área":{u:{
+  "Metro quadrado (m²)":1,"Quilômetro quadrado (km²)":1e6,
+  "Centímetro quadrado (cm²)":1e-4,"Milímetro quadrado (mm²)":1e-6,
+  "Hectare (ha)":10000,"Are (a)":100,"Acre (ac)":4046.86,
+  "Pé quadrado (ft²)":0.092903,"Polegada quadrada (in²)":0.00064516,
+  "Jarda quadrada (yd²)":0.836127,"Milha quadrada (mi²)":2589988,
+  "Rood":1011.71,"Township":93239572,"Barn (b)":1e-28
+}},
+
+"Tempo":{u:{
+  "Segundo (s)":1,"Milissegundo (ms)":0.001,"Microssegundo (µs)":1e-6,
+  "Nanossegundo (ns)":1e-9,"Picossegundo (ps)":1e-12,"Femtossegundo (fs)":1e-15,
+  "Minuto (min)":60,"Hora (h)":3600,"Dia (d)":86400,"Semana":604800,
+  "Quinzena":1209600,"Mês (30d)":2592000,"Trimestre (91d)":7862400,
+  "Semestre (182d)":15724800,"Ano (365d)":31536000,"Ano juliano":31557600,
+  "Década":315360000,"Século":3.1536e9,"Milênio":3.1536e10
+}},
+
+"Pressão":{u:{
+  "Pascal (Pa)":1,"Millipascal (mPa)":0.001,"Micropascal (µPa)":1e-6,
+  "Hectopascal (hPa)":100,"Kilopascal (kPa)":1000,"Megapascal (MPa)":1e6,"Gigapascal (GPa)":1e9,
+  "Bar":100000,"Milibar (mbar)":100,"Microbar":0.1,
+  "Atmosfera (atm)":101325,"Atmosfera técnica (at)":98066.5,
+  "mmHg (torr)":133.322,"cmHg":1333.22,"inHg":3386.39,
+  "cmH₂O":98.0638,"mmH₂O":9.80638,"ftH₂O":2988.98,"inH₂O":249.089,
+  "PSI":6894.76,"ksi":6894760,"kgf/cm²":98066.5,"kgf/m²":9.80665,"dina/cm²":0.1
+}},
+
+"Energia":{u:{
+  "Joule (J)":1,"Kilojoule (kJ)":1000,"Megajoule (MJ)":1e6,"Gigajoule (GJ)":1e9,
+  "Caloria (cal)":4.184,"Kilocaloria (kcal)":4184,
+  "Watt-hora (Wh)":3600,"Kilowatt-hora (kWh)":3.6e6,"Megawatt-hora (MWh)":3.6e9,
+  "Gigawatt-hora (GWh)":3.6e12,"Terawatt-hora (TWh)":3.6e15,
+  "BTU":1055.06,"Therm (EC)":1.05506e8,
+  "Elétron-volt (eV)":1.60218e-19,"keV":1.60218e-16,"MeV":1.60218e-13,"GeV":1.60218e-10,
+  "Erg":1e-7,"Pé-libra-força (ft·lbf)":1.35582,
+  "Tonelada de TNT":4.184e9,"Quiloton TNT":4.184e12,"Megaton TNT":4.184e15,
+  "Tonelada eq. petróleo (toe)":4.1868e10,"Barril eq. petróleo (BOE)":6.117e9
+}},
+
+"Potência":{u:{
+  "Watt (W)":1,"Miliwatt (mW)":0.001,"Microwatt (µW)":1e-6,
+  "Kilowatt (kW)":1000,"Megawatt (MW)":1e6,"Gigawatt (GW)":1e9,"Terawatt (TW)":1e12,
+  "Cavalo-vapor métrico (cv)":735.499,"Cavalo-vapor imperial (hp)":745.7,
+  "Cavalo-vapor caldeira":9810.6,"BTU/hora":0.293071,"BTU/minuto":17.5843,
+  "Caloria/segundo":4.184,"Erg/segundo":1e-7,"Pé-libra/segundo":1.35582,
+  "Tonelada de refrigeração":3516.85
+}},
+
+"Dados":{u:{
+  "Bit (b)":1,"Nibble":4,"Byte (B)":8,"Palavra 16-bit (word)":16,"Palavra 32-bit (dword)":32,"Palavra 64-bit (qword)":64,
+  "Kilobyte (KB)":8000,"Megabyte (MB)":8e6,"Gigabyte (GB)":8e9,
+  "Terabyte (TB)":8e12,"Petabyte (PB)":8e15,"Exabyte (EB)":8e18,
+  "Zettabyte (ZB)":8e21,"Yottabyte (YB)":8e24,
+  "Kibibyte (KiB)":8192,"Mebibyte (MiB)":8388608,
+  "Gibibyte (GiB)":8589934592,"Tebibyte (TiB)":8796093022208,
+  "Pebibyte (PiB)":9.007e15,"Exbibyte (EiB)":9.223e18
+}},
+
+"Veloc. Dados":{u:{
+  "bit/segundo (bps)":1,"Kilobit/segundo (Kbps)":1000,
+  "Megabit/segundo (Mbps)":1e6,"Gigabit/segundo (Gbps)":1e9,"Terabit/segundo (Tbps)":1e12,
+  "Byte/segundo (B/s)":8,"Kilobyte/segundo (KB/s)":8000,
+  "Megabyte/segundo (MB/s)":8e6,"Gigabyte/segundo (GB/s)":8e9,
+  "Kibibit/segundo (Kibps)":1024,"Mebibit/segundo (Mibps)":1048576,"Gibibit/segundo (Gibps)":1073741824
+}},
+
+"Ângulo":{u:{
+  "Grau (°)":1,"Radiano (rad)":57.2957795,"Gradiano (grad)":0.9,
+  "Milirradiano (mrad)":0.0572958,"Microrradiano (µrad)":5.72958e-5,
+  "Minuto de arco (')":0.0166667,"Segundo de arco (\")":2.77778e-4,
+  "Milissegundo de arco":2.77778e-7,"Revolução":360,
+  "Ponto náutico":11.25,"Sinal zodiacal":30,"Octante":45,"Sextante":60,"Quadrante":90
+}},
+
+"Frequência":{u:{
+  "Hertz (Hz)":1,"Milihertz (mHz)":0.001,"Microhertz (µHz)":1e-6,
+  "Kilohertz (kHz)":1000,"Megahertz (MHz)":1e6,"Gigahertz (GHz)":1e9,
+  "Terahertz (THz)":1e12,"Petahertz (PHz)":1e15,
+  "RPM":1/60,"RPS":1,"Ciclos/minuto":1/60,
+  "Radianos/segundo":1/(2*Math.PI),"Batimentos/minuto (bpm)":1/60
+}},
+
+"Combustível":{special:"fuel",u:{
+  "km/L":1,"L/100km":null,"mpg (US)":0.425144,"mpg (UK)":0.354006,
+  "km/galão US":0.264172,"km/galão UK":0.219969,"milha/L":1.60934,
+  "km/m³":0.001,"m³/100km":null,
+  "kWh/100km (elétrico)":null,"MPGe (US)":null
+}},
+
+"Força":{u:{
+  "Newton (N)":1,"Micronewton (µN)":1e-6,"Millinewton (mN)":0.001,
+  "Kilonewton (kN)":1000,"Meganewton (MN)":1e6,
+  "Dina (dyn)":1e-5,"Libra-força (lbf)":4.44822,"Kilopound-força (kip)":4448.22,
+  "Kilograma-força (kgf)":9.80665,"Grama-força (gf)":0.00980665,
+  "Tonelada-força métrica":9806.65,"Onça-força (ozf)":0.278014,"Poundal (pdl)":0.138255,"Sthene":1000
+}},
+
+"Torque":{u:{
+  "Newton-metro (N·m)":1,"Millinewton-metro":0.001,"Newton-centímetro":0.01,"Newton-milímetro":0.001,
+  "Kilonewton-metro":1000,"Libra-pé (lb·ft)":1.35582,"Libra-polegada (lb·in)":0.112985,
+  "Onça-polegada":0.007062,"Onça-pé":0.084738,
+  "Kilograma-metro (kgf·m)":9.80665,"Kilograma-centímetro":0.0980665,
+  "Tonelada-metro":9806.65,"Dina-centímetro":1e-7
+}},
+
+"Aceleração":{u:{
+  "Metro/segundo² (m/s²)":1,"Centímetro/segundo²":0.01,"Milímetro/segundo²":0.001,
+  "km/h²":7.71605e-5,"Pé/segundo² (ft/s²)":0.3048,"Polegada/segundo²":0.0254,
+  "mph/segundo":0.44704,"Gravidade padrão (g₀)":9.80665,"Gal":0.01,"Milligal":1e-5
+}},
+
+"Densidade":{u:{
+  "kg/m³":1,"g/cm³":1000,"g/mL":1000,"kg/L":1000,"mg/mL":1,"mg/L":0.001,
+  "kg/dm³":1000,"t/m³":1000,"lb/ft³":16.0185,"lb/in³":27679.9,
+  "lb/gal US":119.826,"oz/in³":1729.99,"slug/ft³":515.379
+}},
+
+"Concentração":{u:{
+  "mol/L (M)":1,"mmol/L (mM)":0.001,"µmol/L (µM)":1e-6,"nmol/L (nM)":1e-9,"pmol/L (pM)":1e-12,
+  "mol/m³":0.001,"kmol/m³":1,"mEq/L":0.001,"mOsmol/L":0.001,"UI/L":1,
+  "mg/dL":1e-4,"mg/L":1e-6,"g/L":0.001,"µg/mL":1e-6,"ng/mL":1e-9,"pg/mL":1e-12,
+  "g/dL":0.01,"g/100mL":0.01,
+  "ppm (mg/kg)":1e-6,"ppb (µg/kg)":1e-9,"ppt (ng/kg)":1e-12,"ppq":1e-15,
+  "% (m/v)":0.1,"% (m/m)":1,"% (v/v)":1
+}},
+
+"Fluxo Vol.":{u:{
+  "m³/segundo":1,"m³/minuto":1/60,"m³/hora":1/3600,
+  "L/segundo":0.001,"L/minuto":1.66667e-5,"L/hora":2.77778e-7,
+  "mL/segundo":1e-6,"mL/minuto":1.66667e-8,
+  "Galão US/minuto (GPM)":6.30902e-5,"Galão US/hora":1.0515e-6,
+  "Galão UK/minuto":7.57682e-5,"Pé³/segundo (CFS)":0.0283168,
+  "Pé³/minuto (CFM)":4.71947e-4,"Pé³/hora":1.31303e-5,
+  "Barril petróleo/dia":1.84013e-6
+}},
+
+"Vazão Mássica":{u:{
+  "kg/segundo":1,"g/segundo":0.001,"mg/segundo":1e-6,
+  "kg/minuto":1/60,"kg/hora":1/3600,"kg/dia":1/86400,
+  "t/hora":1000/3600,"t/dia":1000/86400,
+  "lb/segundo":0.453592,"lb/minuto":0.453592/60,"lb/hora":0.453592/3600,
+  "lb/dia":0.453592/86400,"ton curta/hora":907.185/3600,
+  "g/minuto":0.001/60,"g/hora":0.001/3600
+}},
+
+"Tensão Elét.":{u:{
+  "Volt (V)":1,"Microvolt (µV)":1e-6,"Milivolt (mV)":0.001,
+  "Kilovolt (kV)":1000,"Megavolt (MV)":1e6,"Gigavolt (GV)":1e9,
+  "Abvolt":1e-8,"Statvolt":299.792
+}},
+
+"Corrente":{u:{
+  "Ampere (A)":1,"Picoampere (pA)":1e-12,"Nanoampere (nA)":1e-9,
+  "Microampere (µA)":1e-6,"Miliampere (mA)":0.001,
+  "Kiloampere (kA)":1000,"Megaampere (MA)":1e6,
+  "Abampere":10,"Biot":10,"Statampere":3.33564e-10
+}},
+
+"Resistência":{u:{
+  "Ohm (Ω)":1,"Microohm (µΩ)":1e-6,"Miliohm (mΩ)":0.001,
+  "Kiloohm (kΩ)":1000,"Megaohm (MΩ)":1e6,"Gigaohm (GΩ)":1e9,"Teraohm (TΩ)":1e12,
+  "Abohm":1e-9,"Statohm":8.98755e11
+}},
+
+"Resistividade":{u:{
+  "Ohm·metro (Ω·m)":1,"Ohm·centímetro (Ω·cm)":0.01,
+  "Microohm·metro (µΩ·m)":1e-6,"Microohm·centímetro (µΩ·cm)":1e-8,
+  "Miliohm·metro":0.001,"Kiloohm·metro":1000,"Megaohm·metro":1e6,
+  "Ohm·polegada":0.0254,"Ohm·pé":0.3048,"Circular mil·ohm/pé":1.6624e-9
+}},
+
+"Condut. Elét.":{u:{
+  "Siemens/metro (S/m)":1,"Milisiemens/metro (mS/m)":0.001,
+  "Microsiemens/metro (µS/m)":1e-6,"Siemens/centímetro (S/cm)":100,
+  "Milisiemens/centímetro (mS/cm)":0.1,"Microsiemens/centímetro (µS/cm)":0.001,
+  "Siemens/polegada":39.3701,"Absiemens/metro":1e9,"Statsiemens/metro":1.11265e-12
+}},
+
+"Capacitância":{u:{
+  "Farad (F)":1,"Picofarad (pF)":1e-12,"Nanofarad (nF)":1e-9,
+  "Microfarad (µF)":1e-6,"Milifarad (mF)":0.001,"Kilofarad":1000,
+  "Abfarad":1e9,"Statfarad":1.11265e-12
+}},
+
+"Indutância":{u:{
+  "Henry (H)":1,"Picohenry (pH)":1e-12,"Nanohenry (nH)":1e-9,
+  "Microhenry (µH)":1e-6,"Milihenry (mH)":0.001,"Kilohenry (kH)":1000,
+  "Abhenry":1e-9,"Stathenry":8.98755e11,"Weber/Ampere":1
+}},
+
+"Carga Elét.":{u:{
+  "Coulomb (C)":1,"Picocoulomb (pC)":1e-12,"Nanocoulomb (nC)":1e-9,
+  "Microcoulomb (µC)":1e-6,"Milicoulomb (mC)":0.001,
+  "Kilocoulomb (kC)":1000,"Megacoulomb (MC)":1e6,
+  "Ampere-hora (Ah)":3600,"Miliampere-hora (mAh)":3.6,"Ampere-segundo":1,
+  "Abcoulomb":10,"Statcoulomb":3.33564e-10,"Faraday":96485.3
+}},
+
+"Campo Elét.":{u:{
+  "Volt/metro (V/m)":1,"Milivolt/metro":0.001,"Microvolt/metro":1e-6,
+  "Kilovolt/metro (kV/m)":1000,"Megavolt/metro (MV/m)":1e6,
+  "Volt/centímetro":100,"Volt/milímetro":1000,"Volt/polegada":39.3701,
+  "Newton/Coulomb":1,"Statvolt/cm":29979.2
+}},
+
+"Permitividade":{u:{
+  "Farad/metro (F/m)":1,"Picofarad/metro (pF/m)":1e-12,"Nanofarad/metro (nF/m)":1e-9,
+  "Microfarad/metro (µF/m)":1e-6,"Milifarad/metro (mF/m)":0.001,
+  "Permitividade vácuo (ε₀)":8.854e-12,
+  "C²/(N·m²)":1,"F/cm":100,"F/mm":1000
+}},
+
+"Campo Magn.":{u:{
+  "Tesla (T)":1,"Militesla (mT)":0.001,"Microtesla (µT)":1e-6,"Nanotesla (nT)":1e-9,
+  "Gauss (G)":1e-4,"Kilogauss (kG)":0.1,"Weber/m²":1,"Maxwell/cm²":1e-8,
+  "Gamma (γ)":1e-9,"Oersted (Oe)":79.5775
+}},
+
+"Fluxo Magn.":{u:{
+  "Weber (Wb)":1,"Miliweber (mWb)":0.001,"Microweber (µWb)":1e-6,
+  "Volt-segundo":1,"Kilovolt-segundo":1000,
+  "Maxwell (Mx)":1e-8,"Kiloweber (kWb)":1000,"Megaweber (MWb)":1e6,
+  "Tesla·m²":1,"Gauss·cm²":1e-8
+}},
+
+"Permeab. Magn.":{u:{
+  "Henry/metro (H/m)":1,"Microhenry/metro (µH/m)":1e-6,"Milihenry/metro (mH/m)":0.001,
+  "Permeabilidade vácuo (µ₀)":1.2566e-6,
+  "Gauss/Oersted":1.2566e-6,"T·m/A":1,"Wb/(A·m)":1,
+  "Newton/Ampere²":1,"kg·m/A²·s²":1
+}},
+
+"Iluminância":{u:{
+  "Lux (lx)":1,"Millilux":0.001,"Kilolux (klx)":1000,
+  "Foot-candle (fc)":10.7639,"Phot (ph)":10000,"Nox":0.001,
+  "Lumen/m²":1,"Lumen/cm²":10000,"Lumen/ft²":10.7639
+}},
+
+"Luminosidade":{u:{
+  "Candela (cd)":1,"Milicandela (mcd)":0.001,"Kilocandela":1000,
+  "Nit (cd/m²)":1,"Kilonit":1000,"Stilb (sb)":10000,
+  "Lambert (L)":3183.1,"Foot-lambert (fL)":3.42626,
+  "Apostilb":0.31831,"Skot":0.000318,"Candela/pé²":10.7639
+}},
+
+"Radioatividade":{u:{
+  "Becquerel (Bq)":1,"Kilobecquerel (kBq)":1000,"Megabecquerel (MBq)":1e6,
+  "Gigabecquerel (GBq)":1e9,"Terabecquerel (TBq)":1e12,
+  "Curie (Ci)":3.7e10,"Millicurie (mCi)":3.7e7,"Microcurie (µCi)":37000,
+  "Nanocurie (nCi)":37,"Picocurie (pCi)":0.037,
+  "Rutherford (Rd)":1e6,"Desint./segundo":1,"Desint./minuto":1/60
+}},
+
+"Dose Rad.":{u:{
+  "Gray (Gy)":1,"Milligray (mGy)":0.001,"Microgray (µGy)":1e-6,"Kilogray (kGy)":1000,
+  "Rad":0.01,"Millirad":1e-5,
+  "Sievert (Sv)":1,"Millisievert (mSv)":0.001,"Microsievert (µSv)":1e-6,
+  "Rem":0.01,"Millirem":1e-4,"Microrem":1e-7,"Roentgen":0.00877
+}},
+
+"Viscosidade Din.":{u:{
+  "Pascal·segundo (Pa·s)":1,"Milipascal·segundo (mPa·s)":0.001,
+  "Micropascal·segundo":1e-6,"Poise (P)":0.1,"Centipoise (cP)":0.001,
+  "Millipoise":0.0001,"kg/(m·s)":1,"g/(cm·s)":0.1,
+  "lb/(ft·s)":1.48816,"lb/(ft·h)":4.13378e-4,"lbf·s/ft²":47.8803,"lbf·s/in²":6894.76
+}},
+
+"Viscosidade Cin.":{u:{
+  "m²/segundo":1,"cm²/segundo (St)":1e-4,"mm²/segundo (cSt)":1e-6,
+  "m²/hora":2.77778e-4,"ft²/segundo":9.2903e-2,"ft²/hora":2.58064e-5,
+  "in²/segundo":6.4516e-4,"in²/hora":1.7921e-7
+}},
+
+"Tensão Sup.":{u:{
+  "Newton/metro (N/m)":1,"Millinewton/metro (mN/m)":0.001,
+  "Micronewton/metro (µN/m)":1e-6,"Dina/centímetro (dyn/cm)":0.001,
+  "Erg/cm²":0.001,"Joule/m²":1,"Milijoule/m²":0.001,
+  "Libra-força/pé (lbf/ft)":14.5939,"Libra-força/polegada":175.127,
+  "Poundal/pé":0.453592,"kgf/m":9.80665,"gf/cm":0.0980665
+}},
+
+"Resolução":{u:{
+  "Pixel/polegada (PPI)":1,"Dot/polegada (DPI)":1,
+  "Pixel/centímetro (PPCM)":2.54,"Dot/centímetro (DPCM)":2.54,
+  "Pixel/milímetro (PPMM)":25.4,"Linha/milímetro (lp/mm)":25.4,
+  "Pixel/metro":0.0254,"Ciclo/mm":25.4,"Ciclo/cm":2.54
+}},
+
+"Calor Espec.":{u:{
+  "J/(kg·K)":1,"kJ/(kg·K)":1000,"J/(g·K)":1000,"J/(g·°C)":1000,
+  "cal/(g·°C)":4184,"kcal/(kg·°C)":4184,
+  "BTU/(lb·°F)":4186.8,"BTU/(lb·°R)":4186.8,
+  "J/(mol·K)":1,"kJ/(mol·K)":1000,"cal/(mol·K)":4.184
+}},
+
+"Condut. Térmica":{u:{
+  "W/(m·K)":1,"W/(m·°C)":1,"mW/(m·K)":0.001,"kW/(m·K)":1000,
+  "W/(cm·K)":100,"cal/(s·cm·°C)":418.4,
+  "kcal/(h·m·°C)":1.163,"BTU/(h·ft·°F)":1.73073,
+  "BTU·in/(h·ft²·°F)":0.144228
+}},
+
+"Resist. Térmica":{u:{
+  "K/W":1,"°C/W":1,"°F·h/BTU":1.89563,
+  "K·m²/W (RSI)":1,"°C·m²/W":1,
+  "°F·h·ft²/BTU (R-value)":0.176110,"K/kW":0.001
+}},
+
+"Irradiância":{u:{
+  "W/m²":1,"kW/m²":1000,"MW/m²":1e6,"W/cm²":10000,"mW/cm²":10,
+  "BTU/(h·ft²)":3.15459,"BTU/(min·ft²)":189.275,
+  "cal/(s·cm²)":41840,"kcal/(h·m²)":1.163
+}},
+
+"Dens. Energia":{u:{
+  "J/m³":1,"kJ/m³":1000,"MJ/m³":1e6,"GJ/m³":1e9,
+  "J/L":1000,"kJ/L":1e6,"MJ/L":1e9,
+  "Wh/m³":3600,"kWh/m³":3.6e6,"MWh/m³":3.6e9,
+  "Wh/kg":3600,"kWh/kg":3.6e6,"MWh/kg":3.6e9,
+  "Wh/L":3600000,"kWh/L":3.6e9,
+  "BTU/ft³":37259,"BTU/gal US":278716,
+  "cal/cm³":4184000,"kcal/L":4184000
+}},
+
+"Dens. Potência":{u:{
+  "W/m³":1,"kW/m³":1000,"MW/m³":1e6,"W/L":1000,"kW/L":1e6,
+  "W/kg":1,"kW/kg":1000,"MW/kg":1e6,
+  "W/cm³":1e6,"BTU/(h·ft³)":10.3497,"hp/ft³":26334.2,"hp/in³":45469000
+}},
+
+"Momento Inércia":{u:{
+  "kg·m²":1,"g·cm²":1e-7,"kg·cm²":0.0001,
+  "t·m²":1000,"lb·ft²":0.042140,"lb·in²":2.9264e-4,
+  "oz·in²":1.8290e-5,"slug·ft²":1.35582,
+  "kg·mm²":1e-6,"g·mm²":1e-9
+}},
+
+"Entropia":{u:{
+  "Joule/Kelvin (J/K)":1,"Kilojoule/Kelvin (kJ/K)":1000,
+  "Megajoule/Kelvin (MJ/K)":1e6,"Caloria/Kelvin (cal/K)":4.184,
+  "Kilocaloria/Kelvin":4184,"BTU/Rankine (BTU/°R)":1899.1,
+  "BTU/Fahrenheit":1899.1,"J/(mol·K)":1,"kJ/(mol·K)":1000,
+  "cal/(mol·K)":4.184,"erg/K":1e-7
+}},
+
+"Dureza":{special:"hardness",u:{
+  "Vickers (HV)":1,"Brinell (HB)":0.968,"Rockwell C (HRC)":9.81,
+  "Rockwell B (HRB)":1.72,"Rockwell A (HRA)":4.9,
+  "Knoop (HK)":1.05,"Shore A":0.066,"Shore D":0.32,"Shore OO":0.02,
+  "Mohs":50,"Leeb (HLD)":0.82,"MPa (dureza)":1
+}},
+
+"Nível Sonoro":{special:"sound",u:[
+  "Decibel (dB SPL)","dBA (pond. A)","dBC (pond. C)",
+  "Pascal (Pa)","Micropascal (µPa)",
+  "Phon","Sone",
+  "dBm (áudio, ref 1mW/600Ω)","dBu (ref 0.775V)","dBV (ref 1V)"
+]},
+
+"Qtd. Substância":{u:{
+  "Mol (mol)":1,"Milimol (mmol)":0.001,"Micromol (µmol)":1e-6,
+  "Nanomol (nmol)":1e-9,"Picomol (pmol)":1e-12,
+  "Kilomol (kmol)":1000,"Megamol (Mmol)":1e6,
+  "Dúzia":1/6.02214076e23*12,"Grosa (144)":144/6.02214076e23,
+  "Resma (500)":500/6.02214076e23,
+  "Entidade (N_A⁻¹)":1/6.02214076e23
+}},
+
+"Proporção":{u:{
+  "Percentagem (%)":1,"Permilagem (‰)":0.1,"Permiriade (‱)":0.01,
+  "ppm":1e-4,"ppb":1e-7,"ppt":1e-10,"ppq":1e-13,
+  "Fração (0–1)":100,"Partes por cem":1,"Decibel (dB pot.)":1
+}},
+
+"Número de Onda":{u:{
+  "cm⁻¹ (Kayser)":1,"m⁻¹":0.01,"mm⁻¹":10,"µm⁻¹":10000,"nm⁻¹":1e7,
+  "km⁻¹":1e-5,"Kayser":1,"Rydberg (Ry)":1.097e5,"pm⁻¹":1e9,
+  "rad/m":0.01/(2*Math.PI),"rad/cm":1/(2*Math.PI)
+}},
+
+"Impulso Espec.":{u:{
+  "Segundo (s)":1,"Milissegundo (ms)":0.001,
+  "Metro/segundo (m/s)":0.10197,"Pé/segundo (ft/s)":0.031081,
+  "km/segundo":101.97,"Newton·segundo/kg (N·s/kg)":0.10197,
+  "kN·s/kg":101.97,"lbf·s/lb":0.10197
+}},
+
+"Dose Farmac.":{u:{
+  "mg/kg":1,"µg/kg":0.001,"ng/kg":1e-6,
+  "mg/kg/dia":1,"µg/kg/dia":0.001,
+  "mg/m²":1,"µg/m²":0.001,"g/m²":1000,
+  "mg/kg/hora":24,"mg/kg/minuto":1440,
+  "UI/kg":1,"UI/kg/dia":1,"mUI/kg":0.001
+}},
+
+"Conc. Farmac.":{u:{
+  "mg/mL":1,"µg/mL (= mg/L)":0.001,"ng/mL":1e-6,"pg/mL":1e-9,
+  "mg/dL":0.01,"µg/dL":1e-4,"ng/dL":1e-7,
+  "mg/L":0.001,"g/L":1,"g/dL":10,
+  "UI/mL":1,"mUI/mL":0.001,"UI/L":0.001,
+  "mEq/mL":1,"mEq/L":0.001,"mOsmol/L":0.001
+}},
+
+"Módulo Elástico":{u:{
+  "Pascal (Pa)":1,"Kilopascal (kPa)":1000,"Megapascal (MPa)":1e6,
+  "Gigapascal (GPa)":1e9,"Terapascal (TPa)":1e12,
+  "Bar":100000,"kbar":1e8,"Mbar":1e11,
+  "PSI":6894.76,"ksi":6894760,"Mpsi":6.89476e9,
+  "kgf/mm²":9806650,"kgf/cm²":98066.5,"N/mm²":1e6,
+  "dina/cm²":0.1
+}},
+
+// ── FASHION CATEGORIES (lookup tables, base = cm do pé / cm do corpo) ─────────
+// Each row: [label, cm_value]  — base unit is always centimetres
+"👠 Calçado Fem.":{fashion:true,base:"cm pé",rows:[
+  ["BR / EU 33",21.0],["BR / EU 34",21.6],["BR / EU 35",22.2],["BR / EU 36",22.9],
+  ["BR / EU 37",23.5],["BR / EU 38",24.1],["BR / EU 39",24.8],["BR / EU 40",25.4],
+  ["BR / EU 41",26.0],["BR / EU 42",26.7],["BR / EU 43",27.3],["BR / EU 44",27.9],
+  ["US / CA 4",21.6],["US / CA 4.5",22.2],["US / CA 5",22.5],["US / CA 5.5",22.9],
+  ["US / CA 6",23.2],["US / CA 6.5",23.5],["US / CA 7",23.8],["US / CA 7.5",24.1],
+  ["US / CA 8",24.5],["US / CA 8.5",24.8],["US / CA 9",25.1],["US / CA 9.5",25.4],
+  ["US / CA 10",25.7],["US / CA 10.5",26.0],["US / CA 11",26.7],["US / CA 12",27.3],
+  ["UK 2",21.6],["UK 2.5",22.2],["UK 3",22.5],["UK 3.5",22.9],["UK 4",23.2],
+  ["UK 4.5",23.5],["UK 5",23.8],["UK 5.5",24.1],["UK 6",24.5],["UK 6.5",24.8],
+  ["UK 7",25.1],["UK 7.5",25.4],["UK 8",25.7],["UK 8.5",26.0],["UK 9",26.7],
+  ["JP / CN 21cm",21.0],["JP / CN 21.5cm",21.5],["JP / CN 22cm",22.0],["JP / CN 22.5cm",22.5],
+  ["JP / CN 23cm",23.0],["JP / CN 23.5cm",23.5],["JP / CN 24cm",24.0],["JP / CN 24.5cm",24.5],
+  ["JP / CN 25cm",25.0],["JP / CN 25.5cm",25.5],["JP / CN 26cm",26.0],["JP / CN 26.5cm",26.5],
+  ["IT 33",21.0],["IT 34",21.6],["IT 35",22.2],["IT 36",22.9],["IT 37",23.5],
+  ["IT 38",24.1],["IT 39",24.8],["IT 40",25.4],["IT 41",26.0],["IT 42",26.7],
+  ["cm (comprimento pé)",null]
+]},
+
+"👟 Calçado Masc.":{fashion:true,base:"cm pé",rows:[
+  ["BR / EU 36",22.9],["BR / EU 37",23.5],["BR / EU 38",24.1],["BR / EU 39",24.8],
+  ["BR / EU 40",25.4],["BR / EU 41",26.0],["BR / EU 42",26.7],["BR / EU 43",27.3],
+  ["BR / EU 44",27.9],["BR / EU 45",28.6],["BR / EU 46",29.2],["BR / EU 47",29.8],
+  ["BR / EU 48",30.5],
+  ["US / CA 4",22.2],["US / CA 4.5",22.5],["US / CA 5",22.9],["US / CA 5.5",23.2],
+  ["US / CA 6",23.5],["US / CA 6.5",23.8],["US / CA 7",24.1],["US / CA 7.5",24.5],
+  ["US / CA 8",24.8],["US / CA 8.5",25.1],["US / CA 9",25.4],["US / CA 9.5",25.7],
+  ["US / CA 10",26.0],["US / CA 10.5",26.7],["US / CA 11",27.0],["US / CA 11.5",27.3],
+  ["US / CA 12",27.9],["US / CA 13",28.6],["US / CA 14",29.2],["US / CA 15",29.8],
+  ["UK 3.5",22.2],["UK 4",22.5],["UK 4.5",22.9],["UK 5",23.2],["UK 5.5",23.5],
+  ["UK 6",23.8],["UK 6.5",24.1],["UK 7",24.5],["UK 7.5",24.8],["UK 8",25.1],
+  ["UK 8.5",25.4],["UK 9",25.7],["UK 9.5",26.0],["UK 10",26.7],["UK 10.5",27.0],
+  ["UK 11",27.3],["UK 12",27.9],["UK 13",28.6],["UK 14",29.2],
+  ["JP / CN 23cm",23.0],["JP / CN 23.5cm",23.5],["JP / CN 24cm",24.0],["JP / CN 24.5cm",24.5],
+  ["JP / CN 25cm",25.0],["JP / CN 25.5cm",25.5],["JP / CN 26cm",26.0],["JP / CN 26.5cm",26.5],
+  ["JP / CN 27cm",27.0],["JP / CN 27.5cm",27.5],["JP / CN 28cm",28.0],["JP / CN 29cm",29.0],
+  ["cm (comprimento pé)",null]
+]},
+
+"👶 Calçado Inf.":{fashion:true,base:"cm pé",rows:[
+  ["EU 16 (bebé)",9.5],["EU 17",10.2],["EU 18",10.8],["EU 19",11.5],["EU 20",12.1],
+  ["EU 21",12.7],["EU 22",13.3],["EU 23",14.0],["EU 24",14.6],["EU 25",15.2],
+  ["EU 26",15.9],["EU 27",16.5],["EU 28",17.1],["EU 29",17.8],["EU 30",18.4],
+  ["EU 31",19.1],["EU 32",19.7],["EU 33",20.3],["EU 34",21.0],["EU 35",21.6],
+  ["US 1C",9.5],["US 2C",10.2],["US 3C",11.1],["US 4C",11.7],["US 5C",12.4],
+  ["US 6C",13.0],["US 7C",13.7],["US 8C",14.3],["US 9C",15.2],["US 10C",15.9],
+  ["US 11C",16.5],["US 12C",17.1],["US 13C",17.8],["US 1Y",18.4],["US 2Y",19.1],
+  ["US 3Y",19.7],["US 4Y",20.3],["US 5Y",21.0],["US 6Y",22.2],["US 7Y",22.9],
+  ["UK 0",9.5],["UK 1",10.2],["UK 2",11.1],["UK 3",11.7],["UK 4",12.4],
+  ["UK 5",13.0],["UK 6",13.7],["UK 7",14.3],["UK 8",15.2],["UK 9",15.9],
+  ["UK 10",16.5],["UK 11",17.1],["UK 12",17.8],["UK 13",19.1],
+  ["JP 12cm",12.0],["JP 13cm",13.0],["JP 14cm",14.0],["JP 15cm",15.0],
+  ["JP 16cm",16.0],["JP 17cm",17.0],["JP 18cm",18.0],["JP 19cm",19.0],["JP 20cm",20.0],
+  ["cm (comprimento pé)",null]
+]},
+
+"👗 Roupa Fem.":{fashion:true,base:"cm busto",rows:[
+  ["XS (BR 36 / EU 32 / US 0 / UK 4 / JP 5 / CN 155)",80],
+  ["S (BR 38 / EU 34 / US 2 / UK 6 / JP 7 / CN 160)",84],
+  ["M (BR 40 / EU 36 / US 4 / UK 8 / JP 9 / CN 165)",88],
+  ["M (BR 42 / EU 38 / US 6 / UK 10 / JP 11 / CN 168)",92],
+  ["G (BR 44 / EU 40 / US 8 / UK 12 / JP 13 / CN 170)",96],
+  ["G (BR 46 / EU 42 / US 10 / UK 14 / JP 15 / CN 172)",100],
+  ["GG (BR 48 / EU 44 / US 12 / UK 16 / JP 17 / CN 175)",104],
+  ["GG (BR 50 / EU 46 / US 14 / UK 18 / JP 19 / CN 177)",108],
+  ["XGG (BR 52 / EU 48 / US 16 / UK 20 / CN 180)",112],
+  ["XGG (BR 54 / EU 50 / US 18 / UK 22)",116],
+  ["XXGG (BR 56 / EU 52 / US 20 / UK 24)",120],
+  ["XXGG (BR 58 / EU 54 / US 22 / UK 26)",124],
+  ["BR 34 / EU 30 / US 00 / UK 2",76],
+  ["FR / IT 36",80],["FR / IT 38",84],["FR / IT 40",88],["FR / IT 42",92],
+  ["FR / IT 44",96],["FR / IT 46",100],["FR / IT 48",104],["FR / IT 50",108],
+  ["DE 32",80],["DE 34",84],["DE 36",88],["DE 38",92],["DE 40",96],
+  ["DE 42",100],["DE 44",104],["DE 46",108],["DE 48",112],
+  ["cm (busto)",null]
+]},
+
+"👔 Roupa Masc.":{fashion:true,base:"cm peito",rows:[
+  ["XS (BR 36 / EU 44 / US XS / UK XS / JP S / CN 165)",86],
+  ["S (BR 38 / EU 46 / US S / UK S / JP M / CN 170)",90],
+  ["M (BR 40 / EU 48 / US M / UK M / JP L / CN 175)",94],
+  ["M (BR 42 / EU 50 / US M / UK M / CN 178)",98],
+  ["G (BR 44 / EU 52 / US L / UK L / CN 180)",102],
+  ["G (BR 46 / EU 54 / US L / UK L / CN 182)",106],
+  ["GG (BR 48 / EU 56 / US XL / UK XL / CN 185)",110],
+  ["GG (BR 50 / EU 58 / US XL / UK XL / CN 188)",114],
+  ["XGG (BR 52 / EU 60 / US XXL / UK XXL / CN 190)",118],
+  ["XGG (BR 54 / EU 62 / US 2XL / UK 2XL)",122],
+  ["XXGG (BR 56 / EU 64 / US 3XL / UK 3XL)",126],
+  ["Colarinho US/UK 14\" (35.5cm)",null],["Colarinho US/UK 14.5\" (36.8cm)",null],
+  ["Colarinho US/UK 15\" (38.1cm)",null],["Colarinho US/UK 15.5\" (39.4cm)",null],
+  ["Colarinho US/UK 16\" (40.6cm)",null],["Colarinho US/UK 16.5\" (41.9cm)",null],
+  ["Colarinho US/UK 17\" (43.2cm)",null],["Colarinho US/UK 17.5\" (44.5cm)",null],
+  ["Colarinho US/UK 18\" (45.7cm)",null],
+  ["cm (peito)",null]
+]},
+
+"🧒 Roupa Inf.":{fashion:true,base:"cm altura",rows:[
+  ["Recém-nascido (NB / 50cm)",50],["1–3 meses (56cm)",56],["3–6 meses (62cm)",62],
+  ["6–9 meses (68cm)",68],["9–12 meses (74cm)",74],["12–18 meses (80cm)",80],
+  ["18–24 meses (86cm)",86],["2 anos (92cm)",92],["3 anos (98cm)",98],
+  ["4 anos (104cm)",104],["5 anos (110cm)",110],["6 anos (116cm)",116],
+  ["7 anos (122cm)",122],["8 anos (128cm)",128],["9 anos (134cm)",134],
+  ["10 anos (140cm)",140],["11 anos (146cm)",146],["12 anos (152cm)",152],
+  ["14 anos (158cm)",158],["16 anos (164cm)",164],
+  ["US 0–3m",60],["US 3–6m",66],["US 6–9m",70],["US 12m",76],["US 18m",81],
+  ["US 2T",86],["US 3T",94],["US 4T",100],["US 5",108],["US 6",116],
+  ["US 6X",120],["US 7",122],["US 8",128],["US 10",134],["US 12",140],
+  ["US 14",152],["US 16",158],
+  ["UK 0–3m",60],["UK 3–6m",66],["UK 6–9m",70],["UK 9–12m",74],["UK 12–18m",80],
+  ["UK 18–24m",86],["UK 2yr",92],["UK 3yr",98],["UK 4yr",104],["UK 5yr",110],
+  ["UK 6yr",116],["UK 7yr",122],["UK 8yr",128],["UK 9yr",134],["UK 10yr",140],
+  ["UK 11yr",146],["UK 12yr",152],["UK 14yr",158],
+  ["JP 80cm",80],["JP 90cm",90],["JP 100cm",100],["JP 110cm",110],
+  ["JP 120cm",120],["JP 130cm",130],["JP 140cm",140],["JP 150cm",150],
+  ["CN 80",80],["CN 90",90],["CN 100",100],["CN 110",110],["CN 120",120],
+  ["CN 130",130],["CN 140",140],["CN 150",150],["CN 160",160],
+  ["cm (altura)",null]
+]},
+
+"👖 Jeans/Cintos":{fashion:true,base:"cm cintura",rows:[
+  ["24\" (61cm)",61],["25\" (63.5cm)",63.5],["26\" (66cm)",66],["27\" (68.5cm)",68.5],
+  ["28\" (71cm)",71],["29\" (73.5cm)",73.5],["30\" (76cm)",76],["31\" (78.5cm)",78.5],
+  ["32\" (81cm)",81],["33\" (83.5cm)",83.5],["34\" (86.5cm)",86.5],["35\" (89cm)",89],
+  ["36\" (91.5cm)",91.5],["38\" (96.5cm)",96.5],["40\" (101.5cm)",101.5],
+  ["42\" (106.5cm)",106.5],["44\" (112cm)",112],["46\" (117cm)",117],
+  ["BR/EU XS (36–38)",65],["BR/EU S (38–40)",70],["BR/EU M (40–42)",76],
+  ["BR/EU G (44–46)",86],["BR/EU GG (48–50)",96],["BR/EU XGG (52–54)",106],
+  ["Cinto US/UK 28\" (71cm)",71],["Cinto US/UK 30\" (76cm)",76],
+  ["Cinto US/UK 32\" (81cm)",81],["Cinto US/UK 34\" (86cm)",86],
+  ["Cinto US/UK 36\" (91cm)",91],["Cinto US/UK 38\" (97cm)",97],
+  ["Cinto US/UK 40\" (102cm)",102],["Cinto US/UK 42\" (107cm)",107],
+  ["Cinto US/UK 44\" (112cm)",112],
+  ["Cinto EU 70",70],["Cinto EU 75",75],["Cinto EU 80",80],["Cinto EU 85",85],
+  ["Cinto EU 90",90],["Cinto EU 95",95],["Cinto EU 100",100],["Cinto EU 105",105],
+  ["Cinto EU 110",110],["Cinto EU 115",115],
+  ["cm (cintura)",null]
+]},
+
+"🎩 Chapéus":{fashion:true,base:"cm perímetro cabeça",rows:[
+  ["EU/BR 51",51],["EU/BR 52",52],["EU/BR 53",53],["EU/BR 54",54],["EU/BR 55",55],
+  ["EU/BR 56",56],["EU/BR 57",57],["EU/BR 58",58],["EU/BR 59",59],["EU/BR 60",60],
+  ["EU/BR 61",61],["EU/BR 62",62],["EU/BR 63",63],["EU/BR 64",64],
+  ["US / UK 6 3/8\" (51cm)",51],["US / UK 6 1/2\" (52cm)",52],["US / UK 6 5/8\" (53cm)",53],
+  ["US / UK 6 3/4\" (54cm)",54],["US / UK 6 7/8\" (55cm)",55],
+  ["US / UK 7\" (56cm)",56],["US / UK 7 1/8\" (57cm)",57],["US / UK 7 1/4\" (58cm)",58],
+  ["US / UK 7 3/8\" (59cm)",59],["US / UK 7 1/2\" (60cm)",60],
+  ["US / UK 7 5/8\" (61cm)",61],["US / UK 7 3/4\" (62cm)",62],["US / UK 7 7/8\" (63cm)",63],
+  ["XS (< 53cm)",52],["S (53–54cm)",53.5],["M (55–56cm)",55.5],
+  ["L (57–58cm)",57.5],["XL (59–60cm)",59.5],["XXL (61–62cm)",61.5],
+  ["JP 3 (54cm)",54],["JP 4 (55cm)",55],["JP 5 (56cm)",56],["JP 6 (57cm)",57],
+  ["JP 7 (58cm)",58],["JP 8 (59cm)",59],["JP 9 (60cm)",60],["JP 10 (61cm)",61],
+  ["CN 54",54],["CN 56",56],["CN 58",58],["CN 60",60],["CN 62",62],
+  ["cm (perímetro cabeça)",null]
+]},
+
+"💍 Anéis":{fashion:true,base:"mm diâmetro",rows:[
+  ["BR 10 / Diâm. 14.1mm",14.1],["BR 11 / Diâm. 14.5mm",14.5],["BR 12 / Diâm. 14.9mm",14.9],
+  ["BR 13 / Diâm. 15.3mm",15.3],["BR 14 / Diâm. 15.7mm",15.7],["BR 15 / Diâm. 16.1mm",16.1],
+  ["BR 16 / Diâm. 16.5mm",16.5],["BR 17 / Diâm. 16.9mm",16.9],["BR 18 / Diâm. 17.3mm",17.3],
+  ["BR 19 / Diâm. 17.7mm",17.7],["BR 20 / Diâm. 18.2mm",18.2],["BR 21 / Diâm. 18.6mm",18.6],
+  ["BR 22 / Diâm. 19.0mm",19.0],["BR 23 / Diâm. 19.4mm",19.4],["BR 24 / Diâm. 19.8mm",19.8],
+  ["BR 25 / Diâm. 20.2mm",20.2],["BR 26 / Diâm. 20.6mm",20.6],["BR 27 / Diâm. 21.0mm",21.0],
+  ["BR 28 / Diâm. 21.4mm",21.4],["BR 29 / Diâm. 21.8mm",21.8],["BR 30 / Diâm. 22.3mm",22.3],
+  ["US 3 / Diâm. 14.1mm",14.1],["US 3.5 / 14.5mm",14.5],["US 4 / 14.9mm",14.9],
+  ["US 4.5 / 15.3mm",15.3],["US 5 / 15.7mm",15.7],["US 5.5 / 16.1mm",16.1],
+  ["US 6 / 16.5mm",16.5],["US 6.5 / 16.9mm",16.9],["US 7 / 17.3mm",17.3],
+  ["US 7.5 / 17.7mm",17.7],["US 8 / 18.2mm",18.2],["US 8.5 / 18.6mm",18.6],
+  ["US 9 / 19.0mm",19.0],["US 9.5 / 19.4mm",19.4],["US 10 / 19.8mm",19.8],
+  ["US 11 / 20.6mm",20.6],["US 12 / 21.4mm",21.4],["US 13 / 22.3mm",22.3],
+  ["UK / AU F (13.5mm)",13.5],["UK / AU G (14.0mm)",14.0],["UK / AU H (14.5mm)",14.5],
+  ["UK / AU I (14.9mm)",14.9],["UK / AU J (15.3mm)",15.3],["UK / AU K (15.7mm)",15.7],
+  ["UK / AU L (16.1mm)",16.1],["UK / AU M (16.5mm)",16.5],["UK / AU N (16.9mm)",16.9],
+  ["UK / AU O (17.3mm)",17.3],["UK / AU P (17.7mm)",17.7],["UK / AU Q (18.2mm)",18.2],
+  ["UK / AU R (18.6mm)",18.6],["UK / AU S (19.0mm)",19.0],["UK / AU T (19.4mm)",19.4],
+  ["UK / AU U (19.8mm)",19.8],["UK / AU V (20.2mm)",20.2],["UK / AU W (20.6mm)",20.6],
+  ["EU 44 (14.0mm)",14.0],["EU 46 (14.6mm)",14.6],["EU 48 (15.3mm)",15.3],
+  ["EU 50 (15.9mm)",15.9],["EU 51 (16.2mm)",16.2],["EU 52 (16.6mm)",16.6],
+  ["EU 53 (16.9mm)",16.9],["EU 54 (17.2mm)",17.2],["EU 55 (17.5mm)",17.5],
+  ["EU 56 (17.8mm)",17.8],["EU 57 (18.1mm)",18.1],["EU 58 (18.5mm)",18.5],
+  ["EU 60 (19.1mm)",19.1],["EU 62 (19.7mm)",19.7],["EU 64 (20.4mm)",20.4],
+  ["JP / CN 6 (14.5mm)",14.5],["JP / CN 7 (14.9mm)",14.9],["JP / CN 8 (15.3mm)",15.3],
+  ["JP / CN 9 (15.7mm)",15.7],["JP / CN 10 (16.1mm)",16.1],["JP / CN 11 (16.5mm)",16.5],
+  ["JP / CN 12 (16.9mm)",16.9],["JP / CN 13 (17.3mm)",17.3],["JP / CN 14 (17.7mm)",17.7],
+  ["JP / CN 15 (18.2mm)",18.2],["JP / CN 16 (18.6mm)",18.6],["JP / CN 17 (19.0mm)",19.0],
+  ["JP / CN 18 (19.4mm)",19.4],["JP / CN 19 (19.8mm)",19.8],["JP / CN 20 (20.2mm)",20.2],
+  ["JP / CN 21 (20.6mm)",20.6],["JP / CN 22 (21.0mm)",21.0],["JP / CN 23 (21.4mm)",21.4],
+  ["mm (diâmetro interior)",null],["cm (perímetro dedo)",null]
+]},
+
+"🧤 Luvas":{fashion:true,base:"cm perímetro mão",rows:[
+  ["XS / Tam. 6 (15–16cm)",15.5],["S / Tam. 6.5 (16–17cm)",16.5],
+  ["S / Tam. 7 (17–18cm)",17.5],["M / Tam. 7.5 (18–19cm)",18.5],
+  ["M / Tam. 8 (19–20cm)",19.5],["L / Tam. 8.5 (20–21cm)",20.5],
+  ["L / Tam. 9 (21–22cm)",21.5],["XL / Tam. 9.5 (22–23cm)",22.5],
+  ["XL / Tam. 10 (23–24cm)",23.5],["XXL / Tam. 10.5 (24–25cm)",24.5],
+  ["XXL / Tam. 11 (25–26cm)",25.5],
+  ["US / UK 6",15.5],["US / UK 6.5",16.5],["US / UK 7",17.5],["US / UK 7.5",18.5],
+  ["US / UK 8",19.5],["US / UK 8.5",20.5],["US / UK 9",21.5],["US / UK 9.5",22.5],
+  ["US / UK 10",23.5],["US / UK 10.5",24.5],["US / UK 11",25.5],
+  ["JP 15cm",15],["JP 16cm",16],["JP 17cm",17],["JP 18cm",18],
+  ["JP 19cm",19],["JP 20cm",20],["JP 21cm",21],["JP 22cm",22],
+  ["CN S (16–17cm)",16.5],["CN M (18–19cm)",18.5],["CN L (20–21cm)",20.5],
+  ["CN XL (22–23cm)",22.5],["CN XXL (24–25cm)",24.5],
+  ["cm (perímetro mão)",null]
+]},
+
+// ── MONITOR / TV ─────────────────────────────────────────────────────────────
+// rows: [label, diagonal_cm]  — base unit = centímetros diagonais
+"🖥️ Monitor / TV":{fashion:true,base:"cm diagonal",rows:[
+  // ── Monitors ──
+  ["13\" (33.0cm)",33.0],
+  ["13.3\" (33.8cm · MacBook Air/Pro)",33.8],
+  ["14\" (35.6cm · laptop)",35.6],
+  ["15\" (38.1cm · laptop)",38.1],
+  ["15.6\" (39.6cm · laptop full-HD)",39.6],
+  ["16\" (40.6cm · MacBook Pro 16)",40.6],
+  ["17\" (43.2cm · laptop)",43.2],
+  ["17.3\" (43.9cm · laptop gaming)",43.9],
+  ["19\" (48.3cm · monitor PC)",48.3],
+  ["20\" (50.8cm)",50.8],
+  ["21.5\" (54.6cm · iMac / monitor)",54.6],
+  ["22\" (55.9cm)",55.9],
+  ["23\" (58.4cm · monitor FHD)",58.4],
+  ["23.8\" (60.5cm · monitor popular)",60.5],
+  ["24\" (61.0cm)",61.0],
+  ["25\" (63.5cm)",63.5],
+  ["27\" (68.6cm · monitor popular / iMac)",68.6],
+  ["28\" (71.1cm · 4K monitor)",71.1],
+  ["29\" (73.7cm · ultrawide 21:9)",73.7],
+  ["31.5\" (80.0cm)",80.0],
+  ["32\" (81.3cm · monitor grande)",81.3],
+  ["34\" (86.4cm · ultrawide)",86.4],
+  ["38\" (96.5cm · ultrawide curved)",96.5],
+  ["40\" (101.6cm)",101.6],
+  ["43\" (109.2cm)",109.2],
+  ["45\" (114.3cm · ultrawide gaming)",114.3],
+  ["49\" (124.5cm · super-ultrawide)",124.5],
+  // ── TVs ──
+  ["TV 32\" (81.3cm)",81.3],
+  ["TV 37\" (94.0cm)",94.0],
+  ["TV 40\" (101.6cm)",101.6],
+  ["TV 42\" (106.7cm)",106.7],
+  ["TV 43\" (109.2cm)",109.2],
+  ["TV 48\" (121.9cm)",121.9],
+  ["TV 49\" (124.5cm)",124.5],
+  ["TV 50\" (127.0cm)",127.0],
+  ["TV 55\" (139.7cm)",139.7],
+  ["TV 58\" (147.3cm)",147.3],
+  ["TV 60\" (152.4cm)",152.4],
+  ["TV 65\" (165.1cm)",165.1],
+  ["TV 70\" (177.8cm)",177.8],
+  ["TV 75\" (190.5cm)",190.5],
+  ["TV 77\" (195.6cm · OLED)",195.6],
+  ["TV 80\" (203.2cm)",203.2],
+  ["TV 83\" (210.8cm · OLED)",210.8],
+  ["TV 85\" (215.9cm)",215.9],
+  ["TV 86\" (218.4cm)",218.4],
+  ["TV 88\" (223.5cm)",223.5],
+  ["TV 95\" (241.3cm)",241.3],
+  ["TV 97\" (246.4cm · LG OLED)",246.4],
+  ["TV 98\" (248.9cm)",248.9],
+  ["TV 100\" (254.0cm)",254.0],
+  ["TV 110\" (279.4cm)",279.4],
+  ["TV 115\" (292.1cm)",292.1],
+  ["cm (diagonal)",null],
+  ["Polegadas (diagonal)",null]
+]},
+
+// ── PAPEL ISO (A, B, C) ──────────────────────────────────────────────────────
+// rows: [label, [largura_mm, altura_mm]]  — usamos o ÍNDICE como "base"
+"📄 Papel ISO (A/B/C)":{paperSize:true,rows:[
+  // Série A
+  ["A0",  [841, 1189]],
+  ["A1",  [594,  841]],
+  ["A2",  [420,  594]],
+  ["A3",  [297,  420]],
+  ["A4",  [210,  297]],
+  ["A5",  [148,  210]],
+  ["A6",  [105,  148]],
+  ["A7",  [74,   105]],
+  ["A8",  [52,    74]],
+  ["A9",  [37,    52]],
+  ["A10", [26,    37]],
+  // Série 2A e 4A
+  ["2A0", [1189, 1682]],
+  ["4A0", [1682, 2378]],
+  // Série B
+  ["B0",  [1000, 1414]],
+  ["B1",  [707,  1000]],
+  ["B2",  [500,   707]],
+  ["B3",  [353,   500]],
+  ["B4",  [250,   353]],
+  ["B5",  [176,   250]],
+  ["B6",  [125,   176]],
+  ["B7",  [88,    125]],
+  ["B8",  [62,     88]],
+  ["B9",  [44,     62]],
+  ["B10", [31,     44]],
+  // Série C (envelopes)
+  ["C0",  [917,  1297]],
+  ["C1",  [648,   917]],
+  ["C2",  [458,   648]],
+  ["C3",  [324,   458]],
+  ["C4",  [229,   324]],
+  ["C5",  [162,   229]],
+  ["C6",  [114,   162]],
+  ["C7",  [81,    114]],
+  ["C8",  [57,     81]],
+  ["DL (envelope)",  [110, 220]],
+  ["C5/6 (envelope)",[114, 229]]
+]},
+
+// ── PAPEL NA + JIS + OUTROS ──────────────────────────────────────────────────
+"📋 Papel NA / JIS":{paperSize:true,rows:[
+  // North American
+  ["Letter (US/CA)",        [215.9, 279.4]],
+  ["Legal (US/CA)",         [215.9, 355.6]],
+  ["Tabloid / Ledger (US)", [279.4, 431.8]],
+  ["Executive (US)",        [184.2, 266.7]],
+  ["Half Letter",           [139.7, 215.9]],
+  ["Junior Legal",          [127.0, 203.2]],
+  ["Government Letter",     [203.2, 266.7]],
+  ["Government Legal",      [215.9, 330.2]],
+  ["ANSI A (= Letter)",     [215.9, 279.4]],
+  ["ANSI B (= Tabloid)",    [279.4, 431.8]],
+  ["ANSI C",                [431.8, 558.8]],
+  ["ANSI D",                [558.8, 863.6]],
+  ["ANSI E",                [863.6,1117.6]],
+  ["Arch A",                [228.6, 304.8]],
+  ["Arch B",                [304.8, 457.2]],
+  ["Arch C",                [457.2, 609.6]],
+  ["Arch D",                [609.6, 914.4]],
+  ["Arch E",                [914.4,1219.2]],
+  ["Arch E1",               [762.0,1066.8]],
+  // Japanese JIS
+  ["JIS B0",  [1030, 1456]],
+  ["JIS B1",  [728,  1030]],
+  ["JIS B2",  [515,   728]],
+  ["JIS B3",  [364,   515]],
+  ["JIS B4",  [257,   364]],
+  ["JIS B5",  [182,   257]],
+  ["JIS B6",  [128,   182]],
+  ["JIS B7",  [91,    128]],
+  ["JIS B8",  [64,     91]],
+  // Chinese GB/T
+  ["CN GB/T 1 (A0+)", [880, 1230]],
+  ["CN GB/T 2 (A1+)", [625,  880]],
+  ["CN GB/T 3 (A2+)", [440,  625]],
+  // Photo sizes
+  ["Foto 3×5\" (7.6×12.7cm)",   [76.2,  127.0]],
+  ["Foto 4×6\" (10×15cm)",      [101.6, 152.4]],
+  ["Foto 5×7\" (13×18cm)",      [127.0, 177.8]],
+  ["Foto 8×10\" (20×25cm)",     [203.2, 254.0]],
+  ["Foto 10×15cm",              [100.0, 150.0]],
+  ["Foto 13×18cm",              [130.0, 180.0]],
+  ["Foto 15×21cm",              [150.0, 210.0]],
+  ["Foto 20×30cm",              [200.0, 300.0]],
+  ["Foto 30×40cm",              [300.0, 400.0]],
+  // Envelopes
+  ["Envelope #10 (US)",         [104.8, 241.3]],
+  ["Envelope #9 (US)",          [98.4,  225.4]],
+  ["Envelope Monarch",          [98.4,  190.5]],
+  // Outros
+  ["Foolscap (UK)",             [203.2, 330.2]],
+  ["F4 (SE Asia)",              [210.0, 330.0]],
+  ["Ofício BR",                 [216.0, 330.0]],
+  ["Carta BR",                  [216.0, 279.0]]
+]},
+
+// ── CULINÁRIA ─────────────────────────────────────────────────────────────────
+"🍳 Culinária":{u:{
+  // Volume
+  "Mililitro (mL)":1,"Litro (L)":1000,"Centilitro (cL)":10,
+  "Colher de chá US (tsp)":4.92892,"Colher de sopa US (tbsp)":14.7868,
+  "Xícara US (cup)":236.588,"Xícara métrica":250,"Xícara UK":284.131,
+  "Colher de chá UK (tsp)":5.91939,"Colher de sopa UK (tbsp)":14.2065,
+  "Colher de chá AU":5,"Colher de sopa AU":20,"Xícara AU":250,
+  "Colher de chá JP":5,"Colher de sopa JP":15,"Xícara JP":200,
+  "Fl oz US":29.5735,"Fl oz UK":28.4131,
+  "Pinta US (pt)":473.176,"Quarto US (qt)":946.353,"Galão US":3785.41,
+  "Pinta UK":568.261,
+  // Massa culinária
+  "Grama (g)":1,"Quilograma (kg)":1000,"Libra (lb)":453.592,"Onça (oz)":28.3495,
+  // Temperatura forno
+  "°C forno":1,"°F forno":0.5556,"Gás (mark)":1
+}},
+
+// ── PNEUS ─────────────────────────────────────────────────────────────────────
+// Lookup: rows com informação estruturada
+"🚗 Pneus":{fashion:true,base:"mm diâmetro ext.",rows:[
+  // Formato: largura/perfil R aro  → [label, diâmetro_ext_mm]
+  ["155/70 R13",554],["165/70 R13",568],["175/70 R13",581],
+  ["155/65 R14",563],["165/65 R14",576],["175/65 R14",589],["185/60 R14",578],
+  ["175/65 R15",604],["185/65 R15",616],["195/65 R15",628],["205/65 R15",641],
+  ["185/60 R15",611],["195/60 R15",622],["205/60 R15",633],["215/60 R15",644],
+  ["205/55 R16",632],["215/55 R16",643],["225/55 R16",654],["235/55 R16",665],
+  ["195/50 R16",609],["205/50 R16",619],["215/50 R16",629],
+  ["205/55 R17",657],["215/55 R17",668],["225/55 R17",679],["235/55 R17",690],
+  ["225/50 R17",660],["235/50 R17",671],["245/50 R17",682],
+  ["225/45 R17",644],["235/45 R17",655],["245/45 R17",665],["255/45 R17",675],
+  ["225/40 R18",640],["235/40 R18",651],["245/40 R18",661],["255/40 R18",671],
+  ["225/45 R18",669],["235/45 R18",680],["245/45 R18",690],
+  ["245/35 R19",659],["255/35 R19",669],["265/35 R19",679],
+  ["235/40 R19",675],["245/40 R19",685],["255/40 R19",695],
+  ["255/35 R20",683],["265/35 R20",693],["275/35 R20",703],
+  ["245/40 R20",709],["255/40 R20",719],["275/40 R20",739],
+  ["275/55 R20",780],["285/50 R20",763],["305/50 R20",782],
+  ["mm (diâmetro externo)",null]
+]},
+
+// ── PARAFUSOS ─────────────────────────────────────────────────────────────────
+"🔩 Parafusos":{fashion:true,base:"mm diâmetro",rows:[
+  // ISO Métrico → [label, diâm_mm]
+  ["M1",1.0],["M1.2",1.2],["M1.4",1.4],["M1.6",1.6],["M2",2.0],
+  ["M2.5",2.5],["M3",3.0],["M3.5",3.5],["M4",4.0],["M5",5.0],
+  ["M6",6.0],["M7",7.0],["M8",8.0],["M10",10.0],["M12",12.0],
+  ["M14",14.0],["M16",16.0],["M18",18.0],["M20",20.0],["M22",22.0],
+  ["M24",24.0],["M27",27.0],["M30",30.0],["M33",33.0],["M36",36.0],
+  // UNC americano
+  ["#0-80 UNF (1.52mm)",1.52],["#1-64 UNC (1.85mm)",1.85],
+  ["#2-56 UNC (2.18mm)",2.18],["#3-48 UNC (2.51mm)",2.51],
+  ["#4-40 UNC (2.84mm)",2.84],["#5-40 UNC (3.18mm)",3.18],
+  ["#6-32 UNC (3.51mm)",3.51],["#8-32 UNC (4.17mm)",4.17],
+  ["#10-24 UNC (4.83mm)",4.83],["#12-24 UNC (5.49mm)",5.49],
+  ["1/4\"-20 UNC (6.35mm)",6.35],["5/16\"-18 UNC (7.94mm)",7.94],
+  ["3/8\"-16 UNC (9.53mm)",9.53],["7/16\"-14 UNC (11.11mm)",11.11],
+  ["1/2\"-13 UNC (12.70mm)",12.70],["9/16\"-12 UNC (14.29mm)",14.29],
+  ["5/8\"-11 UNC (15.88mm)",15.88],["3/4\"-10 UNC (19.05mm)",19.05],
+  ["7/8\"-9 UNC (22.23mm)",22.23],["1\"-8 UNC (25.40mm)",25.40],
+  // British Whitworth
+  ["BSW 1/8\" (3.18mm)",3.18],["BSW 3/16\" (4.76mm)",4.76],
+  ["BSW 1/4\" (6.35mm)",6.35],["BSW 5/16\" (7.94mm)",7.94],
+  ["BSW 3/8\" (9.53mm)",9.53],["BSW 1/2\" (12.70mm)",12.70],
+  ["mm (diâmetro nominal)",null]
+]},
+
+// ── CONSUMO ELÉTRICO ──────────────────────────────────────────────────────────
+"⚡ Consumo Elét.":{u:{
+  "Watt (W)":1,"Kilowatt (kW)":1000,
+  "kWh/hora":1000,"kWh/dia":1000/24,"kWh/mês":1000/720,"kWh/ano":1000/8760,
+  "BTU/hora":0.29307,"HP (cavalo-vapor)":745.7,
+  "Ampere @120V (A)":120,"Ampere @220V (A)":220,"Ampere @240V (A)":240,
+  "VA (volt-ampere)":1,"kVA":1000,
+  "Lâmpada incand. 60W":60,"Lâmpada LED equiv.":9,
+  "Ton. refrigeração":3516.85
+}},
+
+// ── CORPO HUMANO ──────────────────────────────────────────────────────────────
+"🧍 Corpo Humano":{u:{
+  // Altura
+  "cm (altura)":1,"Metro (m)":100,"Milímetro (mm)":0.1,
+  "Pé (ft)":30.48,"Polegada (in)":2.54,
+  // Peso
+  "kg":1,"g":0.001,"Libra (lb)":0.453592,"Onça (oz)":0.0283495,
+  "Pedra UK (st)":6.35029,"Pedra+libra (st+lb)":6.35029,
+  // IMC (referência)
+  "IMC 18.5 (abaixo peso)":1,"IMC 25 (sobrepeso)":1,"IMC 30 (obesidade)":1
+}},
+
+// ── ESCALA MAPAS ──────────────────────────────────────────────────────────────
+"🗺️ Escala Mapas":{u:{
+  "1:100 (1cm = 1m)":100,"1:200":200,"1:250":250,"1:500":500,
+  "1:1.000 (1cm = 10m)":1000,"1:1.250":1250,"1:2.000":2000,"1:2.500":2500,
+  "1:5.000 (1cm = 50m)":5000,"1:10.000 (1cm = 100m)":10000,
+  "1:20.000":20000,"1:25.000 (topo. detalhe)":25000,
+  "1:50.000 (topo. geral)":50000,"1:100.000":100000,
+  "1:200.000":200000,"1:250.000":250000,
+  "1:500.000 (regional)":500000,"1:1.000.000 (nacional)":1000000,
+  "1:5.000.000":5000000,"1:10.000.000":10000000,
+  "1:50.000.000 (mundial)":50000000
+}},
+
+// ── TIPOGRAFIA ────────────────────────────────────────────────────────────────
+"📐 Tipografia":{u:{
+  "Ponto tipográfico (pt)":1,"Pica (pc)":12,"Cícero":12.7887,
+  "Pixel @72dpi (px)":1,"Pixel @96dpi":0.75,"Pixel @120dpi":0.6,"Pixel @144dpi":0.5,
+  "Milímetro (mm)":2.83465,"Centímetro (cm)":28.3465,"Polegada (in)":72,
+  "Em (relativo)":12,"Rem (root em)":12,
+  "Ponto Didot":1.06858,"Ponto PostScript":1,
+  "Twip (1/20 pt)":0.05,"Linha (1/6 pol.)":12
+}},
+
+// ── GAUGE FIOS AWG ────────────────────────────────────────────────────────────
+"🔌 Gauge Fio AWG":{fashion:true,base:"mm²",rows:[
+  // [label, mm²]
+  ["AWG 0000 (4/0) — 107.2mm²",107.2],["AWG 000 (3/0) — 85.0mm²",85.0],
+  ["AWG 00 (2/0) — 67.4mm²",67.4],["AWG 0 (1/0) — 53.5mm²",53.5],
+  ["AWG 1 — 42.4mm²",42.4],["AWG 2 — 33.6mm²",33.6],
+  ["AWG 3 — 26.7mm²",26.7],["AWG 4 — 21.2mm²",21.2],
+  ["AWG 5 — 16.8mm²",16.8],["AWG 6 — 13.3mm²",13.3],
+  ["AWG 7 — 10.5mm²",10.5],["AWG 8 — 8.37mm²",8.37],
+  ["AWG 9 — 6.63mm²",6.63],["AWG 10 — 5.26mm²",5.26],
+  ["AWG 11 — 4.17mm²",4.17],["AWG 12 — 3.31mm²",3.31],
+  ["AWG 13 — 2.63mm²",2.63],["AWG 14 — 2.08mm²",2.08],
+  ["AWG 15 — 1.65mm²",1.65],["AWG 16 — 1.31mm²",1.31],
+  ["AWG 17 — 1.04mm²",1.04],["AWG 18 — 0.823mm²",0.823],
+  ["AWG 19 — 0.653mm²",0.653],["AWG 20 — 0.518mm²",0.518],
+  ["AWG 21 — 0.410mm²",0.410],["AWG 22 — 0.326mm²",0.326],
+  ["AWG 23 — 0.258mm²",0.258],["AWG 24 — 0.205mm²",0.205],
+  ["AWG 25 — 0.162mm²",0.162],["AWG 26 — 0.129mm²",0.129],
+  ["AWG 28 — 0.0810mm²",0.0810],["AWG 30 — 0.0510mm²",0.0510],
+  // IEC 60228 (europeu mm²)
+  ["IEC 0.5mm²",0.5],["IEC 0.75mm²",0.75],["IEC 1.0mm²",1.0],
+  ["IEC 1.5mm²",1.5],["IEC 2.5mm²",2.5],["IEC 4mm²",4.0],
+  ["IEC 6mm²",6.0],["IEC 10mm²",10.0],["IEC 16mm²",16.0],
+  ["IEC 25mm²",25.0],["IEC 35mm²",35.0],["IEC 50mm²",50.0],
+  ["IEC 70mm²",70.0],["IEC 95mm²",95.0],["IEC 120mm²",120.0],
+  ["mm² (área secção)",null]
+]},
+
+// ── BROCAS ────────────────────────────────────────────────────────────────────
+"🪛 Brocas":{fashion:true,base:"mm",rows:[
+  // Série numérica americana (#80 menor → #1 maior)
+  ["#80 — 0.343mm",0.343],["#79 — 0.368mm",0.368],["#78 — 0.406mm",0.406],
+  ["#77 — 0.457mm",0.457],["#76 — 0.508mm",0.508],["#75 — 0.533mm",0.533],
+  ["#74 — 0.572mm",0.572],["#73 — 0.610mm",0.610],["#72 — 0.635mm",0.635],
+  ["#71 — 0.660mm",0.660],["#70 — 0.711mm",0.711],["#68 — 0.787mm",0.787],
+  ["#65 — 0.889mm",0.889],["#60 — 1.016mm",1.016],["#55 — 1.321mm",1.321],
+  ["#52 — 1.613mm",1.613],["#50 — 1.778mm",1.778],["#48 — 1.930mm",1.930],
+  ["#45 — 2.083mm",2.083],["#43 — 2.261mm",2.261],["#40 — 2.438mm",2.438],
+  ["#36 — 2.705mm",2.705],["#33 — 2.870mm",2.870],["#30 — 3.264mm",3.264],
+  ["#25 — 3.658mm",3.658],["#21 — 3.988mm",3.988],["#19 — 4.216mm",4.216],
+  ["#15 — 4.572mm",4.572],["#10 — 4.915mm",4.915],["#7 — 5.105mm",5.105],
+  ["#4 — 5.309mm",5.309],["#1 — 5.791mm",5.791],
+  // Série de letras A–Z
+  ["A — 5.944mm",5.944],["B — 6.045mm",6.045],["C — 6.147mm",6.147],
+  ["D — 6.350mm",6.350],["E — 6.502mm",6.502],["F — 6.756mm",6.756],
+  ["G — 6.909mm",6.909],["H — 7.137mm",7.137],["I — 7.366mm",7.366],
+  ["J — 7.493mm",7.493],["K — 7.671mm",7.671],["L — 7.938mm",7.938],
+  ["M — 8.255mm",8.255],["N — 8.433mm",8.433],["O — 8.738mm",8.738],
+  ["P — 8.992mm",8.992],["Q — 9.246mm",9.246],["R — 9.576mm",9.576],
+  ["S — 9.906mm",9.906],["T — 10.236mm",10.236],["U — 10.490mm",10.490],
+  ["V — 10.820mm",10.820],["W — 11.150mm",11.150],["X — 11.506mm",11.506],
+  ["Y — 11.811mm",11.811],["Z — 12.319mm",12.319],
+  // Métricas comuns
+  ["0.5mm",0.5],["0.6mm",0.6],["0.7mm",0.7],["0.8mm",0.8],["0.9mm",0.9],
+  ["1.0mm",1.0],["1.2mm",1.2],["1.5mm",1.5],["1.8mm",1.8],["2.0mm",2.0],
+  ["2.5mm",2.5],["3.0mm",3.0],["3.2mm",3.2],["3.5mm",3.5],["4.0mm",4.0],
+  ["4.5mm",4.5],["5.0mm",5.0],["5.5mm",5.5],["6.0mm",6.0],["6.5mm",6.5],
+  ["7.0mm",7.0],["7.5mm",7.5],["8.0mm",8.0],["8.5mm",8.5],["9.0mm",9.0],
+  ["9.5mm",9.5],["10.0mm",10.0],["11.0mm",11.0],["12.0mm",12.0],["13.0mm",13.0],
+  ["mm (diâmetro)",null]
+]},
+
+// ── GARRAFAS DE VINHO ─────────────────────────────────────────────────────────
+"🍷 Garrafas Vinho":{u:{
+  "Mignon / Split (187.5mL)":0.1875,"Demi / Half (375mL)":0.375,
+  "Standard (750mL)":0.75,"Magnum (1.5L)":1.5,
+  "Jéroboam Espumante (3L)":3,"Jéroboam Bordeaux (5L)":5,
+  "Rehoboam (4.5L)":4.5,"Mathusalem / Imperial (6L)":6,
+  "Salmanazar (9L)":9,"Balthazar / Balthasar (12L)":12,
+  "Nabuchodonosor (15L)":15,"Melchior (18L)":18,
+  "Solomon (20L)":20,"Sovereign (25L)":25,"Primat / Goliath (27L)":27,
+  "Melchizedek / Midas (30L)":30,
+  "Litro (L)":1,"Mililitro (mL)":0.001,"Galão US":3.78541,"Fl oz US":0.0295735
+}},
+
+// ── OURO / METAIS PRECIOSOS ───────────────────────────────────────────────────
+"🥇 Ouro / Metais":{u:{
+  "Grama (g)":1,"Quilograma (kg)":1000,"Miligrama (mg)":0.001,
+  "Onça troy (oz t)":31.1035,"Libra troy (lb t)":373.242,
+  "Pennyweight (dwt)":1.55517,"Grão (gr)":0.0647989,
+  "Tael HK (香港兩)":37.4290,"Tael CN (市兩)":31.25,
+  "Tael TW (台兩)":37.5,"Bhori/Vori (Sul Asiático)":11.6638,
+  "Tola (Sul Asiático)":11.6638,"Ratti (Índia)":0.182,
+  "Momme (JP, pérolas)":3.75,"Quilate joia (ct)":0.2,
+  // Pureza
+  "24K = 99.9% puro":1,"22K = 91.7%":0.917,"21K = 87.5%":0.875,
+  "18K = 75.0%":0.750,"14K = 58.3%":0.583,"10K = 41.7%":0.417,
+  "9K = 37.5%":0.375,"Sterling silver 92.5%":0.925
+}},
+
+// ── COMBUSTÍVEIS ALTERNATIVOS ─────────────────────────────────────────────────
+"⛽ Combust. Alt.":{u:{
+  "Litro gasolina (ref.)":1,
+  "Litro diesel":1.12,"kg diesel":1.32,
+  "kg GNV / CNG (gás natural)":1.38,"m³ GNV":1.10,
+  "Litro GLP / LPG (propano)":0.74,"kg GLP":1.11,
+  "kg hidrogênio (H₂)":2.80,"Nm³ hidrogênio":0.28,
+  "kWh elétrico (veículo)":0.178,
+  "MJ energia":0.0313,"BTU energia":0.0000295,
+  "Litro etanol":0.64,"Litro E85":0.72,
+  "Litro biodiesel B100":1.02,"Litro metanol":0.50,
+  "Litro querosene (Jet-A)":1.05,"kg carvão":0.45
+}},
+
+// ── MÚSICA / BPM ──────────────────────────────────────────────────────────────
+"🎵 Música / BPM":{u:{
+  "BPM (batidas/minuto)":1,"Hz (batidas/segundo)":60,
+  "ms por batida (1/4)":60000,"ms por semínima":60000,
+  "ms por colcheia (1/8)":30000,"ms por semicolcheia (1/16)":15000,
+  "ms por fusa (1/32)":7500,"ms por semifusa (1/64)":3750,
+  "ms por mínima (1/2)":120000,"ms por semibreve (1/1)":240000,
+  // Notas musicais (frequência Hz, oitava 4)
+  "C4 Dó — 261.63Hz":228.57,"D4 Ré — 293.66Hz":204.58,
+  "E4 Mi — 329.63Hz":182.14,"F4 Fá — 349.23Hz":171.73,
+  "G4 Sol — 392.00Hz":153.06,"A4 Lá — 440.00Hz":136.36,
+  "B4 Si — 493.88Hz":121.45,"A3 Lá3 — 220Hz":272.73,
+  "A5 Lá5 — 880Hz":68.18
+}},
+
+// ── FOTOGRAFIA ────────────────────────────────────────────────────────────────
+"📸 Fotografia":{u:{
+  // Abertura f-stop (relativo a f/1)
+  "f/1.0":1,"f/1.2":0.694,"f/1.4":0.5,"f/1.8":0.309,"f/2.0":0.25,
+  "f/2.4":0.174,"f/2.8":0.128,"f/3.5":0.082,"f/4.0":0.0625,
+  "f/4.5":0.049,"f/5.6":0.032,"f/6.3":0.025,"f/8":0.0156,
+  "f/11":0.0083,"f/16":0.0039,"f/22":0.00207,"f/32":0.000977,
+  // ISO (velocidade de filme / sensor)
+  "ISO 50":50,"ISO 100":100,"ISO 200":200,"ISO 400":400,
+  "ISO 800":800,"ISO 1600":1600,"ISO 3200":3200,"ISO 6400":6400,
+  "ISO 12800":12800,"ISO 25600":25600,"ISO 51200":51200,
+  // Velocidade obturador (segundos)
+  "1/8000s":0.000125,"1/4000s":0.00025,"1/2000s":0.0005,
+  "1/1000s":0.001,"1/500s":0.002,"1/250s":0.004,"1/125s":0.008,
+  "1/60s":0.01667,"1/30s":0.03333,"1/15s":0.06667,
+  "1/8s":0.125,"1/4s":0.25,"1/2s":0.5,"1s":1,"2s":2,"4s":4,"8s":8,"30s":30
+}},
+
+// ── BATERIAS ──────────────────────────────────────────────────────────────────
+"🔋 Baterias":{u:{
+  "mAh (miliampere-hora)":1,"Ah (ampere-hora)":1000,
+  "mWh @1V":1,"mWh @1.2V (NiMH)":1.2,"mWh @1.5V (alcalina)":1.5,
+  "mWh @3.2V (LiFePO4)":3.2,"mWh @3.6V (Li-ion)":3.6,
+  "mWh @3.7V (Li-Po)":3.7,"mWh @4.2V (Li-ion max)":4.2,
+  "Wh @3.7V":3700,"Wh @3.6V":3600,"Wh @7.4V (2S)":7400,
+  "Wh @11.1V (3S)":11100,"Wh @14.8V (4S)":14800,
+  "Wh @22.2V (6S)":22200,"Wh @48V (e-bike)":48000,
+  "kWh @3.7V":3700000,"kWh @48V":48000000,
+  "C-rate 0.5C (descarga lenta)":0.5,"C-rate 1C":1,
+  "C-rate 2C":2,"C-rate 3C":3,"C-rate 5C":5,"C-rate 10C":10
+}},
+
+// ── MEDIDAS AGRÁRIAS ──────────────────────────────────────────────────────────
+"🌾 Medidas Agrárias":{u:{
+  // Área
+  "Metro quadrado (m²)":1,"Hectare (ha)":10000,"Are (a)":100,
+  "Acre (US)":4046.86,"Alqueire BR (SP) — 24.200m²":24200,
+  "Alqueire BR (MG) — 48.400m²":48400,"Alqueire BR (BA/NE) — 9.680m²":9680,
+  "Alqueire PT — 17.424m²":17424,"Légua quadrada":24504100,
+  "Tarefa (BA) — 4.356m²":4356,"Braça quadrada":4.356,
+  "Vara quadrada (BR)":4.84,"Sesmaria — 4.356ha":43560000,
+  "Rood (UK)":1011.71,"Morgen (ZA)":8565,"Feddan (EG)":4200,
+  "Bigha (IN) — standard":2500,"Rai (TH)":1600,
+  "Manzana (CR/NI)":6988,"Cuerda (PR)":3930,
+  // Comprimento agrário
+  "Vara (BR) — 2.2m":2.2,"Braça (BR) — 2.2m":2.2,
+  "Corda (BR) — 10 braças":22,"Légua (BR) — 6.600m":6600
+}},
+
+// ── BASES NUMÉRICAS ───────────────────────────────────────────────────────────
+"🔢 Bases Numéricas":{special:"base",u:["Decimal (base 10)","Binário (base 2)","Octal (base 8)","Hexadecimal (base 16)","Base 32","Base 36","Base 64 (valor)"]},
+
+// ── ASCII / UNICODE ───────────────────────────────────────────────────────────
+"🔤 ASCII / Unicode":{special:"ascii",u:["Caractere","Decimal (ASCII/Unicode)","Hexadecimal","Binário","Octal","HTML Entity","URL Encoding"]},
+
+// ── COORDENADAS GPS ───────────────────────────────────────────────────────────
+"📍 Coordenadas GPS":{special:"gps",u:["Graus Decimais (DD)","Graus Min Seg (DMS)","Graus Min Decimais (DM)","Radianos","UTM (aproximado)"]},
+
+// ── BITOLA DE CANOS ───────────────────────────────────────────────────────────
+"🔧 Bitola Canos":{fashion:true,base:"mm Ø ext.",rows:[
+  // [label, diâmetro_exterior_mm]
+  ["DN 6 / NPS 1/8\" (Ø ext 10.3mm)",10.3],
+  ["DN 8 / NPS 1/4\" (Ø ext 13.7mm)",13.7],
+  ["DN 10 / NPS 3/8\" (Ø ext 17.1mm)",17.1],
+  ["DN 15 / NPS 1/2\" (Ø ext 21.3mm)",21.3],
+  ["DN 20 / NPS 3/4\" (Ø ext 26.7mm)",26.7],
+  ["DN 25 / NPS 1\" (Ø ext 33.4mm)",33.4],
+  ["DN 32 / NPS 1¼\" (Ø ext 42.2mm)",42.2],
+  ["DN 40 / NPS 1½\" (Ø ext 48.3mm)",48.3],
+  ["DN 50 / NPS 2\" (Ø ext 60.3mm)",60.3],
+  ["DN 65 / NPS 2½\" (Ø ext 73.0mm)",73.0],
+  ["DN 80 / NPS 3\" (Ø ext 88.9mm)",88.9],
+  ["DN 100 / NPS 4\" (Ø ext 114.3mm)",114.3],
+  ["DN 125 / NPS 5\" (Ø ext 141.3mm)",141.3],
+  ["DN 150 / NPS 6\" (Ø ext 168.3mm)",168.3],
+  ["DN 200 / NPS 8\" (Ø ext 219.1mm)",219.1],
+  ["DN 250 / NPS 10\" (Ø ext 273.1mm)",273.1],
+  ["DN 300 / NPS 12\" (Ø ext 323.9mm)",323.9],
+  ["DN 350 / NPS 14\" (Ø ext 355.6mm)",355.6],
+  ["DN 400 / NPS 16\" (Ø ext 406.4mm)",406.4],
+  ["DN 450 / NPS 18\" (Ø ext 457.2mm)",457.2],
+  ["DN 500 / NPS 20\" (Ø ext 508.0mm)",508.0],
+  ["DN 600 / NPS 24\" (Ø ext 609.6mm)",609.6],
+  ["mm (diâmetro exterior)",null]
+]},
+
+// ── BITOLA CHAPA METÁLICA ─────────────────────────────────────────────────────
+"🔨 Bitola Chapa":{fashion:true,base:"mm espessura",rows:[
+  // [label, espessura_mm]  — Aço USS / ASTM
+  ["Gauge 3 — 6.073mm",6.073],["Gauge 4 — 5.695mm",5.695],
+  ["Gauge 5 — 5.314mm",5.314],["Gauge 6 — 4.763mm",4.763],
+  ["Gauge 7 — 4.394mm",4.394],["Gauge 8 — 4.115mm",4.115],  // ~4mm mais comum
+  ["Gauge 9 — 3.759mm",3.759],["Gauge 10 — 3.404mm",3.404],
+  ["Gauge 11 — 3.048mm",3.048],["Gauge 12 — 2.657mm",2.657],
+  ["Gauge 13 — 2.278mm",2.278],["Gauge 14 — 1.897mm",1.897],
+  ["Gauge 15 — 1.709mm",1.709],["Gauge 16 — 1.519mm",1.519],
+  ["Gauge 17 — 1.372mm",1.372],["Gauge 18 — 1.214mm",1.214],
+  ["Gauge 19 — 1.062mm",1.062],["Gauge 20 — 0.912mm",0.912],
+  ["Gauge 21 — 0.836mm",0.836],["Gauge 22 — 0.759mm",0.759],
+  ["Gauge 23 — 0.683mm",0.683],["Gauge 24 — 0.607mm",0.607],
+  ["Gauge 25 — 0.531mm",0.531],["Gauge 26 — 0.455mm",0.455],
+  ["Gauge 27 — 0.417mm",0.417],["Gauge 28 — 0.378mm",0.378],
+  ["Gauge 29 — 0.345mm",0.345],["Gauge 30 — 0.305mm",0.305],
+  // Alumínio (B&S / AWG gauge)
+  ["Alumínio Gauge 8 — 3.264mm",3.264],
+  ["Alumínio Gauge 10 — 2.588mm",2.588],
+  ["Alumínio Gauge 12 — 2.053mm",2.053],
+  ["Alumínio Gauge 14 — 1.628mm",1.628],
+  ["Alumínio Gauge 16 — 1.291mm",1.291],
+  ["Alumínio Gauge 18 — 1.024mm",1.024],
+  ["Alumínio Gauge 20 — 0.812mm",0.812],
+  ["Alumínio Gauge 22 — 0.644mm",0.644],
+  ["Alumínio Gauge 24 — 0.511mm",0.511],
+  ["Alumínio Gauge 26 — 0.405mm",0.405],
+  // Padrão métrico comum
+  ["0.5mm",0.5],["0.6mm",0.6],["0.7mm",0.7],["0.8mm",0.8],["0.9mm",0.9],
+  ["1.0mm",1.0],["1.2mm",1.2],["1.5mm",1.5],["2.0mm",2.0],["2.5mm",2.5],
+  ["3.0mm",3.0],["4.0mm",4.0],["5.0mm",5.0],["6.0mm",6.0],
+  ["mm (espessura)",null]
+]},
+
+// ── DECLIVIDADE / INCLINAÇÃO ──────────────────────────────────────────────────
+"📐 Declividade":{u:{
+  "Percentagem (%)":1,
+  "Grau (°)":1.74533,        // tan(x°)*100 — approximate for small angles; exact handled via special
+  "Permilagem (‰)":0.1,
+  "mm/m":0.1,
+  "cm/m":10,
+  "m/km":0.1,
+  "polegada/pé (in/ft)":8.3333,
+  "polegada/metro":2.54,
+  "rise:run 1:n (n=)":100,
+  "1 em N (1:N)":100
+}},
+
+// ── pH ────────────────────────────────────────────────────────────────────────
+"🧪 pH":{special:"ph",u:["pH","Concentração H⁺ (mol/L)","Concentração OH⁻ (mol/L)","pOH","Atividade H⁺"]},
+
+// ── DUREZA DA ÁGUA ────────────────────────────────────────────────────────────
+"💧 Dureza da Água":{u:{
+  "mg/L CaCO₃ (ppm)":1,
+  "mmol/L CaCO₃":100,
+  "°dH (graus alemães)":17.848,
+  "°fH (graus franceses)":10,
+  "°Clark (graus ingleses)":14.254,
+  "mEq/L":50,
+  "gpg (grãos/galão US)":17.118,
+  "mg/L Ca²⁺":2.497,
+  "mg/L Mg²⁺":4.118
+}},
+
+// ── ESCALA RICHTER / SÍSMICA ──────────────────────────────────────────────────
+"🌍 Escala Sísmica":{special:"richter",u:["Magnitude Richter (ML)","Magnitude Momento (Mw)","Energia (Joules)","Energia (TNT equiv. kg)","Intensidade Mercalli (I-XII)"]},
+
+// ── ESCALA BEAUFORT ───────────────────────────────────────────────────────────
+"🌬️ Beaufort / Vento":{fashion:true,base:"km/h",rows:[
+  ["Beaufort 0 — Calmo (< 1 km/h)",0.5],
+  ["Beaufort 1 — Aragem (1–5 km/h)",3],
+  ["Beaufort 2 — Brisa leve (6–11 km/h)",8.5],
+  ["Beaufort 3 — Brisa fraca (12–19 km/h)",15.5],
+  ["Beaufort 4 — Brisa moderada (20–28 km/h)",24],
+  ["Beaufort 5 — Brisa fresca (29–38 km/h)",33.5],
+  ["Beaufort 6 — Brisa forte (39–49 km/h)",44],
+  ["Beaufort 7 — Vento forte (50–61 km/h)",55.5],
+  ["Beaufort 8 — Tempestade fraca (62–74 km/h)",68],
+  ["Beaufort 9 — Tempestade moderada (75–88 km/h)",81.5],
+  ["Beaufort 10 — Tempestade forte (89–102 km/h)",95.5],
+  ["Beaufort 11 — Tempestade violenta (103–117 km/h)",110],
+  ["Beaufort 12 — Furacão (≥ 118 km/h)",120],
+  // Categorias de furacão (Saffir-Simpson)
+  ["Furacão Cat 1 (119–153 km/h)",136],
+  ["Furacão Cat 2 (154–177 km/h)",165.5],
+  ["Furacão Cat 3 (178–208 km/h)",193],
+  ["Furacão Cat 4 (209–251 km/h)",230],
+  ["Furacão Cat 5 (≥ 252 km/h)",260],
+  ["km/h",null],["m/s",null],["nós (kn)",null],["mph",null]
+]},
+
+// ── ÍNDICE UV ─────────────────────────────────────────────────────────────────
+"☀️ Índice UV":{fashion:true,base:"índice UV",rows:[
+  ["UV 0 — Mínimo",0],
+  ["UV 1 — Baixo",1],["UV 2 — Baixo",2],
+  ["UV 3 — Moderado",3],["UV 4 — Moderado",4],["UV 5 — Moderado",5],
+  ["UV 6 — Alto",6],["UV 7 — Alto",7],
+  ["UV 8 — Muito alto",8],["UV 9 — Muito alto",9],["UV 10 — Muito alto",10],
+  ["UV 11 — Extremo",11],["UV 12 — Extremo",12],["UV 13+ — Extremo",13],
+  ["Índice UV (numérico)",null]
+]},
+
+// ── GLICOSE ───────────────────────────────────────────────────────────────────
+"🩸 Glicose":{u:{
+  "mg/dL":1,
+  "mmol/L":18.0182,
+  "µmol/L":0.018018,
+  "mg/L":0.1,
+  "g/L":100,
+  // Referências clínicas (como unidade info)
+  "Hipoglicemia (< 70 mg/dL)":70,
+  "Normal em jejum (70–99 mg/dL)":85,
+  "Pré-diabetes (100–125 mg/dL)":112,
+  "Diabetes (≥ 126 mg/dL)":126,
+  "Pós-prandial normal (< 140 mg/dL)":140,
+  "Hiperglicemia (> 180 mg/dL)":180
+}},
+
+// ── COLESTEROL ────────────────────────────────────────────────────────────────
+"💉 Colesterol":{u:{
+  "mg/dL":1,
+  "mmol/L":38.67,
+  "µmol/L":0.038665,
+  "g/L":100,
+  // Referências
+  "LDL ótimo (< 100 mg/dL)":100,
+  "LDL limite alto (130–159 mg/dL)":145,
+  "LDL alto (160–189 mg/dL)":175,
+  "LDL muito alto (≥ 190 mg/dL)":190,
+  "HDL baixo (< 40 mg/dL)":40,
+  "HDL bom (≥ 60 mg/dL)":60,
+  "Total desejável (< 200 mg/dL)":200,
+  "Total limite (200–239 mg/dL)":220,
+  "Total alto (≥ 240 mg/dL)":240
+}},
+
+// ── HbA1c ─────────────────────────────────────────────────────────────────────
+"🩺 HbA1c":{special:"hba1c",u:["HbA1c (%)","mmol/mol (IFCC)","Glicose média est. (mg/dL)","Glicose média est. (mmol/L)"]},
+
+// ── PRESSÃO ARTERIAL ──────────────────────────────────────────────────────────
+"❤️ Pressão Arterial":{u:{
+  "mmHg":1,
+  "kPa":7.50062,
+  "bar":750.062,
+  "PSI":51.7149,
+  "cmHg":0.1,
+  "atm":760,
+  // Referências
+  "Normal sistólica (< 120 mmHg)":120,
+  "Elevada sistólica (120–129 mmHg)":125,
+  "Hipertensão 1 sistólica (130–139 mmHg)":135,
+  "Hipertensão 2 sistólica (≥ 140 mmHg)":140,
+  "Normal diastólica (< 80 mmHg)":80,
+  "Hipertensão 1 diastólica (80–89 mmHg)":85,
+  "Hipertensão 2 diastólica (≥ 90 mmHg)":90
+}},
+
+// ── PACE / RITMO CORRIDA ──────────────────────────────────────────────────────
+"🏃 Pace / Corrida":{special:"pace",u:["min/km","min/milha","km/h","mph","m/s","seg/100m","min/400m"]},
+
+// ── VO₂MAX ────────────────────────────────────────────────────────────────────
+"🫁 VO₂max":{u:{
+  "mL/kg/min":1,
+  "L/min (70kg)":70,
+  "MET":3.5,
+  // Categorias (homem 30-39 anos)
+  "Fraco (< 38)":38,"Abaixo da média (38–41)":40,
+  "Médio (42–47)":45,"Acima da média (48–53)":50,
+  "Bom (54–59)":57,"Excelente (≥ 60)":60
+}},
+
+// ── FREQUÊNCIA CARDÍACA ───────────────────────────────────────────────────────
+"❤️‍🔥 FC / Zonas Treino":{special:"hrzone",u:["bpm","% FCmax","Zona 1 (50–60%)","Zona 2 (60–70%)","Zona 3 (70–80%)","Zona 4 (80–90%)","Zona 5 (90–100%)"]},
+
+// ── ALTITUDE / PRESSÃO ISA ───────────────────────────────────────────────────
+"✈️ Altitude / Pressão":{special:"altitude",u:["Metro (m)","Pé (ft)","Pressão ISA (hPa)","Pressão ISA (mmHg)","Temperatura ISA (°C)","Densidade relativa (%)"]},
+
+// ── MAGNITUDE ESTELAR ─────────────────────────────────────────────────────────
+"⭐ Magnitude Estelar":{special:"magnitude",u:["Magnitude aparente (m)","Luminosidade relativa (Sol=1)","Fluxo relativo (ref m=0)","Magnitude absoluta (M)"]},
+
+// ── JUROS SIMPLES / COMPOSTOS ─────────────────────────────────────────────────
+"💰 Juros":{special:"interestcalc",u:["placeholder"]},
+
+// ── FUSO HORÁRIO ─────────────────────────────────────────────────────────────
+"🕐 Fuso Horário":{fashion:true,base:"UTC offset horas",rows:[
+  ["UTC−12:00 (Ilhas Baker/Howland)",-12],
+  ["UTC−11:00 (Samoa Americana, Niue)",-11],
+  ["UTC−10:00 (Havai, Cook)",-10],
+  ["UTC−09:30 (Marquesas)",-9.5],
+  ["UTC−09:00 (Alasca)",-9],
+  ["UTC−08:00 (PST — Los Angeles, Vancouver)",-8],
+  ["UTC−07:00 (MST — Denver, Phoenix)",-7],
+  ["UTC−06:00 (CST — Chicago, Cidade do México)",-6],
+  ["UTC−05:00 (EST — Nova Iorque, Toronto, Lima)",-5],
+  ["UTC−04:00 (AST — Halifax, Caracas, Manaus)",-4],
+  ["UTC−03:30 (NST — Terra Nova)",-3.5],
+  ["UTC−03:00 (BRT — São Paulo, Buenos Aires, Santiago)",-3],
+  ["UTC−02:00 (Fernando de Noronha, Geórgia do Sul)",-2],
+  ["UTC−01:00 (Açores, Cabo Verde)",-1],
+  ["UTC±00:00 (GMT/WET — Londres, Lisboa, Acra)",0],
+  ["UTC+01:00 (CET — Paris, Berlim, Madrid, Lagos)",1],
+  ["UTC+02:00 (EET — Cairo, Joanesburgo, Atenas)",2],
+  ["UTC+03:00 (MSK — Moscovo, Nairobi, Riade)",3],
+  ["UTC+03:30 (IRST — Teerão)",3.5],
+  ["UTC+04:00 (GST — Dubai, Abu Dhabi, Baku)",4],
+  ["UTC+04:30 (AFT — Cabul)",4.5],
+  ["UTC+05:00 (PKT — Islamabad, Karachi, Tashkent)",5],
+  ["UTC+05:30 (IST — Mumbai, Nova Deli)",5.5],
+  ["UTC+05:45 (NPT — Katmandu)",5.75],
+  ["UTC+06:00 (BST — Dhaka, Almaty)",6],
+  ["UTC+06:30 (MMT — Yangon)",6.5],
+  ["UTC+07:00 (ICT — Banguecoque, Hanói, Jacarta)",7],
+  ["UTC+08:00 (CST — Pequim, Singapura, Perth, KL)",8],
+  ["UTC+08:30 (Pyongyang — Coreia do Norte)",8.5],
+  ["UTC+08:45 (ACWST — Eucla, Austrália)",8.75],
+  ["UTC+09:00 (JST — Tóquio, Seul)",9],
+  ["UTC+09:30 (ACST — Adelaide, Darwin)",9.5],
+  ["UTC+10:00 (AEST — Sydney, Melbourne, Guam)",10],
+  ["UTC+10:30 (Lord Howe)",10.5],
+  ["UTC+11:00 (SBT — Ilhas Salomão, Nova Caledónia)",11],
+  ["UTC+12:00 (NZST — Auckland, Fidji)",12],
+  ["UTC+12:45 (CHAST — Chatham)",12.75],
+  ["UTC+13:00 (TOT — Tonga, Samoa Ocid.)",13],
+  ["UTC+14:00 (LINT — Ilhas Line)",14],
+  ["horas UTC offset",null]
+]},
+
+// ── NÚMEROS ROMANOS ───────────────────────────────────────────────────────────
+"🔢 Números Romanos":{special:"roman",u:["Decimal (árabe)","Romano (maiúsculas)","Romano (minúsculas)","Binário","Hexadecimal","Octal"]},
+
+// ── PERCENTAGENS ──────────────────────────────────────────────────────────────
+"📊 Percentagens":{special:"pct",u:["Percentagem (%)","Valor base","X% de Y = ?","Y é X% de ? (base)","Após +X% (novo valor)","Após −X% (novo valor)","Variação % entre A→B","Ponto percentual (pp)"]},
+
+// ── COMPRIMENTO DE ONDA ↔ FREQUÊNCIA ─────────────────────────────────────────
+"📡 Onda ↔ Freq.":{u:{
+  "Hz (frequência)":1,
+  "kHz":1000,"MHz":1e6,"GHz":1e9,"THz":1e12,
+  // Comprimento de onda (λ = c/f, c = 299792458 m/s) — stored as Hz equiv
+  "m (comprimento onda)":299792458,
+  "cm (comprimento onda)":29979245800,
+  "mm (comprimento onda)":299792458000,
+  "µm (comprimento onda)":2.998e14,
+  "nm (comprimento onda)":2.998e17,
+  "pm (comprimento onda)":2.998e20,
+  // Bandas de rádio
+  "ELF 3–30 Hz":3,"SLF 30–300 Hz":30,"ULF 300–3000 Hz":300,
+  "VLF 3–30 kHz":3000,"LF 30–300 kHz":30000,"MF 300–3000 kHz":300000,
+  "HF 3–30 MHz":3e6,"VHF 30–300 MHz":30e6,"UHF 300–3000 MHz":300e6,
+  "SHF 3–30 GHz":3e9,"EHF 30–300 GHz":30e9,
+  // Luz visível
+  "Violeta ~420nm":7.138e14,"Azul ~470nm":6.378e14,"Verde ~530nm":5.657e14,
+  "Amarelo ~580nm":5.169e14,"Laranja ~610nm":4.914e14,"Vermelho ~700nm":4.283e14
+}},
+
+// ── dBm / POTÊNCIA RF ─────────────────────────────────────────────────────────
+"📶 dBm / RF":{special:"dbm",u:["dBm","dBW","Watt (W)","mW","µW","nW","pW","dBµV (50Ω)","V rms (50Ω)","V pico (50Ω)"]},
+
+// ── CORES RGB ────────────────────────────────────────────────────────────────
+"🎨 Cores RGB":{special:"rgb",u:["HEX (#RRGGBB)","RGB (r,g,b)","HSL (h,s%,l%)","HSV (h,s%,v%)","CMYK (c%,m%,y%,k%)","RGB normalizado (0–1)","Luminosidade relativa (WCAG)"]},
+
+// ── TEMPERATURA DE COR ───────────────────────────────────────────────────────
+"🌡️ Temperatura de Cor":{fashion:true,base:"Kelvin",rows:[
+  ["Vela / chama (1800K)",1800],
+  ["Lâmpada incandescente 40W (2000K)",2000],
+  ["Lâmpada incandescente 60W (2700K)",2700],
+  ["Lâmpada incandescente 100W (2850K)",2850],
+  ["Halógenio (3200K)",3200],
+  ["Luz quente LED (3000K)",3000],
+  ["Luz neutra LED (4000K)",4000],
+  ["Luz branca fria LED (5000K)",5000],
+  ["Luz do dia nublado (5500K)",5500],
+  ["Luz solar ao meio-dia (5778K — sol)",5778],
+  ["Luz do dia (6500K — D65 padrão)",6500],
+  ["Céu azul / sombra (7500K)",7500],
+  ["Céu azul claro (9000K)",9000],
+  ["Céu azul profundo (10000K+)",10000],
+  ["Studio — quente (3200K)",3200],
+  ["Studio — daylight (5600K)",5600],
+  ["Monitor PC típico (6500K)",6500],
+  ["iPhone / tela sRGB (6500K)",6500],
+  ["Impressão — D50 (5003K)",5003],
+  ["Kelvin (valor numérico)",null]
+]},
+
+// ── GASES IDEAIS ─────────────────────────────────────────────────────────────
+"⚗️ Gases Ideais":{special:"idealgas",u:["Pressão (Pa)","Volume (L)","Temperatura (K)","Quantidade (mol)","n×R×T (energia, J)","Pressão (atm)","Pressão (bar)","Pressão (mmHg)","Volume (m³)","Volume (mL)"]},
+
+// ── MOLES / MASSA ────────────────────────────────────────────────────────────
+"🔬 Moles / Massa":{special:"moles",u:["Moles (mol)","Massa (g)","Massa (kg)","Moléculas (×10²³)","Átomos (×10²³)","Litros @ CNTP (0°C, 1atm)","Litros @ CPTP (25°C, 1atm)","Molar mass (g/mol) input"]},
+
+// ── Z-SCORE ───────────────────────────────────────────────────────────────────
+"📉 Z-score":{special:"zscore",u:["Z-score","Percentil (%)","Probabilidade acum. (0–1)","Desvio padrão (σ) acima média","% acima deste valor","% abaixo deste valor"]},
+
+// ── PROBABILIDADE ─────────────────────────────────────────────────────────────
+"🎲 Probabilidade":{u:{
+  "Probabilidade (0–1)":1,
+  "Percentagem (%)":0.01,
+  "Odds a favor (a:b → a/(a+b))":1,
+  "Odds ratio (p/(1-p))":1,
+  "Log-odds (logit)":1,
+  "1 em N (1:N)":1,
+  "Por milhar (‰)":0.001,
+  "ppm (por milhão)":1e-6,
+  "Número esperado em 100":0.01,
+  "Número esperado em 1000":0.001
+}},
+
+// ── REDES IP / CIDR ───────────────────────────────────────────────────────────
+"🌐 Redes IP / CIDR":{special:"cidr",u:["Prefixo CIDR (/n)","Nº de hosts (utilizáveis)","Nº de endereços totais","Máscara de rede","Wildcard mask","Nº de sub-redes em /24","Bits de host"]},
+
+// ── BANDA / TRANSFERÊNCIA ─────────────────────────────────────────────────────
+"📶 Banda / Transferência":{special:"bandwidth",u:["Mbps (megabits/s)","MB/s (megabytes/s)","Tempo p/ 1 GB (segundos)","Tempo p/ 1 GB (min:seg)","Tempo p/ 1 TB (horas)","Tempo p/ 100 MB (seg)","GB/hora","TB/dia","Gbps","kbps"]},
+
+// ── BETÃO / RESISTÊNCIA ───────────────────────────────────────────────────────
+"🏗️ Betão / Resistência":{fashion:true,base:"MPa",rows:[
+  ["C8/10 — fck=8MPa (betão pobre)",8],
+  ["C12/15 — fck=12MPa",12],
+  ["C16/20 — fck=16MPa",16],
+  ["C20/25 — fck=20MPa (estrutural mín.)",20],
+  ["C25/30 — fck=25MPa (lajes/vigas)",25],
+  ["C30/37 — fck=30MPa",30],
+  ["C35/45 — fck=35MPa",35],
+  ["C40/50 — fck=40MPa (pontes)",40],
+  ["C45/55 — fck=45MPa",45],
+  ["C50/60 — fck=50MPa (pré-esforço)",50],
+  ["C55/67 — fck=55MPa",55],
+  ["C60/75 — fck=60MPa (alta resistência)",60],
+  ["C70/85 — fck=70MPa",70],
+  ["C80/95 — fck=80MPa",80],
+  ["C90/105 — fck=90MPa",90],
+  ["C100/115 — fck=100MPa (ultra alta resist.)",100],
+  ["MPa (valor numérico)",null],
+  ["kgf/cm² (valor)",null],
+  ["PSI (valor)",null]
+]},
+
+// ── NÁUTICA ───────────────────────────────────────────────────────────────────
+"⚓ Náutica":{u:{
+  "Milha náutica (nmi)":1,
+  "Metro (m)":0.000539957,
+  "Quilômetro (km)":0.539957,
+  "Pé (ft)":0.000164579,
+  "Milha terrestre (mi)":0.621371/1.60934,
+  "Cabo (cable)":0.1,
+  "Braça náutica (fathom)":0.000540541,
+  "Nó (knot) — 1h":1,
+  "km/h":0.539957,
+  "mph":0.621371/1.60934,
+  "m/s":0.000539957/0.001,
+  "Braça (fathom) — profundidade":0.000540541,
+  "Pé de profundidade":0.000164579,
+  "Metro de profundidade":0.000539957,
+  "Grau de latitude (≈ 60 nmi)":1/60,
+  "Minuto de arco (≈ 1 nmi)":1,
+  "Légua náutica (3 nmi)":1/3
+}}
+
+};
+
+// ── SPECIAL CONVERSIONS ───────────────────────────────────────────────────────
+// Fashion lookup helper
+function fashionLabels(cat){ return cat.rows.map(r=>r[0]); }
+function fashionCmOf(label,cat){
+  const row=cat.rows.find(r=>r[0]===label);
+  return row?row[1]:null;
+}
+function fashionFromCm(cm,label,cat){
+  if(label==="cm (comprimento pé)"||label==="cm (busto)"||label==="cm (peito)"||
+     label==="cm (altura)"||label==="cm (cintura)"||label==="cm (perímetro cabeça)"||
+     label==="cm (perímetro dedo)"||label==="mm (diâmetro interior)"||
+     label==="cm (perímetro mão)") return cm;
+  const row=cat.rows.find(r=>r[0]===label);
+  return row&&row[1]!==null?row[1]:null;
+}
+
+// ── BASE CONVERSION ───────────────────────────────────────────────────────────
+function toDecimal(v, fromUnit){
+  const s = String(v).trim().toUpperCase();
+  switch(fromUnit){
+    case "Decimal (base 10)":    return parseInt(s, 10);
+    case "Binário (base 2)":     return parseInt(s, 2);
+    case "Octal (base 8)":       return parseInt(s, 8);
+    case "Hexadecimal (base 16)":return parseInt(s, 16);
+    case "Base 32":              return parseInt(s, 32);
+    case "Base 36":              return parseInt(s, 36);
+    case "Base 64 (valor)":      return parseInt(s, 10); // treat as decimal index
+    default: return parseInt(s, 10);
+  }
+}
+function fromDecimal(n, toUnit){
+  if(isNaN(n)||!isFinite(n)) return '—';
+  const i = Math.floor(Math.abs(n));
+  switch(toUnit){
+    case "Decimal (base 10)":    return i.toString(10);
+    case "Binário (base 2)":     return i.toString(2);
+    case "Octal (base 8)":       return i.toString(8);
+    case "Hexadecimal (base 16)":return i.toString(16).toUpperCase();
+    case "Base 32":              return i.toString(32).toUpperCase();
+    case "Base 36":              return i.toString(36).toUpperCase();
+    case "Base 64 (valor)":      return i.toString(10);
+    default: return i.toString(10);
+  }
+}
+
+// ── ASCII / UNICODE ───────────────────────────────────────────────────────────
+function asciiConvert(v, fromUnit, toUnit){
+  let code;
+  const s = String(v).trim();
+  if(fromUnit==="Caractere") code = s.codePointAt(0)||0;
+  else if(fromUnit==="Decimal (ASCII/Unicode)") code = parseInt(s,10);
+  else if(fromUnit==="Hexadecimal") code = parseInt(s,16);
+  else if(fromUnit==="Binário") code = parseInt(s,2);
+  else if(fromUnit==="Octal") code = parseInt(s,8);
+  else if(fromUnit==="HTML Entity") { const m=s.match(/&#(\d+);?/); code=m?parseInt(m[1]):0; }
+  else if(fromUnit==="URL Encoding") { const m=s.match(/%([0-9A-Fa-f]{2})/); code=m?parseInt(m[1],16):0; }
+  else code = parseInt(s,10);
+
+  if(toUnit==="Caractere") return String.fromCodePoint(code);
+  if(toUnit==="Decimal (ASCII/Unicode)") return code.toString();
+  if(toUnit==="Hexadecimal") return code.toString(16).toUpperCase().padStart(2,'0');
+  if(toUnit==="Binário") return code.toString(2).padStart(8,'0');
+  if(toUnit==="Octal") return code.toString(8);
+  if(toUnit==="HTML Entity") return `&#${code};`;
+  if(toUnit==="URL Encoding") return '%'+code.toString(16).toUpperCase().padStart(2,'0');
+  return code.toString();
+}
+
+// ── pH ────────────────────────────────────────────────────────────────────────
+function phConvert(v, fromUnit, toUnit){
+  let pH;
+  const n = parseFloat(v);
+  if(fromUnit==="pH") pH = n;
+  else if(fromUnit==="Concentração H⁺ (mol/L)") pH = -Math.log10(n);
+  else if(fromUnit==="Concentração OH⁻ (mol/L)") pH = 14 + Math.log10(n);
+  else if(fromUnit==="pOH") pH = 14 - n;
+  else if(fromUnit==="Atividade H⁺") pH = -Math.log10(n);
+  else pH = n;
+
+  if(toUnit==="pH") return pH;
+  if(toUnit==="Concentração H⁺ (mol/L)") return Math.pow(10, -pH);
+  if(toUnit==="Concentração OH⁻ (mol/L)") return Math.pow(10, pH - 14);
+  if(toUnit==="pOH") return 14 - pH;
+  if(toUnit==="Atividade H⁺") return Math.pow(10, -pH);
+  return pH;
+}
+
+// ── HbA1c ─────────────────────────────────────────────────────────────────────
+function hba1cConvert(v, fromUnit, toUnit){
+  let pct; // percentage
+  const n = parseFloat(v);
+  if(fromUnit==="HbA1c (%)") pct = n;
+  else if(fromUnit==="mmol/mol (IFCC)") pct = (n/10.929)+2.15;
+  else if(fromUnit==="Glicose média est. (mg/dL)") pct = (n+46.7)/28.7;
+  else if(fromUnit==="Glicose média est. (mmol/L)") pct = (n*18.0182+46.7)/28.7;
+  else pct = n;
+
+  if(toUnit==="HbA1c (%)") return pct;
+  if(toUnit==="mmol/mol (IFCC)") return (pct-2.15)*10.929;
+  if(toUnit==="Glicose média est. (mg/dL)") return pct*28.7 - 46.7;
+  if(toUnit==="Glicose média est. (mmol/L)") return (pct*28.7 - 46.7)/18.0182;
+  return pct;
+}
+
+// ── PACE / CORRIDA ────────────────────────────────────────────────────────────
+function paceConvert(v, fromUnit, toUnit){
+  // base = seconds per km
+  let secPerKm;
+  const n = parseFloat(v);
+  function minSecToSec(ms){ // "mm:ss" or decimal minutes
+    if(String(ms).includes(':')){const p=String(ms).split(':');return parseFloat(p[0])*60+parseFloat(p[1]);}
+    return ms*60;
+  }
+  if(fromUnit==="min/km") secPerKm = minSecToSec(n);
+  else if(fromUnit==="min/milha") secPerKm = minSecToSec(n)/1.60934;
+  else if(fromUnit==="km/h") secPerKm = 3600/n;
+  else if(fromUnit==="mph") secPerKm = 3600/(n*1.60934);
+  else if(fromUnit==="m/s") secPerKm = 1000/n;
+  else if(fromUnit==="seg/100m") secPerKm = n*10;
+  else if(fromUnit==="min/400m") secPerKm = minSecToSec(n)*2.5;
+  else secPerKm = n*60;
+
+  const toSec = (spk) => {
+    if(toUnit==="min/km") return spk/60;
+    if(toUnit==="min/milha") return spk*1.60934/60;
+    if(toUnit==="km/h") return 3600/spk;
+    if(toUnit==="mph") return 3600/(spk*1.60934);
+    if(toUnit==="m/s") return 1000/spk;
+    if(toUnit==="seg/100m") return spk/10;
+    if(toUnit==="min/400m") return spk*0.4/60;
+    return spk/60;
+  };
+  return toSec(secPerKm);
+}
+
+// ── ALTITUDE / ISA ────────────────────────────────────────────────────────────
+function altitudeConvert(v, fromUnit, toUnit){
+  let m; // metres
+  const n = parseFloat(v);
+  if(fromUnit==="Metro (m)") m = n;
+  else if(fromUnit==="Pé (ft)") m = n*0.3048;
+  else if(fromUnit==="Pressão ISA (hPa)") m = (1-(n/1013.25)**0.190284)*44330.77;
+  else if(fromUnit==="Pressão ISA (mmHg)") m = (1-((n/10)*1.33322/1013.25)**0.190284)*44330.77;
+  else if(fromUnit==="Temperatura ISA (°C)") m = (15-n)/0.0065;
+  else if(fromUnit==="Densidade relativa (%)") m = 0; // approx
+  else m = n;
+
+  const pHPa = m <= 11000 ? 1013.25*(1-m/44330.77)**(1/0.190284) : 226.32*Math.exp(-(m-11000)/6341.62);
+  const tC   = m <= 11000 ? 15 - 0.0065*m : -56.5;
+  const rho  = Math.min(100, Math.max(0, (pHPa/1013.25)*(288.15/(tC+273.15))*100));
+
+  if(toUnit==="Metro (m)") return m;
+  if(toUnit==="Pé (ft)") return m/0.3048;
+  if(toUnit==="Pressão ISA (hPa)") return pHPa;
+  if(toUnit==="Pressão ISA (mmHg)") return pHPa*0.750062;
+  if(toUnit==="Temperatura ISA (°C)") return tC;
+  if(toUnit==="Densidade relativa (%)") return rho;
+  return m;
+}
+
+// ── MAGNITUDE ESTELAR ─────────────────────────────────────────────────────────
+function magConvert(v, fromUnit, toUnit){
+  let m; // apparent magnitude
+  const n = parseFloat(v);
+  if(fromUnit==="Magnitude aparente (m)") m = n;
+  else if(fromUnit==="Luminosidade relativa (Sol=1)") m = 4.83 - 2.512*Math.log10(n); // ref: Sun M=4.83
+  else if(fromUnit==="Fluxo relativo (ref m=0)") m = -2.512*Math.log10(n);
+  else if(fromUnit==="Magnitude absoluta (M)") m = n; // treated same without distance
+  else m = n;
+
+  if(toUnit==="Magnitude aparente (m)") return m;
+  if(toUnit==="Luminosidade relativa (Sol=1)") return Math.pow(10,(4.83-m)/2.512);
+  if(toUnit==="Fluxo relativo (ref m=0)") return Math.pow(10,-m/2.512);
+  if(toUnit==="Magnitude absoluta (M)") return m;
+  return m;
+}
+
+// ── RICHTER / SÍSMICA ─────────────────────────────────────────────────────────
+function richterConvert(v, fromUnit, toUnit){
+  let ml; // Richter ML
+  const n = parseFloat(v);
+  if(fromUnit==="Magnitude Richter (ML)") ml = n;
+  else if(fromUnit==="Magnitude Momento (Mw)") ml = n; // approx equal for common range
+  else if(fromUnit==="Energia (Joules)") ml = (Math.log10(n)-4.8)/1.5;
+  else if(fromUnit==="Energia (TNT equiv. kg)") ml = (Math.log10(n*4.184e6)-4.8)/1.5;
+  else if(fromUnit==="Intensidade Mercalli (I-XII)") ml = n*1.1-0.5;
+  else ml = n;
+
+  const joules = Math.pow(10, 1.5*ml + 4.8);
+  if(toUnit==="Magnitude Richter (ML)") return ml;
+  if(toUnit==="Magnitude Momento (Mw)") return ml;
+  if(toUnit==="Energia (Joules)") return joules;
+  if(toUnit==="Energia (TNT equiv. kg)") return joules/4.184e6;
+  if(toUnit==="Intensidade Mercalli (I-XII)") return Math.min(12,Math.max(1,Math.round((ml+0.5)/1.1)));
+  return ml;
+}
+
+// ── JUROS ─────────────────────────────────────────────────────────────────────
+function interestConvert(v, fromUnit, toUnit){
+  // defaults when not provided
+  const n = parseFloat(v)||0;
+  // We use a fixed scenario: C=1000, r=5%, t=10yr unless the input is one of those
+  const C=1000, r=0.05, t=10;
+  if(toUnit==="Montante final (simples)") return C*(1+r*t);
+  if(toUnit==="Montante final (composto)") return C*Math.pow(1+r,t);
+  if(toUnit==="Juros totais (simples)") return C*r*t;
+  if(toUnit==="Juros totais (composto)") return C*(Math.pow(1+r,t)-1);
+  if(toUnit==="Taxa mensal equiv. (%)") return (Math.pow(1+r,1/12)-1)*100;
+  if(toUnit==="Taxa diária equiv. (%)") return (Math.pow(1+r,1/365)-1)*100;
+  if(toUnit==="Capital (€/$)") return n;
+  if(toUnit==="Taxa anual (%)") return r*100;
+  if(toUnit==="Período (anos)") return t;
+  return n;
+}
+function tempToK(v,u){
+  if(u==="Celsius (°C)")return v+273.15;
+  if(u==="Fahrenheit (°F)")return (v-32)*5/9+273.15;
+  if(u==="Kelvin (K)")return v;
+  if(u==="Rankine (°R)")return v*5/9;
+  if(u==="Réaumur (°Ré)")return v*5/4+273.15;
+  if(u==="Delisle (°De)")return 373.15-v*2/3;
+  if(u==="Newton (°N)")return v*100/33+273.15;
+  if(u==="Rømer (°Rø)")return (v-7.5)*40/21+273.15;
+  return v;
+}
+function tempFromK(k,u){
+  if(u==="Celsius (°C)")return k-273.15;
+  if(u==="Fahrenheit (°F)")return (k-273.15)*9/5+32;
+  if(u==="Kelvin (K)")return k;
+  if(u==="Rankine (°R)")return k*9/5;
+  if(u==="Réaumur (°Ré)")return (k-273.15)*4/5;
+  if(u==="Delisle (°De)")return (373.15-k)*3/2;
+  if(u==="Newton (°N)")return (k-273.15)*33/100;
+  if(u==="Rømer (°Rø)")return (k-273.15)*21/40+7.5;
+  return k;
+}
+
+const REF_PA=20e-6;
+function soundToPa(v,u){
+  if(u==="Decibel (dB SPL)"||u==="dBA (pond. A)"||u==="dBC (pond. C)")return REF_PA*Math.pow(10,v/20);
+  if(u==="Pascal (Pa)")return v;
+  if(u==="Micropascal (µPa)")return v*1e-6;
+  if(u==="Phon")return REF_PA*Math.pow(10,v/20);
+  if(u==="Sone"){const db=40+10*Math.log2(Math.max(v,1e-12));return REF_PA*Math.pow(10,db/20);}
+  if(u==="dBm (áudio, ref 1mW/600Ω)"){const vrms=Math.sqrt(0.001*600)*Math.pow(10,v/20);return vrms*Math.sqrt(2);}
+  if(u==="dBu (ref 0.775V)"){const vrms=0.775*Math.pow(10,v/20);return vrms;}
+  if(u==="dBV (ref 1V)"){const vrms=1*Math.pow(10,v/20);return vrms;}
+  return v;
+}
+function soundFromPa(pa,u){
+  const db=20*Math.log10(Math.max(pa,1e-30)/REF_PA);
+  if(u==="Decibel (dB SPL)"||u==="dBA (pond. A)"||u==="dBC (pond. C)")return db;
+  if(u==="Pascal (Pa)")return pa;
+  if(u==="Micropascal (µPa)")return pa*1e6;
+  if(u==="Phon")return db;
+  if(u==="Sone")return db<40?Math.pow(2,(db-40)/10):Math.pow(2,(db-40)/10);
+  if(u==="dBm (áudio, ref 1mW/600Ω)")return 20*Math.log10(pa/Math.sqrt(0.001*600));
+  if(u==="dBu (ref 0.775V)")return 20*Math.log10(pa/0.775);
+  if(u==="dBV (ref 1V)")return 20*Math.log10(pa/1);
+  return pa;
+}
+
+const FCAT=CATEGORIES["Combustível"];
+const FUEL_KWH_PER_100KM_REF=15; // reference for MPGe
+function fuelToBase(v,u){
+  // base = km/L
+  if(u==="L/100km") return 100/v;
+  if(u==="m³/100km") return 100/(v*1000);      // 1 m³ = 1000 L
+  if(u==="kWh/100km (elétrico)") return 33.705/v; // 33.705 kWh = 1 US gallon gasoline ÷ 0.425144 km/L·gal
+  if(u==="MPGe (US)") return v*0.425144;
+  return v*FCAT.u[u];
+}
+function fuelFromBase(b,u){
+  if(u==="L/100km") return 100/b;
+  if(u==="m³/100km") return 100/(b*1000);
+  if(u==="kWh/100km (elétrico)") return 33.705/b;
+  if(u==="MPGe (US)") return b/0.425144;
+  return b/FCAT.u[u];
+}
+
+// ── NÚMEROS ROMANOS ───────────────────────────────────────────────────────────
+function toRoman(n){
+  if(isNaN(n)||n<1||n>3999)return'—';
+  const v=[1000,900,500,400,100,90,50,40,10,9,5,4,1];
+  const s=['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+  let r='';for(let i=0;i<v.length;i++){while(n>=v[i]){r+=s[i];n-=v[i];}}return r;
+}
+function fromRoman(s){
+  const m={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+  s=s.toUpperCase().trim();let n=0;
+  for(let i=0;i<s.length;i++){
+    const c=m[s[i]],nx=m[s[i+1]];
+    if(!c)return NaN;
+    if(nx&&c<nx){n-=c;}else{n+=c;}
+  }return n;
+}
+function romanConvert(v,fu,tu){
+  let dec;
+  if(fu==="Decimal (árabe)") dec=parseInt(v);
+  else if(fu==="Romano (maiúsculas)"||fu==="Romano (minúsculas)") dec=fromRoman(String(v));
+  else if(fu==="Binário") dec=parseInt(String(v),2);
+  else if(fu==="Hexadecimal") dec=parseInt(String(v),16);
+  else if(fu==="Octal") dec=parseInt(String(v),8);
+  else dec=parseInt(v);
+  if(isNaN(dec))return'—';
+  if(tu==="Decimal (árabe)") return dec;
+  if(tu==="Romano (maiúsculas)") return toRoman(dec);
+  if(tu==="Romano (minúsculas)") return toRoman(dec).toLowerCase();
+  if(tu==="Binário") return dec.toString(2);
+  if(tu==="Hexadecimal") return dec.toString(16).toUpperCase();
+  if(tu==="Octal") return dec.toString(8);
+  return dec;
+}
+
+// ── PERCENTAGENS ──────────────────────────────────────────────────────────────
+function pctConvert(v,fu,tu){
+  const n=parseFloat(v)||0;
+  // For pct we need context — use defaults: pct=10, base=200
+  const pct=fu==="Percentagem (%)"?n:10;
+  const base=fu==="Valor base"?n:200;
+  const xPctY=pct/100*base;
+  if(tu==="Percentagem (%)") return pct;
+  if(tu==="Valor base") return base;
+  if(tu==="X% de Y = ?") return xPctY;
+  if(tu==="Y é X% de ? (base)") return xPctY/(pct/100);
+  if(tu==="Após +X% (novo valor)") return base*(1+pct/100);
+  if(tu==="Após −X% (novo valor)") return base*(1-pct/100);
+  if(tu==="Variação % entre A→B") return ((base+xPctY-base)/base)*100;
+  if(tu==="Ponto percentual (pp)") return pct;
+  return n;
+}
+
+// ── dBm / RF ──────────────────────────────────────────────────────────────────
+function dbmConvert(v,fu,tu){
+  let mw;
+  const n=parseFloat(v)||0;
+  if(fu==="dBm") mw=Math.pow(10,n/10);
+  else if(fu==="dBW") mw=Math.pow(10,n/10)*1000;
+  else if(fu==="Watt (W)") mw=n*1000;
+  else if(fu==="mW") mw=n;
+  else if(fu==="µW") mw=n/1000;
+  else if(fu==="nW") mw=n/1e6;
+  else if(fu==="pW") mw=n/1e9;
+  else if(fu==="dBµV (50Ω)") mw=Math.pow(10,(n-107)/10);
+  else if(fu==="V rms (50Ω)") mw=(n*n/50)*1000;
+  else if(fu==="V pico (50Ω)") mw=((n/Math.sqrt(2))*(n/Math.sqrt(2))/50)*1000;
+  else mw=n;
+  if(tu==="dBm") return 10*Math.log10(Math.max(mw,1e-30));
+  if(tu==="dBW") return 10*Math.log10(Math.max(mw/1000,1e-30));
+  if(tu==="Watt (W)") return mw/1000;
+  if(tu==="mW") return mw;
+  if(tu==="µW") return mw*1000;
+  if(tu==="nW") return mw*1e6;
+  if(tu==="pW") return mw*1e9;
+  if(tu==="dBµV (50Ω)") return 10*Math.log10(Math.max(mw,1e-30))+107;
+  if(tu==="V rms (50Ω)") return Math.sqrt(Math.max(mw/1000,0)*50);
+  if(tu==="V pico (50Ω)") return Math.sqrt(Math.max(mw/1000,0)*50)*Math.sqrt(2);
+  return mw;
+}
+
+// ── CORES RGB ─────────────────────────────────────────────────────────────────
+function rgbConvert(v,fu,tu){
+  // Parse input to {r,g,b} 0-255
+  let r=128,g=0,b=128;
+  const s=String(v).trim();
+  if(fu==="HEX (#RRGGBB)"){
+    const h=s.replace('#','');
+    r=parseInt(h.slice(0,2),16);g=parseInt(h.slice(2,4),16);b=parseInt(h.slice(4,6),16);
+  }else if(fu==="RGB (r,g,b)"){
+    const m=s.match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
+    if(m){r=+m[1];g=+m[2];b=+m[3];}
+  }else if(fu==="RGB normalizado (0–1)"){
+    const m=s.match(/([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if(m){r=Math.round(+m[1]*255);g=Math.round(+m[2]*255);b=Math.round(+m[3]*255);}
+  }else if(fu==="HSL (h,s%,l%)"){
+    const m=s.match(/([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if(m){const [hr,hs,hl]=m.slice(1,4).map(Number);({r,g,b}=hslToRgb(hr,hs/100,hl/100));}
+  }else if(fu==="HSV (h,s%,v%)"){
+    const m=s.match(/([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if(m){const [hh,hs,hv]=m.slice(1,4).map(Number);({r,g,b}=hsvToRgb(hh,hs/100,hv/100));}
+  }
+  // Helper: clamp
+  r=Math.max(0,Math.min(255,Math.round(r)));
+  g=Math.max(0,Math.min(255,Math.round(g)));
+  b=Math.max(0,Math.min(255,Math.round(b)));
+  if(tu==="HEX (#RRGGBB)") return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('').toUpperCase();
+  if(tu==="RGB (r,g,b)") return `${r}, ${g}, ${b}`;
+  if(tu==="RGB normalizado (0–1)") return `${(r/255).toFixed(3)}, ${(g/255).toFixed(3)}, ${(b/255).toFixed(3)}`;
+  if(tu==="HSL (h,s%,l%)"){const {h,s,l}=rgbToHsl(r,g,b);return `${h.toFixed(0)}°, ${(s*100).toFixed(1)}%, ${(l*100).toFixed(1)}%`;}
+  if(tu==="HSV (h,s%,v%)"){const {h,s,v}=rgbToHsv(r,g,b);return `${h.toFixed(0)}°, ${(s*100).toFixed(1)}%, ${(v*100).toFixed(1)}%`;}
+  if(tu==="CMYK (c%,m%,y%,k%)"){const {c,m,y,k}=rgbToCmyk(r,g,b);return `${c.toFixed(0)}%, ${m.toFixed(0)}%, ${y.toFixed(0)}%, ${k.toFixed(0)}%`;}
+  if(tu==="Luminosidade relativa (WCAG)"){
+    const lum=x=>{const s=x/255;return s<=0.03928?s/12.92:Math.pow((s+0.055)/1.055,2.4);};
+    const L=0.2126*lum(r)+0.7152*lum(g)+0.0722*lum(b);
+    return L.toFixed(4);
+  }
+  return `${r}, ${g}, ${b}`;
+}
+function rgbToHsl(r,g,b){
+  r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){h=s=0;}else{
+    const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+    switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}
+    h*=60;
+  }return{h,s,l};
+}
+function rgbToHsv(r,g,b){
+  r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;
+  let h;const s=max?d/max:0,v=max;
+  if(!d){h=0;}else{
+    switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}
+    h*=60;
+  }return{h,s,v};
+}
+function hslToRgb(h,s,l){
+  const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;
+  const hk=h/360;
+  const toC=t=>{let tc=t<0?t+1:t>1?t-1:t;
+    if(tc<1/6)return p+(q-p)*6*tc;if(tc<1/2)return q;if(tc<2/3)return p+(q-p)*(2/3-tc)*6;return p;};
+  return{r:Math.round(toC(hk+1/3)*255),g:Math.round(toC(hk)*255),b:Math.round(toC(hk-1/3)*255)};
+}
+function hsvToRgb(h,s,v){
+  const i=Math.floor(h/60)%6,f=h/60-Math.floor(h/60);
+  const p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+  const [rv,gv,bv]=[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i];
+  return{r:Math.round(rv*255),g:Math.round(gv*255),b:Math.round(bv*255)};
+}
+function rgbToCmyk(r,g,b){
+  r/=255;g/=255;b/=255;const k=1-Math.max(r,g,b);
+  if(k===1)return{c:0,m:0,y:0,k:100};
+  return{c:(1-r-k)/(1-k)*100,m:(1-g-k)/(1-k)*100,y:(1-b-k)/(1-k)*100,k:k*100};
+}
+
+// ── GASES IDEAIS PV=nRT ────────────────────────────────────────────────────────
+const R_GAS=8.31446; // J/(mol·K)
+function idealGasConvert(v,fu,tu){
+  // fixed scenario: n=1mol, T=298.15K (25°C), P=101325Pa → V=0.02479m³=24.79L
+  const n=parseFloat(v)||1;
+  const P0=101325,T0=298.15,n0=1;
+  const V_L=(n0*R_GAS*T0/P0)*1000; // litres
+  if(tu==="Pressão (Pa)") return P0;
+  if(tu==="Pressão (atm)") return P0/101325;
+  if(tu==="Pressão (bar)") return P0/100000;
+  if(tu==="Pressão (mmHg)") return P0/133.322;
+  if(tu==="Volume (L)") return V_L;
+  if(tu==="Volume (m³)") return V_L/1000;
+  if(tu==="Volume (mL)") return V_L*1000;
+  if(tu==="Temperatura (K)") return T0;
+  if(tu==="Quantidade (mol)") return n0;
+  if(tu==="n×R×T (energia, J)") return n0*R_GAS*T0;
+  return n;
+}
+
+// ── MOLES / MASSA ─────────────────────────────────────────────────────────────
+const NA=6.02214076e23;
+function molesConvert(v,fu,tu){
+  // base = moles; default molar mass = 18.015 g/mol (água)
+  const n=parseFloat(v)||1;
+  let moles;
+  const M=18.015; // default H₂O
+  if(fu==="Moles (mol)") moles=n;
+  else if(fu==="Massa (g)") moles=n/M;
+  else if(fu==="Massa (kg)") moles=n*1000/M;
+  else if(fu==="Moléculas (×10²³)") moles=n*1e23/NA;
+  else if(fu==="Átomos (×10²³)") moles=n*1e23/(NA*3); // H₂O has 3 atoms
+  else if(fu==="Litros @ CNTP (0°C, 1atm)") moles=n/22.414;
+  else if(fu==="Litros @ CPTP (25°C, 1atm)") moles=n/24.465;
+  else if(fu==="Molar mass (g/mol) input") moles=1; // treat as 1 mol
+  else moles=n;
+
+  if(tu==="Moles (mol)") return moles;
+  if(tu==="Massa (g)") return moles*M;
+  if(tu==="Massa (kg)") return moles*M/1000;
+  if(tu==="Moléculas (×10²³)") return moles*NA/1e23;
+  if(tu==="Átomos (×10²³)") return moles*NA*3/1e23;
+  if(tu==="Litros @ CNTP (0°C, 1atm)") return moles*22.414;
+  if(tu==="Litros @ CPTP (25°C, 1atm)") return moles*24.465;
+  if(tu==="Molar mass (g/mol) input") return M;
+  return moles;
+}
+
+// ── Z-SCORE ───────────────────────────────────────────────────────────────────
+function zscoreConvert(v,fu,tu){
+  // Standard normal CDF approximation (Abramowitz & Stegun)
+  function normCdf(z){
+    const t=1/(1+0.2316419*Math.abs(z));
+    const d=0.3989423*Math.exp(-z*z/2);
+    const p=d*t*(0.3193815+t*(-0.3565638+t*(1.7814779+t*(-1.8212560+t*1.3302744))));
+    return z>=0?1-p:p;
+  }
+  // Approximate inverse normal CDF (rational approximation)
+  function normInv(p){
+    if(p<=0)return-Infinity;if(p>=1)return Infinity;
+    const a=[-3.969683028665376e1,2.209460984245205e2,-2.759285104469687e2,1.383577518672690e2,-3.066479806614716e1,2.506628277459239];
+    const b=[-5.447609879822406e1,1.615858368580409e2,-1.556989798598866e2,6.680131188771972e1,-1.328068155288572e1];
+    const c=[-7.784894002430293e-3,-3.223964580411365e-1,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
+    const d=[7.784695709041462e-3,3.224671290700398e-1,2.445134137142996,3.754408661907416];
+    const q=Math.min(p,1-p);
+    let r;
+    if(q>0.02425){r=p-0.5;const s=r*r;r=r*(((((a[0]*s+a[1])*s+a[2])*s+a[3])*s+a[4])*s+a[5])/((((((b[0]*s+b[1])*s+b[2])*s+b[3])*s+b[4])*s+1));}
+    else{r=Math.sqrt(-2*Math.log(q));r=(((((c[0]*r+c[1])*r+c[2])*r+c[3])*r+c[4])*r+c[5])/((((d[0]*r+d[1])*r+d[2])*r+d[3])*r+1);}
+    return p<0.5?-r:r;
+  }
+  const n=parseFloat(v)||0;
+  let z;
+  if(fu==="Z-score") z=n;
+  else if(fu==="Percentil (%)") z=normInv(n/100);
+  else if(fu==="Probabilidade acum. (0–1)") z=normInv(n);
+  else if(fu==="Desvio padrão (σ) acima média") z=n;
+  else if(fu==="% abaixo deste valor") z=normInv(n/100);
+  else if(fu==="% acima deste valor") z=normInv(1-n/100);
+  else z=n;
+  const cdf=normCdf(z);
+  if(tu==="Z-score") return z;
+  if(tu==="Percentil (%)") return cdf*100;
+  if(tu==="Probabilidade acum. (0–1)") return cdf;
+  if(tu==="Desvio padrão (σ) acima média") return z;
+  if(tu==="% abaixo deste valor") return cdf*100;
+  if(tu==="% acima deste valor") return (1-cdf)*100;
+  return z;
+}
+
+// ── CIDR ──────────────────────────────────────────────────────────────────────
+function cidrConvert(v,fu,tu){
+  let prefix;
+  const n=parseFloat(v)||24;
+  if(fu==="Prefixo CIDR (/n)") prefix=n;
+  else if(fu==="Nº de hosts (utilizáveis)"){prefix=32-Math.ceil(Math.log2(n+2));}
+  else if(fu==="Nº de endereços totais") prefix=32-Math.ceil(Math.log2(Math.max(n,1)));
+  else if(fu==="Bits de host") prefix=32-n;
+  else prefix=n;
+  prefix=Math.max(0,Math.min(32,Math.round(prefix)));
+  const total=Math.pow(2,32-prefix);
+  const hosts=Math.max(0,total-2);
+  const maskBits=prefix===0?0:(0xFFFFFFFF<<(32-prefix))>>>0;
+  const m=[(maskBits>>>24)&255,(maskBits>>>16)&255,(maskBits>>>8)&255,maskBits&255];
+  const w=[255-m[0],255-m[1],255-m[2],255-m[3]];
+  if(tu==="Prefixo CIDR (/n)") return prefix;
+  if(tu==="Nº de hosts (utilizáveis)") return hosts;
+  if(tu==="Nº de endereços totais") return total;
+  if(tu==="Máscara de rede") return m.join('.');
+  if(tu==="Wildcard mask") return w.join('.');
+  if(tu==="Nº de sub-redes em /24") return prefix<=24?Math.pow(2,prefix-24):Math.pow(2,prefix-24);
+  if(tu==="Bits de host") return 32-prefix;
+  return prefix;
+}
+
+// ── BANDWIDTH ─────────────────────────────────────────────────────────────────
+function bandwidthConvert(v,fu,tu){
+  let mbps;
+  const n=parseFloat(v)||100;
+  if(fu==="Mbps (megabits/s)") mbps=n;
+  else if(fu==="Gbps") mbps=n*1000;
+  else if(fu==="kbps") mbps=n/1000;
+  else if(fu==="MB/s (megabytes/s)") mbps=n*8;
+  else if(fu==="Tempo p/ 1 GB (segundos)") mbps=8192/n;
+  else if(fu==="Tempo p/ 1 GB (min:seg)") mbps=8192/(n*60);
+  else if(fu==="Tempo p/ 100 MB (seg)") mbps=819.2/n;
+  else if(fu==="Tempo p/ 1 TB (horas)") mbps=8388608/(n*3600);
+  else if(fu==="GB/hora") mbps=n/3.6;
+  else if(fu==="TB/dia") mbps=n/0.0001157;
+  else mbps=n;
+  if(tu==="Mbps (megabits/s)") return mbps;
+  if(tu==="Gbps") return mbps/1000;
+  if(tu==="kbps") return mbps*1000;
+  if(tu==="MB/s (megabytes/s)") return mbps/8;
+  if(tu==="Tempo p/ 1 GB (segundos)") return 8192/mbps;
+  if(tu==="Tempo p/ 1 GB (min:seg)") return 8192/mbps/60;
+  if(tu==="Tempo p/ 100 MB (seg)") return 819.2/mbps;
+  if(tu==="Tempo p/ 1 TB (horas)") return 8388608/(mbps*3600);
+  if(tu==="GB/hora") return mbps*3.6;
+  if(tu==="TB/dia") return mbps*0.0001157;
+  return mbps;
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function fmt(n){
+  if(n===null||n===undefined||isNaN(n)||!isFinite(n))return"—";
+  const a=Math.abs(n);
+  if(a===0)return"0";
+  if(a>=1e15||(a<1e-6&&a>0))return n.toExponential(4);
+  if(a>=1000)return n.toLocaleString(undefined,{maximumFractionDigits:4});
+  return parseFloat(n.toPrecision(6)).toString();
+}
+function ulist(cat){
+  if(cat.fashion||cat.paperSize) return cat.rows.map(r=>r[0]);
+  if(cat.special||cat.soundSpecial) return cat.u;
+  return Object.keys(cat.u);
+}
+function toBase(v,unit){
+  const cat=CATEGORIES[currentCat],n=parseFloat(v);
+  if(cat.fashion){ const cm=fashionCmOf(unit,cat); return cm!==null?cm:n; }
+  if(cat.paperSize) return unit;
+  if(cat.special==="temp") return tempToK(n,unit);
+  if(cat.special==="sound") return soundToPa(n,unit);
+  if(cat.special==="fuel"||currentCat==="Combustível") return fuelToBase(n,unit);
+  if(cat.special==="base") return toDecimal(v,unit);
+  if(cat.special==="roman") return v;
+  if(cat.special==="ph") return phConvert(n,unit,"pH");
+  if(cat.special==="hba1c") return hba1cConvert(n,unit,"HbA1c (%)");
+  if(cat.special==="pace") return paceConvert(n,unit,"min/km");
+  if(cat.special==="altitude") return altitudeConvert(n,unit,"Metro (m)");
+  if(cat.special==="magnitude") return magConvert(n,unit,"Magnitude aparente (m)");
+  if(cat.special==="richter") return richterConvert(n,unit,"Magnitude Richter (ML)");
+  if(cat.special==="dbm") return dbmConvert(n,unit,"mW");
+  if(cat.special==="idealgas") return n;
+  if(cat.special==="moles") return n;
+  if(cat.special==="zscore") return n;
+  if(cat.special==="cidr") return n;
+  if(cat.special==="bandwidth") return n;
+  if(cat.special==="pct") return n;
+  if(cat.special==="ascii"||cat.special==="gps") return v;
+  if(cat.special==="rgb") return v;
+  if(cat.special==="interestcalc"||cat.special==="hrzone") return n;
+  return n*cat.u[unit];
+}
+function fromBase(base,unit){
+  const cat=CATEGORIES[currentCat];
+  if(cat.fashion){ const cm=fashionCmOf(unit,cat); return cm!==null?cm:base; }
+  if(cat.paperSize) return unit;
+  if(cat.special==="temp") return tempFromK(base,unit);
+  if(cat.special==="sound") return soundFromPa(base,unit);
+  if(cat.special==="fuel"||currentCat==="Combustível") return fuelFromBase(base,unit);
+  if(cat.special==="base") return fromDecimal(base,unit);
+  if(cat.special==="roman") return romanConvert(base,"Decimal (árabe)",unit);
+  if(cat.special==="ph") return phConvert(base,"pH",unit);
+  if(cat.special==="hba1c") return hba1cConvert(base,"HbA1c (%)",unit);
+  if(cat.special==="pace") return paceConvert(base,"min/km",unit);
+  if(cat.special==="altitude") return altitudeConvert(base,"Metro (m)",unit);
+  if(cat.special==="magnitude") return magConvert(base,"Magnitude aparente (m)",unit);
+  if(cat.special==="richter") return richterConvert(base,"Magnitude Richter (ML)",unit);
+  if(cat.special==="dbm") return dbmConvert(base,"mW",unit);
+  if(cat.special==="idealgas") return idealGasConvert(base,"Quantidade (mol)",unit);
+  if(cat.special==="moles") return molesConvert(base,"Moles (mol)",unit);
+  if(cat.special==="zscore") return zscoreConvert(base,"Z-score",unit);
+  if(cat.special==="cidr") return cidrConvert(base,"Prefixo CIDR (/n)",unit);
+  if(cat.special==="bandwidth") return bandwidthConvert(base,"Mbps (megabits/s)",unit);
+  if(cat.special==="pct") return pctConvert(base,"Percentagem (%)",unit);
+  if(cat.special==="ascii"||cat.special==="gps") return base;
+  if(cat.special==="rgb") return rgbConvert(base,"HEX (#RRGGBB)",unit);
+  if(cat.special==="interestcalc"||cat.special==="hrzone") return base;
+  return base/cat.u[unit];
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const CAT_KEYS=Object.keys(CATEGORIES);
+let currentCat=CAT_KEYS[0],currentLang='pt';
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function applyLang(){
+  document.getElementById('h-title').textContent=TITLE[currentLang];
+  document.getElementById('h-subtitle').textContent=SUBTITLE[currentLang];
+  document.getElementById('lbl-from').textContent=FROM[currentLang];
+  document.getElementById('lbl-to').textContent=TO[currentLang];
+  document.getElementById('lbl-all').textContent=ALLCONV[currentLang];
+  document.getElementById('sup-title').textContent=SUPTITLE[currentLang];
+  document.getElementById('sup-desc').textContent=SUPDESC[currentLang];
+  document.getElementById('sup-btn').textContent=SUPBTN[currentLang];
+  document.getElementById('footer-text').textContent=FOOTER[currentLang];
+  document.getElementById('dev-title').textContent=DEV_TITLE[currentLang];
+  document.getElementById('dev-desc').textContent=DEV_DESC[currentLang];
+  document.getElementById('dev-btn').textContent=DEV_BTN[currentLang];
+  document.documentElement.lang=currentLang;
+  buildCatTabs();
+}
+function buildLangBar(){
+  const bar=document.getElementById('langBar');
+  const labels={pt:'🇵🇹 PT',en:'🇬🇧 EN',es:'🇪🇸 ES',fr:'🇫🇷 FR',de:'🇩🇪 DE',zh:'🇨🇳 ZH'};
+  bar.innerHTML='';
+  Object.keys(labels).forEach(lang=>{
+    const btn=document.createElement('button');
+    btn.className='lang-btn'+(lang===currentLang?' active':'');
+    btn.textContent=labels[lang];
+    btn.onclick=()=>{
+      currentLang=lang;
+      document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');applyLang();
+    };
+    bar.appendChild(btn);
+  });
+}
+function buildCatTabs(){
+  const tabs=document.getElementById('catTabs');
+  tabs.innerHTML='';
+  CAT_KEYS.forEach(key=>{
+    const btn=document.createElement('button');
+    btn.className='cat-btn'+(key===currentCat?' active':'');
+    btn.textContent=catName(key,currentLang);
+    btn.onclick=()=>{
+      currentCat=key;
+      document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');populateSelects();
+    };
+    tabs.appendChild(btn);
+  });
+}
+function isLookupCat(cat){ return !!(cat.fashion||cat.paperSize); }
+function isInterestCat(cat){ return cat.special==="interestcalc"; }
+
+function populateSelects(){
+  const cat=CATEGORIES[currentCat];
+  const mainCard=document.getElementById('mainCard');
+  const lookupCard=document.getElementById('lookupCard');
+  const interestCard=document.getElementById('interestCard');
+  const allLabel=document.getElementById('lbl-all');
+  const allGrid=document.getElementById('allGrid');
+
+  // Hide all first
+  mainCard.classList.add('hidden');
+  lookupCard.classList.remove('active');
+  interestCard.classList.remove('active');
+
+  if(isInterestCat(cat)){
+    interestCard.classList.add('active');
+    allLabel.style.display='none';
+    allGrid.innerHTML='';
+    calcInterest();
+    return;
+  }
+
+  if(isLookupCat(cat)){
+    lookupCard.classList.add('active');
+    allLabel.style.display='none';
+    allGrid.innerHTML='';
+    const lkSel=document.getElementById('lkSelect');
+    lkSel.innerHTML='';
+    ulist(cat).forEach(u=>{
+      lkSel.innerHTML+=`<option value="${u}">${u}</option>`;
+    });
+    lkSel.onchange=()=>renderLookup();
+    renderLookup();
+    return;
+  }
+
+  mainCard.classList.remove('hidden');
+  allLabel.style.display='';
+  const units=ulist(cat);
+  const fS=document.getElementById('fromUnit'),tS=document.getElementById('toUnit');
+  fS.innerHTML='';tS.innerHTML='';
+  units.forEach(u=>{
+    fS.innerHTML+=`<option value="${u}">${u}</option>`;
+    tS.innerHTML+=`<option value="${u}">${u}</option>`;
+  });
+  tS.selectedIndex=1;
+  convert();
+}
+
+// ── INTEREST CALCULATOR ───────────────────────────────────────────────────────
+function calcInterest(){
+  const C = parseFloat(document.getElementById('ic-capital').value)||1000;
+  const r = parseFloat(document.getElementById('ic-rate').value)/100||0.05;
+  const t = parseFloat(document.getElementById('ic-years').value)||10;
+  const container = document.getElementById('ic-results');
+
+  const simpleTotal = C*(1+r*t);
+  const compTotal   = C*Math.pow(1+r,t);
+  const simpleInt   = C*r*t;
+  const compInt     = compTotal-C;
+  const rMonthly    = (Math.pow(1+r,1/12)-1)*100;
+  const rDaily      = (Math.pow(1+r,1/365)-1)*100;
+  const doubleYears = Math.log(2)/Math.log(1+r); // rule of 72 exact
+  const rule72      = 72/r/100; // rule of 72 approx
+
+  // Build amortisation table preview (5 year snapshots)
+  const snapshots = [];
+  const snapYears = t<=10 ? Array.from({length:t},(_,i)=>i+1) : [1,2,3,5,Math.round(t/2),t-1,t].filter((y,i,a)=>y<=t&&a.indexOf(y)===i).sort((a,b)=>a-b);
+  snapYears.forEach(y=>{
+    snapshots.push({y, simple: C*(1+r*y), compound: C*Math.pow(1+r,y)});
+  });
+
+  const fmtMoney = n => n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtPct   = n => n.toFixed(4)+'%';
+
+  const cards = [
+    {label:'Montante final — juros simples', value:'€ '+fmtMoney(simpleTotal), sub:`Juros: € ${fmtMoney(simpleInt)}`},
+    {label:'Montante final — juros compostos', value:'€ '+fmtMoney(compTotal), sub:`Juros: € ${fmtMoney(compInt)}`, accent:true},
+    {label:'Diferença compostos vs simples', value:'€ '+fmtMoney(compInt-simpleInt), sub:`${((compInt/simpleInt-1)*100).toFixed(1)}% mais juros compostos`},
+    {label:'Taxa mensal equivalente', value:fmtPct(rMonthly), sub:`de ${(r*100).toFixed(2)}% ao ano`},
+    {label:'Taxa diária equivalente', value:fmtPct(rDaily), sub:`de ${(r*100).toFixed(2)}% ao ano`},
+    {label:'Dobrar o capital (exacto)', value:doubleYears.toFixed(2)+' anos', sub:`Regra dos 72: ~${rule72.toFixed(1)} anos`},
+    {label:'Valor presente de € 1 futuro', value:'€ '+Math.pow(1+r,-t).toFixed(6), sub:`daqui a ${t} anos, taxa ${(r*100).toFixed(2)}%`},
+    {label:'Capital necessário p/ €'+fmtMoney(compTotal)+' daqui a '+t+'a', value:'€ '+fmtMoney(C), sub:`a ${(r*100).toFixed(2)}%/ano composto`},
+  ];
+
+  container.innerHTML = cards.map(c=>`
+    <div class="lk-chip${c.accent?' exact':''}">
+      <div class="lk-val" style="font-size:.65rem;color:var(--muted);margin-bottom:4px;">${c.label}</div>
+      <div class="lk-primary" style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:500;color:${c.accent?'var(--accent)':'var(--text)'};">${c.value}</div>
+      <div class="lk-val" style="font-size:.65rem;color:var(--muted);margin-top:3px;">${c.sub}</div>
+    </div>
+  `).join('');
+
+  // Year-by-year table
+  if(snapshots.length){
+    const tableHtml = `
+      <div style="grid-column:1/-1;margin-top:.5rem;">
+        <div class="lk-section-title" style="margin-bottom:.5rem;">Evolução do capital</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;font-size:.72rem;border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);">Ano</th>
+                <th style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);">Simples</th>
+                <th style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--accent2);">Composto</th>
+                <th style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);">Diferença</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${snapshots.map(s=>`
+                <tr>
+                  <td style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);">${s.y}</td>
+                  <td style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);">€ ${fmtMoney(s.simple)}</td>
+                  <td style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--accent2);">€ ${fmtMoney(s.compound)}</td>
+                  <td style="text-align:right;padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);">+€ ${fmtMoney(s.compound-s.simple)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    container.innerHTML += tableHtml;
+  }
+}
+
+// ── LOOKUP RENDERER ───────────────────────────────────────────────────────────
+
+// Per-category display config
+// type: 'fashion'|'monitor'|'paper'|'screw'|'tyre'|'drillbit'|'awg'
+function getCatType(key){
+  if(key==='🖥️ Monitor / TV') return 'monitor';
+  if(key==='📄 Papel ISO (A/B/C)'||key==='📋 Papel NA / JIS') return 'paper';
+  if(key==='🔩 Parafusos') return 'screw';
+  if(key==='🚗 Pneus') return 'tyre';
+  if(key==='🪛 Brocas') return 'drillbit';
+  if(key==='🔌 Gauge Fio AWG') return 'awg';
+  if(key==='🔧 Bitola Canos') return 'pipe';
+  if(key==='🔨 Bitola Chapa') return 'sheet';
+  if(key==='🕐 Fuso Horário') return 'timezone';
+  if(key==='☀️ Índice UV') return 'uvindex';
+  if(key==='🌬️ Beaufort / Vento') return 'beaufort';
+  if(key==='🏗️ Betão / Resistência') return 'concrete';
+  if(key==='🌡️ Temperatura de Cor') return 'colortemp';
+  return 'fashion';
+}
+
+// Returns the numeric value stored in the row and a formatted display string
+function rowDisplay(row, catType){
+  const val = row[1];
+  if(val === null) return {num: null, primary: '—', secondary: ''};
+
+  switch(catType){
+    case 'monitor': {
+      const inch = (val/2.54).toFixed(1);
+      return {num: val, primary: `${val.toFixed(1)} cm`, secondary: `${inch}"`};
+    }
+    case 'screw':
+      return {num: val, primary: `⌀ ${val} mm`, secondary: `${(val/25.4).toFixed(4)}"`};
+    case 'tyre':
+      return {num: val, primary: `Ø ${val} mm`, secondary: `${(val/10).toFixed(1)} cm · ${(val/25.4).toFixed(1)}"`};
+    case 'drillbit': {
+      const inchFrac = val < 1 ? `${(val/25.4).toFixed(4)}"` : `${(val/25.4).toFixed(3)}"`;
+      return {num: val, primary: `⌀ ${val} mm`, secondary: inchFrac};
+    }
+    case 'pipe':
+      return {num: val, primary: `Ø ext. ${val} mm`, secondary: `Ø ext. ${(val/25.4).toFixed(3)}"`};
+    case 'sheet':
+      return {num: val, primary: `${val} mm`, secondary: `${(val/25.4).toFixed(4)}"`};
+    case 'timezone': {
+      const h = val;
+      const sign = h >= 0 ? '+' : '';
+      const hh = Math.floor(Math.abs(h));
+      const mm = Math.round((Math.abs(h) - hh)*60);
+      return {num: val, primary: `UTC${sign}${hh}:${mm.toString().padStart(2,'0')}`, secondary: mm>0?`${sign}${h}h`:''};
+    }
+    case 'uvindex': {
+      const cat = val <= 2 ? 'Baixo' : val <= 5 ? 'Moderado' : val <= 7 ? 'Alto' : val <= 10 ? 'Muito alto' : 'Extremo';
+      const color = val <= 2 ? '#4caf50' : val <= 5 ? '#ffeb3b' : val <= 7 ? '#ff9800' : val <= 10 ? '#f44336' : '#9c27b0';
+      return {num: val, primary: `UV ${val}`, secondary: cat};
+    }
+    case 'beaufort': {
+      return {num: val, primary: `${val} km/h`, secondary: `${(val/3.6).toFixed(1)} m/s · ${(val/1.852).toFixed(1)} kn`};
+    }
+    case 'concrete':
+      return {num: val, primary: `fck = ${val} MPa`, secondary: `${(val*10.197).toFixed(0)} kgf/cm² · ${(val*145.04).toFixed(0)} PSI`};
+    case 'colortemp': {
+      const desc = val<2200?'Muito quente — chama':val<3000?'Quente — incandescente':val<3700?'Branco quente':val<5000?'Branco neutro':val<6000?'Branco frio / luz dia':val<7500?'Daylight standard':'Azul frio';
+      return {num: val, primary: `${val} K`, secondary: desc};
+    }
+    default: // fashion: cm body measurement
+      return {num: val, primary: `${val} cm`, secondary: ''};
+  }
+}
+
+// Result bar content per category type
+function buildResultBar(sel, cat, catType){
+  const row = cat.rows.find(r=>r[0]===sel);
+  if(!row || row[1]===null) return null;
+  const val = row[1];
+
+  switch(catType){
+    case 'monitor': {
+      const inch = (val/2.54).toFixed(1);
+      const res = val/2.54 < 38 ? (val/2.54<25?'FHD / QHD típico':'QHD / 4K típico') : '4K / 8K típico';
+      const w169 = (val/100 * 16/Math.sqrt(337) * 100).toFixed(0);
+      const h169 = (val/100 *  9/Math.sqrt(337) * 100).toFixed(0);
+      return {
+        main: `${val.toFixed(1)} cm &nbsp;·&nbsp; ${inch}"`,
+        sub:  `Resoluções: ${res} &nbsp;·&nbsp; Dimensões 16:9: ~${w169} × ${h169} cm`
+      };
+    }
+    case 'paper': {
+      const [w,h] = val;
+      return {
+        main: `${w} × ${h} mm`,
+        sub:  `${(w/10).toFixed(1)} × ${(h/10).toFixed(1)} cm &nbsp;·&nbsp; ${(w/25.4).toFixed(2)}" × ${(h/25.4).toFixed(2)}" &nbsp;·&nbsp; Área: ${((w*h)/1e6).toFixed(4)} m²`
+      };
+    }
+    case 'screw':
+      return {
+        main: `⌀ ${val} mm`,
+        sub:  `${(val/25.4).toFixed(4)}" &nbsp;·&nbsp; Raio: ${(val/2).toFixed(2)} mm`
+      };
+    case 'tyre': {
+      // Decode "205/55 R16" style
+      const m = sel.match(/(\d+)\/(\d+)\s*R(\d+)/);
+      if(m){
+        const width=+m[1], aspect=+m[2], rim=+m[3];
+        const sidewall = width * aspect / 100;
+        const diamInch = (rim + 2*sidewall/25.4).toFixed(2);
+        return {
+          main: `Ø ${val} mm exterior`,
+          sub:  `Largura: ${width} mm &nbsp;·&nbsp; Flanco: ${sidewall.toFixed(0)} mm &nbsp;·&nbsp; Aro: ${rim}" &nbsp;·&nbsp; Ø exterior: ${diamInch}"`
+        };
+      }
+      return { main: `Ø ${val} mm`, sub: '' };
+    }
+    case 'drillbit':
+      return {
+        main: `⌀ ${val} mm`,
+        sub:  `${(val/25.4).toFixed(4)}" &nbsp;·&nbsp; Raio: ${(val/2).toFixed(3)} mm`
+      };
+    case 'awg':
+      return {
+        main: `${val} mm²`,
+        sub:  `Diâm. equiv.: ~${(2*Math.sqrt(val/Math.PI)).toFixed(3)} mm &nbsp;·&nbsp; ${(val/0.5067).toFixed(0)} kcmil`
+      };
+    case 'pipe':
+      return {
+        main: `Ø ext. ${val} mm`,
+        sub:  `${(val/10).toFixed(2)} cm &nbsp;·&nbsp; ${(val/25.4).toFixed(3)}"`
+      };
+    case 'sheet':
+      return {
+        main: `${val} mm`,
+        sub:  `${(val/25.4).toFixed(4)}" &nbsp;·&nbsp; ${(val*1000).toFixed(0)} µm`
+      };
+    case 'timezone': {
+      const sign = val>=0?'+':'';
+      const hh = Math.floor(Math.abs(val));
+      const mm = Math.round((Math.abs(val)-hh)*60);
+      return {
+        main: `UTC${sign}${hh}:${mm.toString().padStart(2,'0')}`,
+        sub: `Diferença para Lisboa (UTC+0/+1): ${val>=0?'+':''}${val}h`
+      };
+    }
+    case 'uvindex': {
+      const cat = val<=2?'🟢 Baixo — proteção mínima':val<=5?'🟡 Moderado — proteger-se':val<=7?'🟠 Alto — proteção essencial':val<=10?'🔴 Muito alto — evitar exposição':'🟣 Extremo — risco máximo';
+      return { main: `UV ${val}`, sub: cat };
+    }
+    case 'beaufort':
+      return {
+        main: `${val.toFixed(1)} km/h`,
+        sub:  `${(val/3.6).toFixed(1)} m/s &nbsp;·&nbsp; ${(val/1.852).toFixed(1)} nós &nbsp;·&nbsp; ${(val/1.60934).toFixed(1)} mph`
+      };
+    case 'concrete':
+      return {
+        main: `fck = ${val} MPa`,
+        sub:  `${(val*10.197).toFixed(1)} kgf/cm² &nbsp;·&nbsp; ${(val*145.04).toFixed(0)} PSI &nbsp;·&nbsp; ${(val*1000).toFixed(0)} kN/m²`
+      };
+    case 'colortemp': {
+      const desc = val<2200?'Muito quente — chama/vela':val<3000?'Quente — lâmpada incandescente':val<3700?'Branco quente — LED quente':val<5000?'Branco neutro':val<6000?'Branco frio / luz do dia':val<7500?'Daylight (D65 padrão)':'Azul frio — céu aberto';
+      return { main: `${val} K`, sub: desc };
+    }
+    default: { // fashion
+      const base = cat.base || 'medida base';
+      return { main: `${val} cm`, sub: base };
+    }
+  }
+}
+
+function renderLookup(){
+  const cat=CATEGORIES[currentCat];
+  const catType=getCatType(currentCat);
+  const sel=document.getElementById('lkSelect').value;
+  const resBar=document.getElementById('lkResultBar');
+  const resMain=document.getElementById('lkResMain');
+  const resSub=document.getElementById('lkResSub');
+  const grid=document.getElementById('allGrid');
+  const allLabel=document.getElementById('lbl-all');
+  allLabel.style.display='';
+  grid.innerHTML='';
+
+  // ── RESULT BAR ──────────────────────────────────────────────────────────────
+  const rb = buildResultBar(sel, cat, catType);
+  if(rb){ resBar.style.display='block'; resMain.innerHTML=rb.main; resSub.innerHTML=rb.sub; }
+  else   { resBar.style.display='none'; }
+
+  // ── BUILD CHIP GROUPS ────────────────────────────────────────────────────────
+  const selRow = cat.rows.find(r=>r[0]===sel);
+  const selVal = selRow ? selRow[1] : null;
+
+  // For paper: group by area similarity
+  // For others: group by numeric proximity
+  const exact=[], close=[], rest=[];
+
+  cat.rows.forEach(r=>{
+    if(r[0]===sel) return;
+    const v = r[1];
+    if(v===null){ rest.push(r); return; }
+
+    if(catType==='paper'){
+      if(!selVal){ rest.push(r); return; }
+      const selArea = selVal[0]*selVal[1];
+      const rowArea = v[0]*v[1];
+      const ratio = Math.abs(rowArea-selArea)/selArea;
+      if(ratio===0) exact.push(r);
+      else if(ratio<0.35) close.push(r);
+      else rest.push(r);
+    } else {
+      if(selVal===null){ rest.push(r); return; }
+      const thresholds = {monitor:8, tyre:15, drillbit:0.5, screw:1, awg:2, fashion:2};
+      const thr = thresholds[catType]||2;
+      if(v===selVal) exact.push(r);
+      else if(Math.abs(v-selVal)<=thr) close.push(r);
+      else rest.push(r);
+    }
+  });
+
+  // Labels
+  const L = {
+    equiv:  {pt:'Equivalentes / mesmo tamanho',en:'Equivalent / same size',es:'Equivalente / mismo tamaño',fr:'Équivalent / même taille',de:'Gleiche Größe',zh:'等价/相同尺寸'},
+    close:  {pt:'Próximos',en:'Close',es:'Cercanos',fr:'Proches',de:'Nah',zh:'相近'},
+    all:    {pt:'Todos',en:'All',es:'Todos',fr:'Tous',de:'Alle',zh:'全部'}
+  };
+  const ll = l => (L[l][currentLang]||L[l].en);
+
+  // Grid column width per type
+  const colW = {paper:'minmax(200px,1fr)', monitor:'minmax(210px,1fr)', drillbit:'minmax(170px,1fr)', screw:'minmax(175px,1fr)', tyre:'minmax(195px,1fr)', awg:'minmax(185px,1fr)', fashion:'minmax(175px,1fr)'};
+  grid.style.gridTemplateColumns = `repeat(auto-fill,${colW[catType]||'minmax(175px,1fr)'})`;
+
+  if(exact.length){ addSectionHeader(grid, ll('equiv')); exact.forEach(r=>grid.appendChild(makeChip(r,cat,catType,selVal,'exact'))); }
+  if(close.length){ addSectionHeader(grid, ll('close')); close.forEach(r=>grid.appendChild(makeChip(r,cat,catType,selVal,'close'))); }
+  if(rest.length){  addSectionHeader(grid, ll('all'));   rest.forEach(r=>grid.appendChild(makeChip(r,cat,catType,selVal,''))); }
+}
+
+function addSectionHeader(grid,text){
+  const d=document.createElement('div');
+  d.className='lk-section-title';
+  d.style.gridColumn='1/-1';
+  d.textContent=text;
+  grid.appendChild(d);
+}
+
+function makeChip(row, cat, catType, selVal, cls){
+  const chip=document.createElement('div');
+  chip.className='lk-chip'+(cls?' '+cls:'');
+  const {num, primary, secondary} = rowDisplay(row, catType);
+
+  let badge='';
+  if(cls==='exact') badge=`<span class="lk-badge exact">${{pt:'igual',en:'exact',es:'igual',fr:'égal',de:'gleich',zh:'相同'}[currentLang]||'exact'}</span> `;
+  else if(cls==='close') badge=`<span class="lk-badge close">${{pt:'próximo',en:'close',es:'cercano',fr:'proche',de:'nah',zh:'相近'}[currentLang]||'close'}</span> `;
+
+  // For paper: show dims prominently
+  if(catType==='paper'){
+    const [w,h] = row[1];
+    chip.innerHTML=
+      `${badge}<div class="lk-name">${row[0]}</div>`+
+      `<div class="paper-dims">${w} × ${h} mm</div>`+
+      `<div class="lk-val">${(w/10).toFixed(1)}×${(h/10).toFixed(1)} cm &nbsp;·&nbsp; ${(w/25.4).toFixed(2)}"×${(h/25.4).toFixed(2)}"</div>`;
+  } else {
+    const secHtml = secondary ? `<div class="lk-val lk-secondary">${secondary}</div>` : '';
+    chip.innerHTML=
+      `${badge}<div class="lk-name">${row[0]}</div>`+
+      `<div class="lk-val lk-primary">${primary}</div>`+
+      secHtml;
+  }
+
+  chip.onclick=()=>{document.getElementById('lkSelect').value=row[0]; renderLookup();};
+  return chip;
+}
+
+// ── STANDARD CONVERT (numeric categories) ────────────────────────────────────
+function convert(){
+  const cat=CATEGORIES[currentCat];
+  if(isLookupCat(cat)){renderLookup();return;}
+
+  const fu=document.getElementById('fromUnit').value;
+  const tu=document.getElementById('toUnit').value;
+  const fv=document.getElementById('fromVal').value;
+
+  // ── BASE NUMÉRICAS (text input/output) ────────────────────────────────────
+  if(cat.special==="base"){
+    const dec = toDecimal(fv, fu);
+    const res = fromDecimal(dec, tu);
+    document.getElementById('toVal').value = res;
+    document.getElementById('resBig').textContent = res;
+    document.getElementById('resUnit').textContent = tu;
+    const grid=document.getElementById('allGrid');
+    grid.innerHTML='';
+    cat.u.forEach(u=>{
+      if(u===fu)return;
+      const val=fromDecimal(dec,u);
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.9rem;font-family:'DM Mono',monospace;">${val}</div><div class="ru">${u}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=u;convert();};
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  // ── ASCII / UNICODE ────────────────────────────────────────────────────────
+  if(cat.special==="ascii"){
+    const res = asciiConvert(fv, fu, tu);
+    document.getElementById('toVal').value = res;
+    document.getElementById('resBig').textContent = res;
+    document.getElementById('resUnit').textContent = tu;
+    const grid=document.getElementById('allGrid');
+    grid.innerHTML='';
+    cat.u.forEach(u=>{
+      if(u===fu)return;
+      const val=asciiConvert(fv,fu,u);
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.9rem;font-family:'DM Mono',monospace;">${val}</div><div class="ru">${u}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=u;convert();};
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  // ── NÚMEROS ROMANOS ───────────────────────────────────────────────────────
+  if(cat.special==="roman"){
+    const res=romanConvert(fv,fu,tu);
+    document.getElementById('toVal').value=String(res);
+    document.getElementById('resBig').textContent=String(res);
+    document.getElementById('resUnit').textContent=tu;
+    const grid=document.getElementById('allGrid');
+    grid.innerHTML='';
+    cat.u.forEach(u=>{
+      if(u===fu)return;
+      const val=romanConvert(fv,fu,u);
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.9rem;font-family:'DM Mono',monospace;">${val}</div><div class="ru">${u}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=u;convert();};
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  // ── CORES RGB ─────────────────────────────────────────────────────────────
+  if(cat.special==="rgb"){
+    const res=rgbConvert(fv,fu,tu);
+    document.getElementById('toVal').value=String(res);
+    document.getElementById('resBig').textContent=String(res);
+    document.getElementById('resUnit').textContent=tu;
+    const grid=document.getElementById('allGrid');
+    grid.innerHTML='';
+    cat.u.forEach(u=>{
+      if(u===fu)return;
+      const val=rgbConvert(fv,fu,u);
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      // Show color swatch for hex
+      const isHex=u==="HEX (#RRGGBB)";
+      const swatchHtml=isHex?`<div style="width:20px;height:20px;border-radius:4px;background:${val};border:1px solid var(--border);display:inline-block;vertical-align:middle;margin-right:6px;"></div>`:'';
+      chip.innerHTML=`<div class="rv" style="font-size:.82rem;display:flex;align-items:center;">${swatchHtml}${val}</div><div class="ru">${u}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=u;convert();};
+      grid.appendChild(chip);
+    });
+    // Show live colour preview in result bar
+    let hexPreview='';
+    try{ hexPreview=rgbConvert(fv,fu,"HEX (#RRGGBB)"); }catch(e){}
+    if(hexPreview.startsWith('#')){
+      document.getElementById('resUnit').innerHTML=`<span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:${hexPreview};border:1px solid var(--border);vertical-align:middle;margin-right:4px;"></span>${tu}`;
+    }
+    return;
+  }
+  if(cat.special==="hrzone"){
+    const bpm=parseFloat(fv)||180;
+    const grid=document.getElementById('allGrid');
+    document.getElementById('resBig').textContent=bpm+' bpm';
+    document.getElementById('resUnit').textContent='FCmax';
+    document.getElementById('toVal').value='';
+    grid.innerHTML='';
+    const zones=[
+      ['Zona 1 (50–60%)',0.5,0.6,'Recuperação ativa / muito leve'],
+      ['Zona 2 (60–70%)',0.6,0.7,'Aeróbico base / queima gordura'],
+      ['Zona 3 (70–80%)',0.7,0.8,'Aeróbico / resistência'],
+      ['Zona 4 (80–90%)',0.8,0.9,'Anaeróbico / limiar'],
+      ['Zona 5 (90–100%)',0.9,1.0,'VO₂max / máximo']
+    ];
+    zones.forEach(([name,lo,hi,desc])=>{
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.9rem;">${Math.round(bpm*lo)}–${Math.round(bpm*hi)} bpm</div><div class="ru">${name} · ${desc}</div>`;
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  // ── GPS COORDINATES ───────────────────────────────────────────────────────
+  if(cat.special==="gps"){
+    const v=parseFloat(fv)||0;
+    const grid=document.getElementById('allGrid');
+    const dd = fu==="Graus Decimais (DD)"?v:
+               fu==="Radianos"?v*(180/Math.PI):v; // simplified
+    const deg=Math.floor(Math.abs(dd));
+    const minDec=(Math.abs(dd)-deg)*60;
+    const min=Math.floor(minDec);
+    const sec=(minDec-min)*60;
+    const sign=dd<0?'-':'+';
+    document.getElementById('resBig').textContent=`${sign}${dd.toFixed(6)}°`;
+    document.getElementById('resUnit').textContent='Graus Decimais';
+    document.getElementById('toVal').value='';
+    grid.innerHTML='';
+    const formats=[
+      ['Graus Decimais (DD)', `${dd.toFixed(6)}°`],
+      ['Graus Min Seg (DMS)',  `${sign}${deg}° ${min}' ${sec.toFixed(2)}"`],
+      ['Graus Min Decimais (DM)', `${sign}${deg}° ${minDec.toFixed(4)}'`],
+      ['Radianos', `${(dd*Math.PI/180).toFixed(6)} rad`],
+      ['UTM (aproximado)', `zona ${Math.floor((dd+180)/6)+1} (${dd.toFixed(2)}° long)`]
+    ];
+    formats.forEach(([name,val])=>{
+      if(name===fu)return;
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.85rem;font-family:'DM Mono',monospace;">${val}</div><div class="ru">${name}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=name;convert();};
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  const v=parseFloat(fv);
+  if(isNaN(v)){document.getElementById('toVal').value='';return;}
+  const base=toBase(v,fu);
+  const result=fromBase(base,tu);
+
+  // Format result — pace outputs min:sec, base outputs string
+  let displayResult = fmt(result);
+  if(cat.special==="pace"&&isFinite(result)){
+    const totalMin = result;
+    const m = Math.floor(totalMin);
+    const s = Math.round((totalMin-m)*60);
+    if(tu==="min/km"||tu==="min/milha"||tu==="min/400m")
+      displayResult = `${m}:${s.toString().padStart(2,'0')}`;
+  }
+  if(cat.special==="bandwidth"&&isFinite(result)){
+    if(tu==="Tempo p/ 1 GB (min:seg)"||tu==="Tempo p/ 1 GB (segundos)"){
+      const secs = tu==="Tempo p/ 1 GB (min:seg)"?result*60:result;
+      if(tu==="Tempo p/ 1 GB (min:seg)"){
+        const m=Math.floor(secs/60),s=Math.round(secs%60);
+        displayResult=`${m}:${s.toString().padStart(2,'0')}`;
+      }
+    }
+  }
+  if(cat.special==="cidr"&&isFinite(result)){
+    if(tu==="Máscara de rede"||tu==="Wildcard mask") displayResult=fromBase(v,tu);
+  }
+  if(cat.special==="base") displayResult = fromDecimal(base, tu);
+
+  document.getElementById('toVal').value=displayResult;
+  document.getElementById('resBig').textContent=displayResult;
+  document.getElementById('resUnit').textContent=tu;
+  const grid=document.getElementById('allGrid');
+  const units=ulist(cat);
+  grid.innerHTML='';
+  units.forEach(u=>{
+    if(u===fu)return;
+    const val=fromBase(base,u);
+    let dv=fmt(val);
+    if(cat.special==="pace"&&isFinite(val)){
+      if(u==="min/km"||u==="min/milha"||u==="min/400m"){
+        const m=Math.floor(val); const s=Math.round((val-m)*60);
+        dv=`${m}:${s.toString().padStart(2,'0')}`;
+      }
+    }
+    const chip=document.createElement('div');
+    chip.className='res-chip';
+    chip.innerHTML=`<div class="rv">${dv}</div><div class="ru">${u}</div>`;
+    chip.onclick=()=>{document.getElementById('toUnit').value=u;convert();};
+    grid.appendChild(chip);
+  });
+}
+function swapUnits(){
+  const fu=document.getElementById('fromUnit').value;
+  const tu=document.getElementById('toUnit').value;
+  const tv=document.getElementById('toVal').value;
+  document.getElementById('fromUnit').value=tu;
+  document.getElementById('toUnit').value=fu;
+  if(tv)document.getElementById('fromVal').value=tv;
+  convert();
+}
+buildLangBar();buildCatTabs();populateSelects();
+document.getElementById('fromVal').addEventListener('input',convert);
+document.getElementById('fromUnit').addEventListener('change',convert);
+document.getElementById('toUnit').addEventListener('change',convert);
+document.getElementById('swapBtn').addEventListener('click',swapUnits);
+</script>
+</body>
+</html>

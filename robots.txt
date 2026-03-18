@@ -1,0 +1,17 @@
+# Universal Converter — robots.txt
+# https://universalconverter.xyz/
+# GitHub Pages: https://universussoft.github.io/universalconverter/
+
+User-agent: *
+Allow: /
+
+# Block no-value crawl paths
+Disallow: /cdn-cgi/
+Disallow: /*.json$
+
+# Sitemaps
+Sitemap: https://universalconverter.xyz/sitemap.xml
+Sitemap: https://universussoft.github.io/universalconverter/sitemap.xml
+
+# Crawl-delay for polite bots
+Crawl-delay: 1

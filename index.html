@@ -11,14 +11,15 @@
 <meta name="author" content="Américo Rodrigues">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="theme-color" content="#c8f264">
-<link rel="canonical" href="https://conversor-universal.pt/">
+<link rel="canonical" href="https://universalconverter.xyz/">
+<link rel="alternate" href="https://universussoft.github.io/universalconverter/" hreflang="pt">
 
 <!-- ── OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ── -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Conversor Universal">
-<meta property="og:title" content="Conversor Universal de Unidades — +1300 unidades grátis">
-<meta property="og:description" content="Converte qualquer unidade: comprimento, massa, temperatura, moedas em tempo real, IMC, calorias, proporções, fusos horários e 120+ categorias. Grátis, sem anúncios.">
-<meta property="og:url" content="https://conversor-universal.pt/">
+<meta property="og:site_name" content="Universal Converter">
+<meta property="og:title" content="Universal Converter — +1300 units free">
+<meta property="og:description" content="Convert any unit: length, mass, temperature, live currency, BMI, calories, proportions, timezones and 130+ categories. Free, no ads.">
+<meta property="og:url" content="https://universalconverter.xyz/">
 <meta property="og:locale" content="pt_PT">
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:locale:alternate" content="es_ES">
@@ -36,11 +37,11 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "@id": "https://conversor-universal.pt/#app",
+      "@id": "https://universalconverter.xyz/#app",
       "name": "Conversor Universal de Unidades",
       "alternateName": ["Universal Unit Converter", "Conversor Universal"],
       "description": "Conversor universal gratuito com mais de 1300 unidades e 130 categorias incluindo comprimento, massa, temperatura, moedas em tempo real, IMC, calorias, proporções e fusos horários.",
-      "url": "https://conversor-universal.pt/",
+      "url": "https://universalconverter.xyz/",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Web",
       "browserRequirements": "Requires JavaScript",
@@ -113,7 +114,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Conversor Universal",
-          "item": "https://conversor-universal.pt/"
+          "item": "https://universalconverter.xyz/"
         }
       ]
     }
@@ -435,6 +436,49 @@
   .vcalc-tab.active{background:var(--accent);color:#0d0d0f;border-color:var(--accent);font-weight:500;}
   .zone-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:.4rem 0;}
   .amort-scroll{max-height:220px;overflow-y:auto;border-radius:var(--radius-sm);border:1px solid var(--border);}
+
+  /* ── ASTRO CARD ── */
+  .astro-moon{width:60px;height:60px;border-radius:50%;border:2px solid var(--border);overflow:hidden;flex-shrink:0;background:var(--surface2);position:relative;}
+  .astro-moon-fill{position:absolute;top:0;height:100%;background:var(--accent);transition:all .4s ease;}
+  .astro-zodiac-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(200,242,100,.08);border:1px solid rgba(200,242,100,.25);border-radius:20px;font-size:.78rem;color:var(--accent);margin:.5rem 0;}
+  .astro-cal-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem;}
+  .astro-cal-tab{padding:4px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer;transition:all .15s;}
+  .astro-cal-tab.active{background:var(--accent2);color:#0d0d0f;border-color:var(--accent2);font-weight:500;}
+  .astro-date-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:.75rem;}
+  .astro-date-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;}
+  .astro-date-chip .adc-cal{font-size:.63rem;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.07em;}
+  .astro-date-chip .adc-val{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--text);}
+  .astro-date-chip .adc-sub{font-size:.65rem;color:var(--muted2);margin-top:2px;}
+  .astro-section-title{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:1.25rem 0 .6rem;}
+  .astro-planet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:7px;}
+  .astro-planet-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;}
+  .astro-planet-chip .apc-name{font-size:.7rem;color:var(--muted);margin-bottom:2px;}
+  .astro-planet-chip .apc-sign{font-family:'Fraunces',serif;font-size:.95rem;color:var(--text);}
+  .astro-planet-chip .apc-deg{font-size:.65rem;color:var(--accent2);}
+
+  /* ── LUNAR YEAR CALENDAR ── */
+  .ly-month{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+  .ly-month-title{font-size:.72rem;font-weight:500;color:var(--text);letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase;}
+  .ly-event{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:.5px solid var(--border);}
+  .ly-event:last-child{border-bottom:none;}
+  .ly-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+  .ly-event-date{font-family:'Fraunces',serif;font-size:.9rem;color:var(--text);min-width:28px;flex-shrink:0;}
+  .ly-event-info{flex:1;}
+  .ly-event-name{font-size:.75rem;color:var(--text);font-weight:500;line-height:1.3;}
+  .ly-event-sub{font-size:.62rem;color:var(--muted);margin-top:1px;line-height:1.3;}
+  .ly-badge{display:inline-block;font-size:.58rem;padding:1px 5px;border-radius:8px;font-weight:500;margin-left:4px;vertical-align:middle;}
+  .ly-badge-super{background:rgba(239,83,80,.15);color:#ef5350;}
+  .ly-badge-micro{background:rgba(66,165,245,.12);color:#42a5f5;}
+  .ly-badge-blue{background:rgba(66,165,245,.18);color:#42a5f5;}
+  .ly-badge-eclipse-solar{background:rgba(255,152,0,.15);color:#ff9800;}
+  .ly-badge-eclipse-lunar{background:rgba(171,71,188,.15);color:#ab47bc;}
+  .ly-empty{font-size:.72rem;color:var(--muted2);font-style:italic;padding:4px 0;}
+  .ly-all-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 11px;display:flex;gap:8px;align-items:flex-start;}
+  .ly-all-chip .la-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+  .ly-all-chip .la-date{font-family:'Fraunces',serif;font-size:.88rem;color:var(--text);min-width:70px;}
+  .ly-all-chip .la-info{flex:1;}
+  .ly-all-chip .la-name{font-size:.75rem;font-weight:500;color:var(--text);}
+  .ly-all-chip .la-sub{font-size:.62rem;color:var(--muted);margin-top:1px;}
 </style></head>
 <body>
 <div class="wrapper">
@@ -749,6 +793,113 @@
       <!-- Common dilutions -->
       <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:1rem 0 .5rem;">Diluições comuns</div>
       <div class="prop-chips" id="dil-presets"></div>
+    </div>
+  </div>
+
+  <!-- 🔭 ASTRONOMIA & ASTROLOGIA -->
+  <div class="vcalc-card" id="card-astro">
+    <div class="lookup-header"><span class="lookup-badge">🔭 Astronomia &amp; Astrologia</span></div>
+
+    <!-- Mode tabs -->
+    <div class="astro-cal-tabs" id="astro-mode-tabs">
+      <button class="astro-cal-tab active" data-mode="birth" onclick="setAstroMode('birth')">🌟 Mapa natal</button>
+      <button class="astro-cal-tab" data-mode="moon" onclick="setAstroMode('moon')">🌙 Fase lunar</button>
+      <button class="astro-cal-tab" data-mode="calendars" onclick="setAstroMode('calendars')">📅 Calendários</button>
+      <button class="astro-cal-tab" data-mode="lunar-year" onclick="setAstroMode('lunar-year')">🗓️ Calendário Lunar</button>
+    </div>
+
+    <!-- ── BIRTH / NATAL ── -->
+    <div id="astro-birth">
+      <div class="vcalc-row vcalc-row-3">
+        <div><div class="vcalc-label">Data de nascimento</div><input class="vcalc-input" type="date" id="astro-bdate" style="font-size:.95rem;" oninput="calcAstro()"></div>
+        <div><div class="vcalc-label">Hora (opcional)</div><input class="vcalc-input" type="time" id="astro-btime" value="12:00" style="font-size:.95rem;" oninput="calcAstro()"></div>
+        <div><div class="vcalc-label">Hemisfério</div><select class="vcalc-select" id="astro-hemi" onchange="calcAstro()"><option value="N">Norte</option><option value="S">Sul</option></select></div>
+      </div>
+      <div class="vcalc-result" id="astro-birth-result">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div>
+            <div class="vcalc-result-val" id="astro-sun-sign"></div>
+            <div class="vcalc-result-desc" id="astro-sun-desc"></div>
+          </div>
+        </div>
+      </div>
+      <div class="astro-section-title">Planetas principais</div>
+      <div class="astro-planet-grid" id="astro-planets"></div>
+      <div class="astro-section-title">Elementos &amp; Modalidade</div>
+      <div class="vcalc-grid" id="astro-elements"></div>
+    </div>
+
+    <!-- ── MOON PHASE ── -->
+    <div id="astro-moon" style="display:none;">
+      <div class="vcalc-row vcalc-row-2">
+        <div><div class="vcalc-label">Data</div><input class="vcalc-input" type="date" id="moon-date" style="font-size:.95rem;" oninput="calcMoon()"></div>
+        <div><div class="vcalc-label">Hora</div><input class="vcalc-input" type="time" id="moon-time" value="12:00" style="font-size:.95rem;" oninput="calcMoon()"></div>
+      </div>
+      <div class="vcalc-result" id="moon-result">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div class="astro-moon"><div class="astro-moon-fill" id="moon-fill-el"></div></div>
+          <div>
+            <div class="vcalc-result-val" id="moon-phase-name"></div>
+            <div class="vcalc-result-desc" id="moon-phase-desc"></div>
+          </div>
+        </div>
+      </div>
+      <div class="astro-section-title">Próximas fases</div>
+      <div class="astro-date-grid" id="moon-next-phases"></div>
+      <div class="astro-section-title">Distância &amp; dados</div>
+      <div class="astro-planet-grid" id="moon-data"></div>
+    </div>
+
+    <!-- ── CALENDARS ── -->
+    <div id="astro-calendars" style="display:none;">
+      <div class="vcalc-row vcalc-row-2">
+        <div><div class="vcalc-label">Data gregoriana</div><input class="vcalc-input" type="date" id="cal-date" style="font-size:.95rem;" oninput="calcCalendars()"></div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;"><button class="prop-add-btn" onclick="document.getElementById('cal-date').value=new Date().toISOString().split('T')[0];calcCalendars()">Hoje</button></div>
+      </div>
+      <div class="astro-date-grid" id="cal-grid"></div>
+      <div class="astro-section-title">Eventos e feriados religiosos próximos</div>
+      <div class="astro-date-grid" id="cal-events"></div>
+    </div>
+
+    <!-- ── LUNAR YEAR CALENDAR ── -->
+    <div id="astro-lunar-year" style="display:none;">
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem;">
+        <div style="flex:1;min-width:120px;">
+          <div class="vcalc-label">Ano</div>
+          <input class="vcalc-input" type="number" id="ly-year" value="" min="1900" max="2100" style="font-size:1.2rem;" oninput="calcLunarYear()">
+        </div>
+        <div>
+          <div class="vcalc-label">Hemisfério</div>
+          <select class="vcalc-select" id="ly-hemi" onchange="calcLunarYear()">
+            <option value="N">Norte</option>
+            <option value="S">Sul</option>
+          </select>
+        </div>
+        <button class="prop-add-btn" onclick="document.getElementById('ly-year').value=new Date().getFullYear();calcLunarYear()">Ano atual</button>
+      </div>
+
+      <!-- Summary bar -->
+      <div class="vcalc-result" id="ly-summary" style="display:none;">
+        <div class="vcalc-result-val" id="ly-summary-val"></div>
+        <div class="vcalc-result-desc" id="ly-summary-desc"></div>
+      </div>
+
+      <!-- Legend -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:.75rem 0 .5rem;font-size:.68rem;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;"></span>🌕 Lua Cheia</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted2);display:inline-block;"></span>🌑 Lua Nova</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#ef5350;display:inline-block;"></span>🔴 Superlua</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#42a5f5;display:inline-block;"></span>🔵 Lua Azul</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#ff9800;display:inline-block;"></span>🌑☀️ Eclipse Solar</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#ab47bc;display:inline-block;"></span>🌕☀️ Eclipse Lunar</span>
+      </div>
+
+      <!-- Monthly grid -->
+      <div id="ly-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:.5rem;"></div>
+
+      <!-- All events list -->
+      <div class="astro-section-title" id="ly-events-title" style="display:none;">Todos os eventos do ano</div>
+      <div id="ly-events-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:7px;"></div>
     </div>
   </div>
 
@@ -5702,6 +5853,680 @@ buildCatTabs();
 setTimeout(()=>{
   const activeBtn = document.querySelector(`.cat-btn[data-key="${CSS.escape(currentCat)}"]`);
   if(activeBtn) activeBtn.classList.add('active');
+},0);
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── 🔭 ASTRONOMIA & ASTROLOGIA ────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── Zodiac & planet data ──────────────────────────────────────────────────────
+const ZODIAC = [
+  {name:'Áries',sym:'♈',start:[3,21],end:[4,19],elem:'Fogo',mod:'Cardinal',planet:'Marte'},
+  {name:'Touro',sym:'♉',start:[4,20],end:[5,20],elem:'Terra',mod:'Fixo',planet:'Vénus'},
+  {name:'Gémeos',sym:'♊',start:[5,21],end:[6,20],elem:'Ar',mod:'Mutável',planet:'Mercúrio'},
+  {name:'Caranguejo',sym:'♋',start:[6,21],end:[7,22],elem:'Água',mod:'Cardinal',planet:'Lua'},
+  {name:'Leão',sym:'♌',start:[7,23],end:[8,22],elem:'Fogo',mod:'Fixo',planet:'Sol'},
+  {name:'Virgem',sym:'♍',start:[8,23],end:[9,22],elem:'Terra',mod:'Mutável',planet:'Mercúrio'},
+  {name:'Balança',sym:'♎',start:[9,23],end:[10,22],elem:'Ar',mod:'Cardinal',planet:'Vénus'},
+  {name:'Escorpião',sym:'♏',start:[10,23],end:[11,21],elem:'Água',mod:'Fixo',planet:'Plutão'},
+  {name:'Sagitário',sym:'♐',start:[11,22],end:[12,21],elem:'Fogo',mod:'Mutável',planet:'Júpiter'},
+  {name:'Capricórnio',sym:'♑',start:[12,22],end:[1,19],elem:'Terra',mod:'Cardinal',planet:'Saturno'},
+  {name:'Aquário',sym:'♒',start:[1,20],end:[2,18],elem:'Ar',mod:'Fixo',planet:'Úrano'},
+  {name:'Peixes',sym:'♓',start:[2,19],end:[3,20],elem:'Água',mod:'Mutável',planet:'Neptuno'},
+];
+const ELEM_COLOR={Fogo:'#ef5350',Terra:'#8d6e63',Ar:'#42a5f5',Água:'#26c6da'};
+
+// ── Julian Day Number ─────────────────────────────────────────────────────────
+function toJD(year, month, day, hour=12){
+  if(month<=2){year--;month+=12;}
+  const A=Math.floor(year/100), B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(year+4716))+Math.floor(30.6001*(month+1))+day+B-1524.5+hour/24;
+}
+
+// ── Sun longitude (ecliptic, degrees) ────────────────────────────────────────
+function sunLongitude(jd){
+  const T=(jd-2451545.0)/36525;
+  const L0=(280.46646+36000.76983*T)%360;
+  const M=(357.52911+35999.05029*T-0.0001537*T*T)*Math.PI/180;
+  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(M)
+         +(0.019993-0.000101*T)*Math.sin(2*M)+0.000289*Math.sin(3*M);
+  return (L0+C+360)%360;
+}
+
+// ── Moon phase ────────────────────────────────────────────────────────────────
+function moonPhase(jd){
+  // Moon longitude approximation
+  const T=(jd-2451545.0)/36525;
+  const D=(297.85036+445267.111480*T-0.0019142*T*T)*Math.PI/180;
+  const M=(357.52772+35999.050340*T-0.0001603*T*T)*Math.PI/180;
+  const Mprime=(134.96298+477198.867398*T+0.0086972*T*T)*Math.PI/180;
+  const moonLon=(218.3165+481267.8813*T+6.289*Math.sin(Mprime)-1.274*Math.sin(2*D-Mprime)
+    +0.658*Math.sin(2*D)+0.214*Math.sin(2*Mprime)-0.186*Math.sin(M)+360)%360;
+  const sunLon=sunLongitude(jd);
+  const phase=((moonLon-sunLon)+360)%360; // 0=new, 180=full
+  const illum=(1-Math.cos(phase*Math.PI/180))/2;
+  return {phase, illum, moonLon};
+}
+
+// Moon distance (km)
+function moonDistance(jd){
+  const T=(jd-2451545.0)/36525;
+  const Mprime=(134.96298+477198.867398*T)*Math.PI/180;
+  const D=(297.85036+445267.111480*T)*Math.PI/180;
+  return 385001-20905*Math.cos(Mprime)-3699*Math.cos(2*D-Mprime)-2956*Math.cos(2*D);
+}
+
+// Next phase JD (type: 0=new,1=first,2=full,3=last)
+function nextPhaseJD(jd, type){
+  const target=type*90;
+  let jdTry=jd+0.5;
+  for(let i=0;i<60;i++){
+    const {phase}=moonPhase(jdTry);
+    const diff=((phase-target+540)%360)-180;
+    if(Math.abs(diff)<0.5) return jdTry;
+    jdTry+=diff/13.2;
+  }
+  return jdTry;
+}
+
+function jdToDate(jd){
+  const z=Math.floor(jd+0.5), f=(jd+0.5)-z;
+  let A=z; if(z>=2299161){const alpha=Math.floor((z-1867216.25)/36524.25);A=z+1+alpha-Math.floor(alpha/4);}
+  const B=A+1524, C=Math.floor((B-122.1)/365.25), D=Math.floor(365.25*C);
+  const E=Math.floor((B-D)/30.6001);
+  const day=B-D-Math.floor(30.6001*E);
+  const month=E<14?E-1:E-13, year=month>2?C-4716:C-4715;
+  const hour=f*24;
+  return new Date(Date.UTC(year,month-1,day,Math.round(hour)));
+}
+
+// ── Zodiac sign from ecliptic longitude ──────────────────────────────────────
+function signFromLon(lon){return ZODIAC[Math.floor(lon/30)%12];}
+function signFromDate(month,day){
+  return ZODIAC.find(z=>{
+    const [sm,sd]=z.start,[em,ed]=z.end;
+    if(sm>em) return (month===sm&&day>=sd)||(month===em&&day<=ed)||(month>sm||month<em);
+    return (month===sm&&day>=sd)||(month===em&&day<=ed)||(month>sm&&month<em);
+  })||ZODIAC[0];
+}
+
+// Approximate planet sign (mean orbital periods)
+function planetSign(jd, period_days, ref_jd, ref_lon){
+  return signFromLon(((jd-ref_jd)/period_days*360+ref_lon+3600)%360);
+}
+
+// ── Mode switcher ─────────────────────────────────────────────────────────────
+let astroMode='birth';
+function setAstroMode(mode){
+  astroMode=mode;
+  document.querySelectorAll('.astro-cal-tab').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  document.getElementById('astro-birth').style.display=mode==='birth'?'':'none';
+  document.getElementById('astro-moon').style.display=mode==='moon'?'':'none';
+  document.getElementById('astro-calendars').style.display=mode==='calendars'?'':'none';
+  document.getElementById('astro-lunar-year').style.display=mode==='lunar-year'?'':'none';
+  if(mode==='moon') calcMoon();
+  if(mode==='calendars') calcCalendars();
+  if(mode==='birth') calcAstro();
+  if(mode==='lunar-year') calcLunarYear();
+}
+
+// ── BIRTH / NATAL ─────────────────────────────────────────────────────────────
+function calcAstro(){
+  const dv=document.getElementById('astro-bdate').value;
+  if(!dv) return;
+  const [y,m,d]=dv.split('-').map(Number);
+  const tv=document.getElementById('astro-btime').value||'12:00';
+  const [hh,mm]=tv.split(':').map(Number);
+  const hour=hh+mm/60;
+  const jd=toJD(y,m,d,hour);
+  const sunLon=sunLongitude(jd);
+  const sunSign=signFromLon(sunLon);
+  const sunDeg=(sunLon%30).toFixed(1);
+
+  // Moon sign
+  const {phase:moonPhaseAngle,illum,moonLon}=moonPhase(jd);
+  const moonSign=signFromLon(moonLon);
+  const moonDeg=(moonLon%30).toFixed(1);
+  const dist=moonDistance(jd);
+
+  document.getElementById('astro-birth-result').classList.add('visible');
+  document.getElementById('astro-sun-sign').textContent=`${sunSign.sym} ${sunSign.name} — Signo Solar`;
+  document.getElementById('astro-sun-desc').innerHTML=
+    `${sunDeg}° em ${sunSign.name} &nbsp;·&nbsp; Elemento: <b>${sunSign.elem}</b> &nbsp;·&nbsp; Modalidade: ${sunSign.mod}<br>
+     Planeta regente: ${sunSign.planet} &nbsp;·&nbsp; Lua em ${moonSign.sym} ${moonSign.name} (${moonDeg}°)`;
+
+  // Planets (approximate positions via mean motion)
+  const REF_JD=2451545.0; // J2000.0 = 2000-01-01 12:00
+  const PLANETS=[
+    {name:'☉ Sol',      lon:sunLon},
+    {name:'☽ Lua',      lon:moonLon},
+    {name:'☿ Mercúrio', period:87.97,  ref:252.3},
+    {name:'♀ Vénus',    period:224.70, ref:181.97},
+    {name:'♂ Marte',    period:686.97, ref:355.43},
+    {name:'♃ Júpiter',  period:4332.59,ref:34.40},
+    {name:'♄ Saturno',  period:10759.22,ref:50.08},
+    {name:'♅ Úrano',    period:30685.4, ref:314.06},
+    {name:'♆ Neptuno',  period:60189.5, ref:304.35},
+    {name:'♇ Plutão',   period:90560,   ref:238.96},
+  ];
+  const cont=document.getElementById('astro-planets');
+  cont.innerHTML='';
+  PLANETS.forEach(p=>{
+    const lon=p.lon!==undefined?p.lon:((jd-REF_JD)/p.period*360+p.ref+7200)%360;
+    const sign=signFromLon(lon);
+    const deg=(lon%30).toFixed(1);
+    const chip=document.createElement('div');
+    chip.className='astro-planet-chip';
+    chip.innerHTML=`<div class="apc-name">${p.name}</div><div class="apc-sign">${sign.sym} ${sign.name}</div><div class="apc-deg">${deg}° ${sign.name}</div>`;
+    cont.appendChild(chip);
+  });
+
+  // Elements tally
+  const elemCount={Fogo:0,Terra:0,Ar:0,Água:0};
+  PLANETS.forEach(p=>{
+    const lon=p.lon!==undefined?p.lon:((jd-REF_JD)/p.period*360+p.ref+7200)%360;
+    elemCount[signFromLon(lon).elem]=(elemCount[signFromLon(lon).elem]||0)+1;
+  });
+  const elemCont=document.getElementById('astro-elements');
+  elemCont.innerHTML='';
+  Object.entries(elemCount).forEach(([elem,cnt])=>{
+    const chip=document.createElement('div');
+    chip.className='vcalc-chip';
+    chip.style.borderColor=ELEM_COLOR[elem]+'66';
+    chip.innerHTML=`<div class="vc-label">${elem}</div><div class="vc-val" style="color:${ELEM_COLOR[elem]}">${cnt} planeta${cnt!==1?'s':''}</div>`;
+    elemCont.appendChild(chip);
+  });
+  ['Modalidade','Elemento dominante','Signo Ascendente (aprox.)'].forEach((l,i)=>{
+    const vals=[sunSign.mod,Object.entries(elemCount).sort((a,b)=>b[1]-a[1])[0][0],'Requer hora e local exactos'];
+    const chip=document.createElement('div');
+    chip.className='vcalc-chip';
+    chip.innerHTML=`<div class="vc-label">${l}</div><div class="vc-val">${vals[i]}</div>`;
+    elemCont.appendChild(chip);
+  });
+}
+// Default date
+document.getElementById('astro-bdate').value=new Date().toISOString().split('T')[0];
+calcAstro();
+
+// ── MOON PHASE ────────────────────────────────────────────────────────────────
+const PHASE_NAMES=['🌑 Lua Nova','🌒 Quarto Crescente','🌓 Primeiro Quarto','🌔 Lua Gibosa Crescente',
+  '🌕 Lua Cheia','🌖 Lua Gibosa Minguante','🌗 Último Quarto','🌘 Quarto Minguante'];
+function phaseName(angle){
+  const idx=Math.floor(((angle+22.5)%360)/45);
+  return PHASE_NAMES[idx];
+}
+
+function calcMoon(){
+  const dv=document.getElementById('moon-date').value;
+  const tv=document.getElementById('moon-time').value||'12:00';
+  if(!dv) return;
+  const [y,m,d]=dv.split('-').map(Number);
+  const [hh,mm]=tv.split(':').map(Number);
+  const jd=toJD(y,m,d,hh+mm/60);
+  const {phase,illum,moonLon}=moonPhase(jd);
+  const dist=moonDistance(jd);
+  const pName=phaseName(phase);
+  const moonSign=signFromLon(moonLon);
+  const illuminPct=(illum*100).toFixed(1);
+
+  // Moon fill visual (left or right half depending on waxing/waning)
+  const el=document.getElementById('moon-fill-el');
+  const waxing=phase<180;
+  if(waxing){el.style.left=(50-illum*50)+'%';el.style.width=(illum*50)+'%';el.style.right='';}
+  else{el.style.right=(50-illum*50)+'%';el.style.width=(illum*50)+'%';el.style.left='';}
+
+  document.getElementById('moon-result').classList.add('visible');
+  document.getElementById('moon-phase-name').textContent=pName;
+  document.getElementById('moon-phase-desc').innerHTML=
+    `Iluminação: <b>${illuminPct}%</b> &nbsp;·&nbsp; Ângulo: ${phase.toFixed(1)}°<br>
+     Lua em ${moonSign.sym} ${moonSign.name} &nbsp;·&nbsp; Distância: ${Math.round(dist).toLocaleString()} km<br>
+     ${dist<362000?'🔴 Superlua (perigeu)':dist>405000?'⚪ Microlua (apogeu)':'Distância normal'}`;
+
+  // Next 4 phases
+  const phaseTypes=[{t:0,n:'🌑 Lua Nova'},{t:1,n:'🌒 Quarto Crescente'},{t:2,n:'🌕 Lua Cheia'},{t:3,n:'🌘 Último Quarto'}];
+  const nextCont=document.getElementById('moon-next-phases');
+  nextCont.innerHTML='';
+  phaseTypes.forEach(pt=>{
+    let jdNext=nextPhaseJD(jd,pt.t);
+    if(jdNext<jd+0.5) jdNext=nextPhaseJD(jd+28,pt.t);
+    const dt=jdToDate(jdNext);
+    const chip=document.createElement('div');
+    chip.className='astro-date-chip';
+    chip.innerHTML=`<div class="adc-cal">${pt.n}</div><div class="adc-val">${dt.toLocaleDateString('pt',{day:'numeric',month:'long',year:'numeric'})}</div><div class="adc-sub">daqui a ${Math.round(jdNext-jd)} dias</div>`;
+    nextCont.appendChild(chip);
+  });
+
+  // Extra data
+  const moonDataCont=document.getElementById('moon-data');
+  moonDataCont.innerHTML='';
+  [{name:'Distância à Terra',val:Math.round(dist).toLocaleString()+' km'},{name:'Iluminação',val:illuminPct+'%'},
+   {name:'Ângulo de fase',val:phase.toFixed(2)+'°'},{name:'Constelação aprox.',val:moonSign.sym+' '+moonSign.name},
+   {name:'Período sinódico',val:'29.53 dias'},{name:'Velocidade orbital',val:'~1.02 km/s'},
+  ].forEach(({name,val})=>{
+    const c=document.createElement('div');
+    c.className='astro-planet-chip';
+    c.innerHTML=`<div class="apc-name">${name}</div><div class="apc-sign">${val}</div>`;
+    moonDataCont.appendChild(c);
+  });
+}
+document.getElementById('moon-date').value=new Date().toISOString().split('T')[0];
+
+// ── CALENDARS ─────────────────────────────────────────────────────────────────
+
+// Julian Calendar
+function gregorianToJulian(y,m,d){
+  const jd=toJD(y,m,d,12);
+  // Julian calendar offset (currently 13 days behind Gregorian)
+  const T=Math.floor((y-100)/100)*3/4-0.75; // correction varies by century but approx:
+  const diff=y>=200?Math.floor((y-200)/100)*1:0; // simplified
+  // More precise: use JD and reverse
+  let jy=y,jm=m,jd2=d;
+  // Convert JD to Julian Calendar
+  let z=Math.floor(jd+0.5),a=z,b=a+1524,c=Math.floor((b-122.1)/365.25);
+  let dd=Math.floor(365.25*c),e=Math.floor((b-dd)/30.6001);
+  const day2=b-dd-Math.floor(30.6001*e);
+  const month2=e<14?e-1:e-13, year2=month2>2?c-4716:c-4715;
+  return {year:year2,month:month2,day:day2};
+}
+
+// Julian Day -> Hebrew Calendar (Meeus algorithm)
+function jdToHebrew(jd){
+  const z=Math.floor(jd+0.5);
+  let year=Math.floor((z-347821.25)/365.25)+1;
+  // Find Hebrew year
+  let jd0=hebrewYearStart(year);
+  if(jd0>z) year--;
+  jd0=hebrewYearStart(year);
+  const jd1=hebrewYearStart(year+1);
+  const daysInYear=jd1-jd0;
+  const elapsed=z-jd0;
+  // Hebrew months
+  const months=hebrewMonths(year,daysInYear);
+  let cum=0,month=1;
+  for(let i=0;i<months.length;i++){if(elapsed<cum+months[i]){month=i+1;break;}cum+=months[i];}
+  const day=elapsed-cum+1;
+  const HMONTHS=['Tishri','Cheshvan','Kislev','Tevet','Shvat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul'];
+  return {year:year,month:HMONTHS[month-1]||month,day:Math.max(1,Math.round(day))};
+}
+function hebrewYearStart(y){
+  const m=235*y-234, f=12084+13*(m%19), n=Math.floor(m/19)*6935+Math.floor(f/25)+1;
+  return n-(n%7===2||n%7===4||n%7===6?1:0)-(n%7===1&&(m%19>6)?1:0)-(n%7===0&&(m%19>11)?1:0)+347821;
+}
+function hebrewMonths(y,days){
+  const leap=(235*y-234)%19>=12;
+  const base=[30,29,30,29,30,29,30,29,30,29,30,29];
+  if(leap) base.splice(5,0,30);
+  if(days>365) base[1]=30;
+  if(days<355) base[2]=29;
+  return base;
+}
+
+// Islamic (Hijri) Calendar
+function gregorianToHijri(y,m,d){
+  const jd=toJD(y,m,d,12);
+  const z=Math.floor(jd)+0.5;
+  const N=z-1948438.5;
+  const cyc=Math.floor((N-227015)/10631);
+  const n=N-227015-10631*cyc;
+  const j=-1+Math.floor((n+0.8)/29.5001);
+  const HY=30*cyc+j+1;
+  const HM=Math.min(12,Math.ceil((n-29.5001*j+29)/29.5001));
+  const HD=Math.floor(N-29.5001*(HM-1)+1);
+  const HMONTHS=['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Ula','Jumada al-Akhira','Rajab','Sha\'ban','Ramadão','Shawwal','Dhul Qi\'dah','Dhul Hijjah'];
+  return {year:HY,month:HMONTHS[HM-1]||HM,day:Math.max(1,Math.round(HD))};
+}
+
+// Persian (Solar Hijri)
+function gregorianToPersian(y,m,d){
+  const jd=Math.floor(toJD(y,m,d,12));
+  const depoch=jd-2121445;
+  const cycle=Math.floor(depoch/1029983), cyrem=depoch%1029983;
+  let ycycle;
+  if(cyrem===1029982) ycycle=2820;
+  else{const aux1=Math.floor(cyrem/366),aux2=cyrem%366;ycycle=Math.floor((2134*aux1+2816*aux2+2815)/1028522)+aux1+1;}
+  const year=ycycle+2820*cycle+474;
+  const yday=jd-Math.floor(toJD(year,1,1,12)-(3*year+130)*Math.PI)+1; // approx
+  // Simplified: use fixed offset from Gregorian
+  // More accurate simplified version:
+  const gDate=new Date(Date.UTC(y,m-1,d));
+  const persianOffset=226899; // days from Persian epoch to Julian epoch
+  const jd2=Math.floor(toJD(y,m,d,12));
+  const pyear=y-621-((m<3||(m===3&&d<20))?1:0);
+  const pmonth=((m-3+12)%12)+1;
+  const pday=d-(m<=2?m===1?9:18:m===3?20:0); // very simplified
+  const PMONTHS=['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'];
+  // Use a cleaner algorithm
+  const refJD=2440588; // Unix epoch JD
+  const unixDays=Math.round((jd2-refJD));
+  const d0=new Date(Date.UTC(y,m-1,d));
+  // Approximate Persian date
+  const py=y-621, pm=m, pd=d;
+  const persM=pm<=2?(pm===1?10:11):(pm<=8?pm-2:pm-8);
+  const persY=py+(pm<=2?-1:0)+(pm>8?1:0);
+  return {year:persY,month:PMONTHS[persM-1]||persM,day:pd};
+}
+
+function calcCalendars(){
+  const dv=document.getElementById('cal-date').value;
+  if(!dv){document.getElementById('cal-date').value=new Date().toISOString().split('T')[0];return;}
+  const [y,m,d]=dv.split('-').map(Number);
+  const jd=toJD(y,m,d,12);
+
+  const jul=gregorianToJulian(y,m,d);
+  const heb=jdToHebrew(jd);
+  const isl=gregorianToHijri(y,m,d);
+  const per=gregorianToPersian(y,m,d);
+  const julian_dn=Math.round(jd); // Julian Day Number
+  const unixTs=Math.round((jd-2440587.5)*86400);
+
+  const WEEKDAYS_PT=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const gDate=new Date(Date.UTC(y,m-1,d));
+  const weekday=WEEKDAYS_PT[gDate.getUTCDay()];
+  const dayOfYear=Math.floor((gDate-new Date(Date.UTC(y,0,0)))/86400000);
+  const isLeap=((y%4===0&&y%100!==0)||y%400===0);
+
+  const grid=document.getElementById('cal-grid');
+  grid.innerHTML='';
+  [
+    {cal:'Gregoriano',val:`${d} de ${['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][m-1]} de ${y}`,sub:weekday+' · dia '+dayOfYear+' de '+( isLeap?366:365)},
+    {cal:'Juliano',val:`${jul.day} de ${['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][jul.month-1]} de ${jul.year}`,sub:'13 dias antes do Gregoriano (desde 1900)'},
+    {cal:'Islâmico (Hijri)',val:`${Math.max(1,isl.day)} de ${isl.month} de ${isl.year}H`,sub:'Calendário lunar · 354/355 dias/ano'},
+    {cal:'Hebraico',val:`${heb.day} de ${heb.month} de ${heb.year}`,sub:'Calendário lunissolar'},
+    {cal:'Persa (Solar Hijri)',val:`${Math.max(1,per.day)} de ${per.month} de ${per.year}`,sub:'Calendário oficial do Irão e Afeganistão'},
+    {cal:'Número Juliano (JDN)',val:julian_dn.toString(),sub:'Dias desde 4713 a.C. ao meio-dia'},
+    {cal:'Unix timestamp',val:unixTs.toLocaleString(),sub:'Segundos desde 1970-01-01 00:00 UTC'},
+    {cal:'Dia da semana',val:weekday,sub:'Dia '+dayOfYear+' do ano'},
+  ].forEach(({cal,val,sub})=>{
+    const chip=document.createElement('div');
+    chip.className='astro-date-chip';
+    chip.innerHTML=`<div class="adc-cal">${cal}</div><div class="adc-val">${val}</div>${sub?`<div class="adc-sub">${sub}</div>`:''}`;
+    grid.appendChild(chip);
+  });
+
+  // Religious events near this date
+  const events=document.getElementById('cal-events');
+  events.innerHTML='';
+  // Fixed Gregorian events
+  const fixedEvents=[
+    {m:1,d:1,name:'Ano Novo (Gregoriano)'},{m:1,d:6,name:'Epifania'},{m:2,d:2,name:'Candelária'},
+    {m:3,d:20,name:'Equinócio de Primavera (NH)'},{m:6,d:21,name:'Solstício de Verão (NH)'},
+    {m:9,d,name:'Equinócio de Outono (NH)'},{m:9,d:23,name:'Equinócio de Outono'},
+    {m:12,d:21,name:'Solstício de Inverno (NH)'},{m:12,d:25,name:'Natal'},{m:12,d:31,name:'Véspera de Ano Novo'},
+  ];
+  const nearby=fixedEvents.map(e=>{
+    const dt=new Date(Date.UTC(y,e.m-1,e.d));
+    const diff=Math.round((dt-gDate)/86400000);
+    return {...e,diff};
+  }).filter(e=>Math.abs(e.diff)<=60).sort((a,b)=>a.diff-b.diff);
+  nearby.slice(0,6).forEach(e=>{
+    const chip=document.createElement('div');
+    chip.className='astro-date-chip';
+    const label=e.diff===0?'Hoje':e.diff>0?`daqui a ${e.diff} dias`:`há ${-e.diff} dias`;
+    chip.innerHTML=`<div class="adc-cal">${label}</div><div class="adc-val">${e.name}</div><div class="adc-sub">${e.d}/${e.m}/${y}</div>`;
+    events.appendChild(chip);
+  });
+  if(!nearby.length) events.innerHTML='<div class="adc-sub" style="padding:.5rem">Sem eventos fixos nos próximos 60 dias.</div>';
+}
+document.getElementById('cal-date').value=new Date().toISOString().split('T')[0];
+calcCalendars();
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── 🗓️ LUNAR YEAR CALENDAR ────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Set default year input
+document.getElementById('ly-year').value = new Date().getFullYear();
+
+// ── Mean perigee / apogee distance thresholds ─────────────────────────────────
+const SUPER_MOON_KM  = 362000; // perigee ≤ 362,000 km + full/new = superlua
+const MICRO_MOON_KM  = 405000; // apogee  ≥ 405,000 km + full/new = microlua
+
+// ── Compute all lunar phase events for a given year ───────────────────────────
+function allLunarEvents(year) {
+  const events = [];
+  // Walk from 3 weeks before Jan 1 to 3 weeks after Dec 31 to catch boundary phases
+  const startJD = toJD(year, 1, 1, 12) - 30;
+  const endJD   = toJD(year, 12, 31, 12) + 30;
+
+  // Use Meeus "Astronomical Algorithms" Ch.47 – precise phase times
+  // k = integer/quarter-integer: 0=new, 0.25=first, 0.5=full, 0.75=last
+  // JDE of phase k: JDE0 = 2451550.09766 + 29.530588861 * k
+  const SYNODIC = 29.530588861;
+  const JDE0    = 2451550.09766; // 2000-01-06 new moon reference
+
+  // Find first k for year-3 months to be safe
+  const k0 = Math.floor((year - 2000) * 12.3685) - 4;
+
+  for (let ki = k0; ki < k0 + 16; ki++) {
+    [0, 0.25, 0.5, 0.75].forEach(frac => {
+      const k = ki + frac;
+      const JDE = phaseJDE(k);
+      if (JDE < startJD || JDE > endJD) return;
+      const dt = jdToDate(JDE);
+      if (dt.getUTCFullYear() !== year) return;
+
+      const type = frac === 0 ? 'new' : frac === 0.5 ? 'full' : frac === 0.25 ? 'first' : 'last';
+      const dist = moonDistance(JDE);
+      const isSuper = (type === 'full' || type === 'new') && dist <= SUPER_MOON_KM;
+      const isMicro = (type === 'full' || type === 'new') && dist >= MICRO_MOON_KM;
+
+      // Blue moon: second full moon in a calendar month
+      // (flagged after building full list)
+
+      // Eclipse detection (simplified node proximity)
+      const eclipseType = detectEclipse(JDE, type);
+
+      events.push({ jd: JDE, date: dt, type, dist, isSuper, isMicro, eclipseType, k });
+    });
+  }
+
+  // Flag blue moons: 2nd full moon in same calendar month
+  const fullMoons = events.filter(e => e.type === 'full');
+  const monthFull = {};
+  fullMoons.forEach(e => {
+    const key = `${e.date.getUTCFullYear()}-${e.date.getUTCMonth()}`;
+    monthFull[key] = (monthFull[key] || 0) + 1;
+  });
+  fullMoons.forEach((e, i) => {
+    const key = `${e.date.getUTCFullYear()}-${e.date.getUTCMonth()}`;
+    if (monthFull[key] >= 2) {
+      // Mark the SECOND one as blue
+      const prev = fullMoons.slice(0, i).filter(x => `${x.date.getUTCFullYear()}-${x.date.getUTCMonth()}` === key);
+      if (prev.length >= 1) e.isBlueMoon = true;
+    }
+  });
+
+  return events.sort((a, b) => a.jd - b.jd);
+}
+
+// ── Precise JDE for lunar phase k (Meeus Ch.47) ───────────────────────────────
+function phaseJDE(k) {
+  const T = k / 1236.85;
+  const T2 = T * T, T3 = T2 * T, T4 = T3 * T;
+  let JDE = 2451550.09766 + 29.530588861 * k
+    + 0.00015437 * T2 - 0.000000150 * T3 + 0.00000000073 * T4;
+  const M   = (2.5534 + 29.10535670 * k - 0.0000014 * T2) * Math.PI / 180;
+  const Mp  = (201.5643 + 385.81693528 * k + 0.0107582 * T2 + 0.00001238 * T3) * Math.PI / 180;
+  const F   = (160.7108 + 390.67050284 * k - 0.0016118 * T2 - 0.00000227 * T3) * Math.PI / 180;
+  const Om  = (124.7746 - 1.56375588 * k + 0.0020672 * T2 + 0.00000215 * T3) * Math.PI / 180;
+  const frac = k % 1;
+  if (Math.abs(frac) < 0.01 || Math.abs(frac - 1) < 0.01) {
+    // New Moon
+    JDE += -0.40720 * Math.sin(Mp) + 0.17241 * Math.sin(M) + 0.01608 * Math.sin(2*Mp)
+         + 0.01039 * Math.sin(2*F) + 0.00739 * Math.sin(Mp-M) - 0.00514 * Math.sin(Mp+M);
+  } else if (Math.abs(frac - 0.5) < 0.01) {
+    // Full Moon
+    JDE += -0.40614 * Math.sin(Mp) + 0.17302 * Math.sin(M) + 0.01614 * Math.sin(2*Mp)
+         + 0.01043 * Math.sin(2*F) + 0.00734 * Math.sin(Mp-M) - 0.00515 * Math.sin(Mp+M);
+  } else {
+    // Quarter moons
+    JDE += -0.62801 * Math.sin(Mp) + 0.17172 * Math.sin(M) - 0.01183 * Math.sin(Mp+M)
+         + 0.00862 * Math.sin(2*Mp) + 0.00804 * Math.sin(2*F);
+  }
+  return JDE;
+}
+
+// ── Eclipse detection (Meeus simplified node-proximity method) ────────────────
+function detectEclipse(jde, type) {
+  // F = Moon's argument of latitude; if |sin(F)| < threshold near new/full → eclipse possible
+  const T  = (jde - 2451545) / 36525;
+  const F  = (160.7108 + 390.67050284 * (jde - 2451550.09766) / 29.530588861
+             - 0.0016118 * T * T) * Math.PI / 180;
+  const sinF = Math.abs(Math.sin(F));
+  if (type === 'new' && sinF < 0.36) return 'solar';
+  if (type === 'full' && sinF < 0.36) return 'lunar';
+  return null;
+}
+
+// ── Format helpers ────────────────────────────────────────────────────────────
+const PT_MONTHS_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const PT_MONTHS_LONG  = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function eventLabel(e) {
+  if (e.type === 'new')   return '🌑 Lua Nova';
+  if (e.type === 'full')  return e.isBlueMoon ? '🔵 Lua Azul' : '🌕 Lua Cheia';
+  if (e.type === 'first') return '🌓 Quarto Crescente';
+  return '🌗 Último Quarto';
+}
+
+function eventDotColor(e) {
+  if (e.eclipseType === 'solar')  return '#ff9800';
+  if (e.eclipseType === 'lunar')  return '#ab47bc';
+  if (e.isSuper)  return '#ef5350';
+  if (e.isBlueMoon) return '#42a5f5';
+  if (e.type === 'full') return 'var(--accent)';
+  if (e.type === 'new')  return 'var(--muted2)';
+  return 'var(--border)';
+}
+
+function eventBadgesHTML(e) {
+  let b = '';
+  if (e.isSuper)  b += '<span class="ly-badge ly-badge-super">Superlua</span>';
+  if (e.isMicro)  b += '<span class="ly-badge ly-badge-micro">Microlua</span>';
+  if (e.isBlueMoon) b += '<span class="ly-badge ly-badge-blue">Lua Azul</span>';
+  if (e.eclipseType === 'solar') b += '<span class="ly-badge ly-badge-eclipse-solar">Eclipse Solar</span>';
+  if (e.eclipseType === 'lunar') b += '<span class="ly-badge ly-badge-eclipse-lunar">Eclipse Lunar</span>';
+  return b;
+}
+
+function formatEventDate(dt) {
+  const d = dt.getUTCDate();
+  const m = PT_MONTHS_SHORT[dt.getUTCMonth()];
+  const hh = String(dt.getUTCHours()).padStart(2,'0');
+  const mm = String(dt.getUTCMinutes()).padStart(2,'0');
+  return `${d} ${m} ${hh}:${mm} UTC`;
+}
+
+// ── Main render ───────────────────────────────────────────────────────────────
+function calcLunarYear() {
+  const year = parseInt(document.getElementById('ly-year').value);
+  if (!year || year < 1900 || year > 2100) return;
+  const hemi = document.getElementById('ly-hemi').value;
+
+  const events = allLunarEvents(year);
+
+  // Summary counts
+  const fullCount  = events.filter(e => e.type === 'full').length;
+  const newCount   = events.filter(e => e.type === 'new').length;
+  const superCount = events.filter(e => e.isSuper).length;
+  const microCount = events.filter(e => e.isMicro).length;
+  const blueCount  = events.filter(e => e.isBlueMoon).length;
+  const eclipseSolar = events.filter(e => e.eclipseType === 'solar').length;
+  const eclipseLunar = events.filter(e => e.eclipseType === 'lunar').length;
+
+  // Summary bar
+  const sumEl = document.getElementById('ly-summary');
+  sumEl.style.display = 'block';
+  document.getElementById('ly-summary-val').textContent = `${year} — ${fullCount} Luas Cheias · ${newCount} Luas Novas`;
+  document.getElementById('ly-summary-desc').innerHTML =
+    `${superCount > 0 ? `🔴 <b>${superCount} Superlua${superCount>1?'s':''}</b> · ` : ''}` +
+    `${microCount > 0 ? `🔵 ${microCount} Microlua${microCount>1?'s':''} · ` : ''}` +
+    `${blueCount  > 0 ? `🔵 ${blueCount} Lua${blueCount>1?'s':''} Azul · ` : ''}` +
+    `${eclipseSolar > 0 ? `🌑☀️ ${eclipseSolar} Eclipse${eclipseSolar>1?'s':''} Solar · ` : ''}` +
+    `${eclipseLunar > 0 ? `🌕☀️ ${eclipseLunar} Eclipse${eclipseLunar>1?'s':''} Lunar · ` : ''}` +
+    `Período sinódico: 29.53 dias`;
+
+  // Monthly grid (only full + new + special for brevity)
+  const grid = document.getElementById('ly-grid');
+  grid.innerHTML = '';
+
+  for (let mo = 0; mo < 12; mo++) {
+    const monthEvents = events.filter(e => e.date.getUTCMonth() === mo);
+    const card = document.createElement('div');
+    card.className = 'ly-month';
+
+    const title = document.createElement('div');
+    title.className = 'ly-month-title';
+    title.textContent = PT_MONTHS_LONG[mo] + ' ' + year;
+    card.appendChild(title);
+
+    if (monthEvents.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'ly-empty';
+      empty.textContent = 'Sem fases principais';
+      card.appendChild(empty);
+    } else {
+      monthEvents.forEach(e => {
+        const row = document.createElement('div');
+        row.className = 'ly-event';
+        const dotColor = eventDotColor(e);
+        row.innerHTML = `
+          <div class="ly-dot" style="background:${dotColor};"></div>
+          <div class="ly-event-date">${e.date.getUTCDate()}</div>
+          <div class="ly-event-info">
+            <div class="ly-event-name">${eventLabel(e)}${eventBadgesHTML(e)}</div>
+            <div class="ly-event-sub">${formatEventDate(e.date)} · ${Math.round(e.dist).toLocaleString()} km</div>
+          </div>`;
+        card.appendChild(row);
+      });
+    }
+    grid.appendChild(card);
+  }
+
+  // Full events list (all phases, sorted)
+  const listTitle = document.getElementById('ly-events-title');
+  const list = document.getElementById('ly-events-list');
+  listTitle.style.display = '';
+  list.innerHTML = '';
+
+  // Show only notable: full, new, and any special (super, eclipse, blue)
+  const notable = events.filter(e =>
+    e.type === 'full' || e.type === 'new' || e.isSuper || e.eclipseType || e.isBlueMoon
+  );
+
+  notable.forEach(e => {
+    const chip = document.createElement('div');
+    chip.className = 'ly-all-chip';
+    const dotColor = eventDotColor(e);
+    chip.innerHTML = `
+      <div class="la-dot" style="background:${dotColor};"></div>
+      <div class="la-date">${formatEventDate(e.date)}</div>
+      <div class="la-info">
+        <div class="la-name">${eventLabel(e)}${eventBadgesHTML(e)}</div>
+        <div class="la-sub">${Math.round(e.dist).toLocaleString()} km${e.eclipseType ? ` · Eclipse ${e.eclipseType === 'solar' ? 'Solar possível' : 'Lunar possível'}` : ''}</div>
+      </div>`;
+    // Clicking a date fills the single-date moon tab and jumps to it
+    chip.style.cursor = 'pointer';
+    chip.onclick = () => {
+      const iso = e.date.toISOString().split('T')[0];
+      document.getElementById('moon-date').value = iso;
+      setAstroMode('moon');
+    };
+    list.appendChild(chip);
+  });
+}
+
+// ── Wire astro into NEW_VCATS and CAT_GROUPS ──────────────────────────────────
+NEW_VCATS['🔭 Astronomia'] = 'card-astro';
+ALL_VCAT_KEYS.push('🔭 Astronomia');
+_allVirtualKeys.push('🔭 Astronomia');
+// Add to Astronomia group
+if(CAT_GROUPS.pt['🔭 Astronomia']) CAT_GROUPS.pt['🔭 Astronomia'].push('🔭 Astronomia');
+else CAT_GROUPS.pt['🔭 Astronomia']=['⭐ Magnitude Estelar','📡 Onda ↔ Freq.','🔭 Astronomia'];
+buildCatTabs();
+setTimeout(()=>{
+  const ab=document.querySelector(`.cat-btn[data-key="${CSS.escape(currentCat)}"]`);
+  if(ab) ab.classList.add('active');
 },0);
 </script>
 </body>

@@ -422,7 +422,7 @@ function buildUnitsBlock(entry, lang) {
 
 function pageUrl(entry, lang) {
   const slug = entry.slugs[lang];
-  return lang === 'pt' ? `${BASE_URL}/c/${slug}/` : `${BASE_URL}/${lang}/c/${slug}/`;
+  return `${BASE_URL}/${lang}/c/${slug}/`;
 }
 
 function pageTemplate(entry, lang, ctx) {
@@ -720,9 +720,7 @@ function main() {
   let written = 0;
   entries.forEach(entry => {
     LANGS.forEach(lang => {
-      const dir = lang === 'pt'
-        ? path.join(ROOT, 'c', entry.slugs[lang])
-        : path.join(ROOT, lang, 'c', entry.slugs[lang]);
+      const dir = path.join(ROOT, lang, 'c', entry.slugs[lang]);
       fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, 'index.html'), pageTemplate(entry, lang, ctx));
       written++;

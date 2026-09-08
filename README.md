@@ -88,9 +88,9 @@ All category names, unit labels, calculator outputs, badges, buttons, and toolti
 
 ## Technical Details
 
-- **Single HTML file** — zero external dependencies at runtime (fonts load from Google Fonts)
+- **Single HTML file** — the converter itself (`index.html`) has zero external dependencies at runtime (fonts load from Google Fonts) and needs no build step; open it directly in any browser
 - **~630 KB** — everything included: all data, all logic, all styles
-- **No build step** — edit and open directly in any browser
+- **UNIT_I18N** — 767 unit/label strings translated across EN/ES/FR/DE/ZH, so switching language also translates unit dropdowns, results, the formula bar and conversion history — not just the surrounding UI chrome
 - **Local storage** — saves language, theme, favourites, conversion history, active timezone clocks
 - **Live data** — currency rates fetched from `open.er-api.com` with 1h localStorage cache; falls back to hardcoded rates if offline
 - **Embed widget** — generates iframe or script snippet to embed the converter in any website
@@ -106,6 +106,7 @@ index.html
 └── <script>         All logic (~9500 lines)
     ├── CATEGORIES   126 category definitions with unit conversion factors
     ├── C dict       ~157 entries for category name translations
+    ├── UNIT_I18N    767 entries for unit/label translations (EN/ES/FR/DE/ZH)
     ├── HTML_LBL     ~197 entries for static label translations
     ├── VCAT_NAMES   24 virtual category name translations
     ├── NEW_VCATS    24 virtual calculator cards
@@ -114,6 +115,27 @@ index.html
     ├── Calculators  23 interactive calculator functions
     └── applyLang()  Full UI re-render on language switch
 ```
+
+---
+
+## SEO Landing Pages
+
+Alongside the single-file app, the repo also publishes a static, crawlable site: one page per category/calculator, in each of the 6 languages, plus a homepage hub per language.
+
+```
+pt/                  ← Portuguese hub: grouped links to every category (index.html)
+pt/c/<slug>/          ← 154 Portuguese category/calculator pages
+en/, es/, fr/, de/, zh/   ← same structure, one per language (e.g. en/c/length/)
+sitemap.xml           ← 931 URLs (154 categories × 6 languages + 6 hubs + the app), with hreflang alternates
+```
+
+Each category page is a lightweight shell (title, description, unit list, translated copy) that embeds the real converter via `index.html?embed=1&cat=<key>&lang=<lang>` — no logic is duplicated. The homepage hubs are pure link directories (no iframe), so search engines can actually crawl and follow every internal link instead of seeing an opaque embedded widget.
+
+**Regenerating after adding a category:**
+1. Serve the repo over HTTP (not `file://`) and load `index.html` in a browser.
+2. Run `node scripts/receive.js scripts/extracted-data.json` in a terminal.
+3. Paste the snippet in `scripts/extract-in-browser.js` into the browser's devtools console.
+4. Add any new Portuguese unit/label strings to `scripts/unit-translations.js`, then run `node scripts/merge-unit-i18n.js` (updates `index.html`'s `UNIT_I18N`) and `node scripts/generate-pages.js` (regenerates every `c/` page and `sitemap.xml`).
 
 ---
 

@@ -435,7 +435,7 @@ function pageTemplate(entry, lang, ctx) {
   const embedUrl = `${BASE_URL}/index.html?embed=1&cat=${encodeURIComponent(entry.key)}&lang=${lang}&theme=auto&border=0`;
   const groupLabel = (GROUP_LABELS[entry.group] && GROUP_LABELS[entry.group][lang]) || '';
   const unitsBlock = buildUnitsBlock(entry, lang);
-  const home = lang === 'pt' ? `${BASE_URL}/` : `${BASE_URL}/${lang}/`;
+  const home = homeUrl(lang);
 
   const hreflangLinks = LANGS.map(l => `<link rel="alternate" hreflang="${LANG_LOCALE[l]}" href="${pageUrl(entry, l)}">`).join('\n')
     + `\n<link rel="alternate" hreflang="x-default" href="${pageUrl(entry, 'pt')}">`;
@@ -518,12 +518,116 @@ footer a{color:var(--muted);text-decoration:underline;}
 `;
 }
 
+// ── Per-language homepage shells (en/es/fr/de/zh) ────────────────────────────
+// The real app lives only at the PT root (index.html) — these are thin
+// translated shells, matching the category-page pattern, that embed the
+// full app via ?lang=<lang> (no ?embed=1, so the whole sidebar UI shows).
+const HOME_TITLE = {
+  pt: 'Conversor Universal', en: 'Universal Converter', es: 'Conversor Universal',
+  fr: 'Convertisseur Universel', de: 'Universalumrechner', zh: '通用单位转换器',
+};
+const HOME_TAGLINE = {
+  pt: '+1300 unidades · 150+ categorias e calculadoras · 6 idiomas · 100% grátis · sem anúncios',
+  en: '+1300 units · 150+ categories & calculators · 6 languages · 100% free · no ads',
+  es: '+1300 unidades · 150+ categorías y calculadoras · 6 idiomas · 100% gratis · sin anuncios',
+  fr: '+1300 unités · 150+ catégories et calculatrices · 6 langues · 100% gratuit · sans publicité',
+  de: '+1300 Einheiten · 150+ Kategorien & Rechner · 6 Sprachen · 100% kostenlos · ohne Werbung',
+  zh: '超过1300种单位 · 150多个分类和计算器 · 6种语言 · 100%免费 · 无广告',
+};
+const HOME_INTRO = {
+  pt: 'Uma suite completa de conversores de unidades e calculadoras que corre inteiramente no browser — sem servidor, sem instalação, sem dependências.',
+  en: 'A comprehensive unit converter and calculator suite that runs entirely in the browser — no server, no installation, no dependencies.',
+  es: 'Una suite completa de conversores de unidades y calculadoras que se ejecuta enteramente en el navegador — sin servidor, sin instalación, sin dependencias.',
+  fr: "Une suite complète de convertisseurs d'unités et de calculatrices qui fonctionne entièrement dans le navigateur — sans serveur, sans installation, sans dépendances.",
+  de: 'Eine umfassende Suite aus Einheitenumrechnern und Rechnern, die vollständig im Browser läuft — ohne Server, ohne Installation, ohne Abhängigkeiten.',
+  zh: '一套功能完整的单位换算与计算工具，完全在浏览器中运行 — 无需服务器、安装或任何依赖。',
+};
+
+function homeUrl(lang) {
+  return lang === 'pt' ? `${BASE_URL}/` : `${BASE_URL}/${lang}/`;
+}
+
+function homepageTemplate(lang) {
+  const title = `${HOME_TITLE[lang]} — ${UI.freeSuffix[lang]} | +1300 Units`;
+  const canonical = homeUrl(lang);
+  const embedUrl = `${BASE_URL}/index.html?lang=${lang}`;
+  const hreflangLinks = LANGS.map(l => `<link rel="alternate" hreflang="${LANG_LOCALE[l]}" href="${homeUrl(l)}">`).join('\n')
+    + `\n<link rel="alternate" hreflang="x-default" href="${homeUrl('pt')}">`;
+  const langSwitcher = LANGS.map(l => {
+    const flag = { pt: '🇵🇹', en: '🇬🇧', es: '🇪🇸', fr: '🇫🇷', de: '🇩🇪', zh: '🇨🇳' }[l];
+    return l === lang ? `<span class="lang-current">${flag} ${l.toUpperCase()}</span>` : `<a href="${homeUrl(l)}">${flag} ${l.toUpperCase()}</a>`;
+  }).join(' · ');
+
+  return `<!doctype html>
+<html lang="${LANG_LOCALE[lang]}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${htmlEscape(title)}</title>
+<meta name="description" content="${htmlEscape(HOME_INTRO[lang])}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${htmlEscape(title)}">
+<meta property="og:description" content="${htmlEscape(HOME_INTRO[lang])}">
+<meta property="og:url" content="${canonical}">
+${hreflangLinks}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0d0f;--surface:#18181c;--border:#2e2e38;--accent:#c8f264;--text:#f0efe8;--muted:#9a9aac;--radius:12px;}
+@media (prefers-color-scheme: light){:root{--bg:#f5f5f0;--surface:#ffffff;--border:#d8d8e8;--accent:#3f6b00;--text:#1a1a22;--muted:#5a5a6a;}}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;line-height:1.65;}
+.wrap{max-width:900px;margin:0 auto;padding:2rem 1.25rem 3rem;}
+a{color:var(--accent);}
+.topbar{display:flex;justify-content:flex-end;margin-bottom:1rem;}
+.langs{font-size:.68rem;color:var(--muted);}
+.langs a{color:var(--muted);text-decoration:none;}
+.langs a:hover{text-decoration:underline;color:var(--text);}
+.lang-current{color:var(--accent);font-weight:500;}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:2.4rem;margin:0 0 .4rem;line-height:1.1;text-align:center;color:var(--accent);}
+.tagline{text-align:center;color:var(--muted);font-size:.8rem;margin:0 0 1.5rem;}
+.intro{color:var(--muted);font-size:.92rem;margin:0 auto 1.5rem;max-width:60ch;text-align:center;}
+iframe{width:100%;height:900px;border:1px solid var(--border);border-radius:var(--radius);display:block;margin-bottom:2rem;background:var(--surface);}
+footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);text-align:center;}
+.support{margin-top:2rem;background:linear-gradient(135deg,rgba(200,242,100,.08) 0%,rgba(126,244,200,.08) 100%);border:1px solid rgba(200,242,100,.25);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;}
+.support-text h3{font-family:'Fraunces',serif;font-size:1rem;margin:0 0 .35rem;font-weight:600;}
+.support-text p{margin:0;font-size:.78rem;color:var(--muted);max-width:48ch;}
+.support-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#0d0d0f;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;text-decoration:none;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><div class="langs">${langSwitcher}</div></div>
+  <h1>${htmlEscape(HOME_TITLE[lang])}</h1>
+  <p class="tagline">${htmlEscape(HOME_TAGLINE[lang])}</p>
+  <p class="intro">${htmlEscape(HOME_INTRO[lang])}</p>
+  <iframe src="${embedUrl}" loading="lazy" title="${htmlEscape(HOME_TITLE[lang])}"></iframe>
+  <div class="support">
+    <div class="support-text">
+      <h3>${htmlEscape(UI.supTitle[lang])}</h3>
+      <p>${htmlEscape(UI.supDesc[lang])}</p>
+    </div>
+    <a class="support-btn" href="${DONATE_URL}" target="_blank" rel="noopener">${htmlEscape(UI.supBtn[lang])}</a>
+  </div>
+  <footer>${htmlEscape(HOME_TITLE.pt)} · <a href="${homeUrl('pt')}">${homeUrl('pt')}</a></footer>
+</div>
+</body>
+</html>
+`;
+}
+
 function buildSitemap(entries) {
   const FLAGSHIP = new Set(['Comprimento', 'Massa', 'Temperatura', 'Volume', '💱 Moedas', '🧮 IMC', '🎂 Idade / Nascimento', '📊 Percentagens']);
   const WEEKLY = new Set(['💱 Moedas', '⚡ Custo Eletricidade', '⛽ Custo Viagem', '🌍 Fusos Ao Vivo']);
   const rows = [];
 
-  rows.push(`  <url>\n    <loc>${BASE_URL}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`);
+  const homeAlternates = LANGS.map(l => `    <xhtml:link rel="alternate" hreflang="${LANG_LOCALE[l]}" href="${homeUrl(l)}"/>`).join('\n');
+  LANGS.forEach(lang => {
+    rows.push(`  <url>\n    <loc>${homeUrl(lang)}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n${homeAlternates}\n  </url>`);
+  });
 
   entries.forEach(e => {
     const changefreq = WEEKLY.has(e.key) ? 'weekly' : 'monthly';
@@ -583,10 +687,18 @@ function main() {
     });
   });
 
+  // Per-language homepage shells (PT is the real app at the repo root already).
+  LANGS.filter(l => l !== 'pt').forEach(lang => {
+    const dir = path.join(ROOT, lang);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), homepageTemplate(lang));
+  });
+
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(entries));
 
-  console.log(`Generated ${written} pages (${entries.length} categories × ${LANGS.length} languages)`);
-  console.log(`Regenerated sitemap.xml with ${entries.length * LANGS.length + 1} URLs`);
+  console.log(`Generated ${written} category pages (${entries.length} categories × ${LANGS.length} languages)`);
+  console.log(`Generated ${LANGS.length - 1} translated homepages (en/es/fr/de/zh)`);
+  console.log(`Regenerated sitemap.xml with ${entries.length * LANGS.length + LANGS.length} URLs`);
   if (MISSING_TRANSLATIONS.size) {
     const list = [...MISSING_TRANSLATIONS].sort();
     fs.writeFileSync(path.join(__dirname, 'still-missing-translations.txt'), list.join('\n'));

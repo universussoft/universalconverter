@@ -4,7 +4,7 @@
   <!--
     Universal Converter — sitemap.xml
     Generated: 2026-09-08 by scripts/generate-pages.js
-    Total URLs: 925
+    Total URLs: 930
     Domain: https://universussoft.github.io/universalconverter
   -->
 
@@ -13,6 +13,77 @@
     <lastmod>2026-09-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
+  </url>
+
+  <url>
+    <loc>https://universussoft.github.io/universalconverter/en/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
+  </url>
+
+  <url>
+    <loc>https://universussoft.github.io/universalconverter/es/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
+  </url>
+
+  <url>
+    <loc>https://universussoft.github.io/universalconverter/fr/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
+  </url>
+
+  <url>
+    <loc>https://universussoft.github.io/universalconverter/de/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
+  </url>
+
+  <url>
+    <loc>https://universussoft.github.io/universalconverter/zh/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/"/>
   </url>
 
   <url>

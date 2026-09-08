@@ -5416,6 +5416,10 @@ document.getElementById('shareBtn').onclick=async()=>{
 // Restore from URL on load
 function restoreFromURL(){
   const p=new URLSearchParams(location.search);
+  // Apply ?lang= even without a ?cat= — lets a plain "?lang=en" link (e.g.
+  // from a translated landing page) switch the homepage's language too.
+  const urlLang=p.get('lang');
+  if(urlLang&&['pt','en','es','fr','de','zh'].includes(urlLang)) currentLang=urlLang;
   if(!p.has('cat')) return false;
   const cat=p.get('cat');
   if(!cat) return false;

@@ -5418,7 +5418,10 @@ function restoreFromURL(){
   const p=new URLSearchParams(location.search);
   if(!p.has('cat')) return false;
   const cat=p.get('cat');
-  if(!CATEGORIES[cat]) return false;
+  if(!cat) return false;
+  // Accept both real CATEGORIES keys and virtual calculator-card keys
+  // (NEW_VCATS isn't defined yet at this point in the script, so it is
+  // validated later — see the final populateSelects() call at the end).
   currentCat=cat;
   const lang=p.get('lang');
   if(lang&&['pt','en','es','fr','de','zh'].includes(lang)) currentLang=lang;
@@ -10201,6 +10204,9 @@ _allVirtualKeys.push('🪛 Brocas');
 });
 
 buildCatTabs();
+// Re-render the restored category now that every populateSelects() patch
+// (including virtual-calculator-card support) has been applied.
+if(_hadURL) populateSelects();
 applyLang();
 setTimeout(()=>{
   const ab=document.querySelector(`.cat-btn[data-key="${CSS.escape(currentCat)}"]`);

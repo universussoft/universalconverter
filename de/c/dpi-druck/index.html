@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🖨️ DPI / Druck — Kostenlos | Universal Converter</title>
+<meta name="description" content="Berechnet den DPI/PPI-Wert eines Bildes aus Pixelauflösung und Druckgröße, mit gängigen Druckauflösungen als Referenz.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://universussoft.github.io/universalconverter/de/c/dpi-druck/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🖨️ DPI / Druck — Kostenlos | Universal Converter">
+<meta property="og:description" content="Berechnet den DPI/PPI-Wert eines Bildes aus Pixelauflösung und Druckgröße, mit gängigen Druckauflösungen als Referenz.">
+<meta property="og:url" content="https://universussoft.github.io/universalconverter/de/c/dpi-druck/">
+<link rel="alternate" hreflang="pt-PT" href="https://universussoft.github.io/universalconverter/c/dpi-impressao/">
+<link rel="alternate" hreflang="en" href="https://universussoft.github.io/universalconverter/en/c/dpi-print/">
+<link rel="alternate" hreflang="es" href="https://universussoft.github.io/universalconverter/es/c/dpi-impresion/">
+<link rel="alternate" hreflang="fr" href="https://universussoft.github.io/universalconverter/fr/c/dpi-impression/">
+<link rel="alternate" hreflang="de" href="https://universussoft.github.io/universalconverter/de/c/dpi-druck/">
+<link rel="alternate" hreflang="zh-CN" href="https://universussoft.github.io/universalconverter/zh/c/dpi/">
+<link rel="alternate" hreflang="x-default" href="https://universussoft.github.io/universalconverter/c/dpi-impressao/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0d0f;--surface:#18181c;--border:#2e2e38;--accent:#c8f264;--text:#f0efe8;--muted:#9a9aac;--radius:12px;}
+@media (prefers-color-scheme: light){:root{--bg:#f5f5f0;--surface:#ffffff;--border:#d8d8e8;--accent:#3f6b00;--text:#1a1a22;--muted:#5a5a6a;}}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;line-height:1.65;}
+.wrap{max-width:720px;margin:0 auto;padding:2rem 1.25rem 3rem;}
+a{color:var(--accent);}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem;}
+.back{font-size:.78rem;color:var(--muted);text-decoration:none;}
+.back:hover{text-decoration:underline;}
+.langs{font-size:.68rem;color:var(--muted);}
+.langs a{color:var(--muted);text-decoration:none;}
+.langs a:hover{text-decoration:underline;color:var(--text);}
+.lang-current{color:var(--accent);font-weight:500;}
+.eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 .4rem;}
+h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.85rem;margin:0 0 .6rem;line-height:1.2;}
+.intro{color:var(--muted);font-size:.92rem;margin-bottom:1.5rem;max-width:60ch;}
+iframe{width:100%;max-width:640px;height:480px;border:1px solid var(--border);border-radius:var(--radius);display:block;margin-bottom:2rem;background:var(--surface);}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;margin:0 0 .75rem;}
+.units{display:flex;flex-wrap:wrap;gap:6px;padding:0;list-style:none;margin:0 0 2rem;}
+.units li{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.7rem;color:var(--muted);}
+footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);}
+footer a{color:var(--muted);text-decoration:underline;}
+.support{margin-top:2rem;background:linear-gradient(135deg,rgba(200,242,100,.08) 0%,rgba(126,244,200,.08) 100%);border:1px solid rgba(200,242,100,.25);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;}
+.support-text h3{font-family:'Fraunces',serif;font-size:1rem;margin:0 0 .35rem;font-weight:600;}
+.support-text p{margin:0;font-size:.78rem;color:var(--muted);max-width:48ch;}
+.support-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#0d0d0f;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;text-decoration:none;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="https://universussoft.github.io/universalconverter/de/">← Universal Converter</a>
+    <div class="langs"><a href="https://universussoft.github.io/universalconverter/c/dpi-impressao/">🇵🇹 PT</a> · <a href="https://universussoft.github.io/universalconverter/en/c/dpi-print/">🇬🇧 EN</a> · <a href="https://universussoft.github.io/universalconverter/es/c/dpi-impresion/">🇪🇸 ES</a> · <a href="https://universussoft.github.io/universalconverter/fr/c/dpi-impression/">🇫🇷 FR</a> · <span class="lang-current">🇩🇪 DE</span> · <a href="https://universussoft.github.io/universalconverter/zh/c/dpi/">🇨🇳 ZH</a></div>
+  </div>
+  <p class="eyebrow">Digital</p>
+  <h1>🖨️ DPI / Druck</h1>
+  <p class="intro">Berechnet den DPI/PPI-Wert eines Bildes aus Pixelauflösung und Druckgröße, mit gängigen Druckauflösungen als Referenz.</p>
+  <iframe src="https://universussoft.github.io/universalconverter/index.html?embed=1&cat=%F0%9F%96%A8%EF%B8%8F%20DPI%20Impress%C3%A3o&lang=de&theme=auto&border=0" loading="lazy" title="DPI / Druck"></iframe>
+  
+  <div class="support">
+    <div class="support-text">
+      <h3>Nützlich gefunden?</h3>
+      <p>Dieses Tool ist kostenlos und werbefrei. Wenn es geholfen hat, unterstützen Sie die Entwicklung.</p>
+    </div>
+    <a class="support-btn" href="https://buy.stripe.com/eVq00i49xemXgjJfVufIs00" target="_blank" rel="noopener">Unterstützen · Zahlen Sie was Sie möchten</a>
+  </div>
+  <footer>DPI / Druck ist eine von 154+ kostenlosen Kategorien und Rechnern auf <a href="https://universussoft.github.io/universalconverter/de/">Universal Converter</a> — +1300 Einheiten, 6 Sprachen, ohne Werbung, ohne Anmeldung.</footer>
+</div>
+</body>
+</html>

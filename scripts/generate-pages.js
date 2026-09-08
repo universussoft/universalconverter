@@ -518,10 +518,12 @@ footer a{color:var(--muted);text-decoration:underline;}
 `;
 }
 
-// ── Per-language homepage shells (en/es/fr/de/zh) ────────────────────────────
-// The real app lives only at the PT root (index.html) — these are thin
-// translated shells, matching the category-page pattern, that embed the
-// full app via ?lang=<lang> (no ?embed=1, so the whole sidebar UI shows).
+// ── Per-language homepage hubs (pt/en/es/fr/de/zh) ───────────────────────────
+// The real interactive app lives only at the repo root (index.html). These
+// hubs are real, crawlable link-directory pages (grouped links to every
+// category/calculator page in that language) plus a prominent CTA to the
+// app itself — not an iframe, so Google can actually follow and rank the
+// internal links instead of seeing an opaque embedded widget.
 const HOME_TITLE = {
   pt: 'Conversor Universal', en: 'Universal Converter', es: 'Conversor Universal',
   fr: 'Convertisseur Universel', de: 'Universalumrechner', zh: '通用单位转换器',
@@ -543,20 +545,46 @@ const HOME_INTRO = {
   zh: '一套功能完整的单位换算与计算工具，完全在浏览器中运行 — 无需服务器、安装或任何依赖。',
 };
 
+const HOME_OPEN_APP = {
+  pt: 'Abrir o conversor →', en: 'Open the converter →', es: 'Abrir el conversor →',
+  fr: 'Ouvrir le convertisseur →', de: 'Umrechner öffnen →', zh: '打开换算器 →',
+};
+const HOME_BROWSE = {
+  pt: 'Ou explora todas as categorias e calculadoras abaixo:',
+  en: 'Or browse every category and calculator below:',
+  es: 'O explora todas las categorías y calculadoras a continuación:',
+  fr: 'Ou parcourez toutes les catégories et calculatrices ci-dessous :',
+  de: 'Oder durchstöbern Sie unten alle Kategorien und Rechner:',
+  zh: '或在下方浏览所有分类和计算器：',
+};
+
 function homeUrl(lang) {
-  return lang === 'pt' ? `${BASE_URL}/` : `${BASE_URL}/${lang}/`;
+  return `${BASE_URL}/${lang}/`;
 }
 
-function homepageTemplate(lang) {
+function homepageTemplate(lang, entries) {
   const title = `${HOME_TITLE[lang]} — ${UI.freeSuffix[lang]} | +1300 Units`;
   const canonical = homeUrl(lang);
-  const embedUrl = `${BASE_URL}/index.html?lang=${lang}`;
+  const appUrl = lang === 'pt' ? `${BASE_URL}/` : `${BASE_URL}/index.html?lang=${lang}`;
   const hreflangLinks = LANGS.map(l => `<link rel="alternate" hreflang="${LANG_LOCALE[l]}" href="${homeUrl(l)}">`).join('\n')
     + `\n<link rel="alternate" hreflang="x-default" href="${homeUrl('pt')}">`;
   const langSwitcher = LANGS.map(l => {
     const flag = { pt: '🇵🇹', en: '🇬🇧', es: '🇪🇸', fr: '🇫🇷', de: '🇩🇪', zh: '🇨🇳' }[l];
     return l === lang ? `<span class="lang-current">${flag} ${l.toUpperCase()}</span>` : `<a href="${homeUrl(l)}">${flag} ${l.toUpperCase()}</a>`;
   }).join(' · ');
+
+  // Group category links in the order groups first appear, translated headings.
+  const groupsOrder = [];
+  const byGroup = new Map();
+  entries.forEach(e => {
+    if (!byGroup.has(e.group)) { byGroup.set(e.group, []); groupsOrder.push(e.group); }
+    byGroup.get(e.group).push(e);
+  });
+  const sections = groupsOrder.map(g => {
+    const label = (GROUP_LABELS[g] && GROUP_LABELS[g][lang]) || g;
+    const links = byGroup.get(g).map(e => `<li><a href="${pageUrl(e, lang)}">${htmlEscape(e.names[lang])}</a></li>`).join('');
+    return `<section><h2>${htmlEscape(label)}</h2><ul class="linklist">${links}</ul></section>`;
+  }).join('\n');
 
   return `<!doctype html>
 <html lang="${LANG_LOCALE[lang]}">
@@ -580,7 +608,7 @@ ${hreflangLinks}
 @media (prefers-color-scheme: light){:root{--bg:#f5f5f0;--surface:#ffffff;--border:#d8d8e8;--accent:#3f6b00;--text:#1a1a22;--muted:#5a5a6a;}}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;line-height:1.65;}
-.wrap{max-width:900px;margin:0 auto;padding:2rem 1.25rem 3rem;}
+.wrap{max-width:960px;margin:0 auto;padding:2rem 1.25rem 3rem;}
 a{color:var(--accent);}
 .topbar{display:flex;justify-content:flex-end;margin-bottom:1rem;}
 .langs{font-size:.68rem;color:var(--muted);}
@@ -589,8 +617,16 @@ a{color:var(--accent);}
 .lang-current{color:var(--accent);font-weight:500;}
 h1{font-family:'Fraunces',serif;font-weight:700;font-size:2.4rem;margin:0 0 .4rem;line-height:1.1;text-align:center;color:var(--accent);}
 .tagline{text-align:center;color:var(--muted);font-size:.8rem;margin:0 0 1.5rem;}
-.intro{color:var(--muted);font-size:.92rem;margin:0 auto 1.5rem;max-width:60ch;text-align:center;}
-iframe{width:100%;height:900px;border:1px solid var(--border);border-radius:var(--radius);display:block;margin-bottom:2rem;background:var(--surface);}
+.intro{color:var(--muted);font-size:.92rem;margin:0 auto 1rem;max-width:60ch;text-align:center;}
+.cta-wrap{text-align:center;margin-bottom:.75rem;}
+.cta{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--accent);color:#0d0d0f;border-radius:8px;font-family:'DM Mono',monospace;font-size:.85rem;font-weight:500;text-decoration:none;}
+.browse{text-align:center;color:var(--muted);font-size:.78rem;margin:0 0 2rem;}
+section{margin-bottom:1.75rem;}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;margin:0 0 .6rem;border-bottom:1px solid var(--border);padding-bottom:.4rem;}
+.linklist{display:flex;flex-wrap:wrap;gap:6px 14px;padding:0;list-style:none;margin:0;}
+.linklist li{font-size:.78rem;}
+.linklist a{color:var(--text);text-decoration:none;}
+.linklist a:hover{color:var(--accent);text-decoration:underline;}
 footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);text-align:center;}
 .support{margin-top:2rem;background:linear-gradient(135deg,rgba(200,242,100,.08) 0%,rgba(126,244,200,.08) 100%);border:1px solid rgba(200,242,100,.25);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;}
 .support-text h3{font-family:'Fraunces',serif;font-size:1rem;margin:0 0 .35rem;font-weight:600;}
@@ -604,7 +640,9 @@ footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);f
   <h1>${htmlEscape(HOME_TITLE[lang])}</h1>
   <p class="tagline">${htmlEscape(HOME_TAGLINE[lang])}</p>
   <p class="intro">${htmlEscape(HOME_INTRO[lang])}</p>
-  <iframe src="${embedUrl}" loading="lazy" title="${htmlEscape(HOME_TITLE[lang])}"></iframe>
+  <div class="cta-wrap"><a class="cta" href="${appUrl}">${htmlEscape(HOME_OPEN_APP[lang])}</a></div>
+  <p class="browse">${htmlEscape(HOME_BROWSE[lang])}</p>
+  ${sections}
   <div class="support">
     <div class="support-text">
       <h3>${htmlEscape(UI.supTitle[lang])}</h3>
@@ -612,7 +650,7 @@ footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);f
     </div>
     <a class="support-btn" href="${DONATE_URL}" target="_blank" rel="noopener">${htmlEscape(UI.supBtn[lang])}</a>
   </div>
-  <footer>${htmlEscape(HOME_TITLE.pt)} · <a href="${homeUrl('pt')}">${homeUrl('pt')}</a></footer>
+  <footer>${htmlEscape(HOME_TITLE.pt)} · <a href="${appUrl}">${appUrl}</a></footer>
 </div>
 </body>
 </html>
@@ -624,9 +662,13 @@ function buildSitemap(entries) {
   const WEEKLY = new Set(['💱 Moedas', '⚡ Custo Eletricidade', '⛽ Custo Viagem', '🌍 Fusos Ao Vivo']);
   const rows = [];
 
+  // The real interactive app (Portuguese-first, but ?lang= switches it live).
+  rows.push(`  <url>\n    <loc>${BASE_URL}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`);
+
+  // Per-language link-directory hubs (pt included, for symmetry with /en/, /es/...).
   const homeAlternates = LANGS.map(l => `    <xhtml:link rel="alternate" hreflang="${LANG_LOCALE[l]}" href="${homeUrl(l)}"/>`).join('\n');
   LANGS.forEach(lang => {
-    rows.push(`  <url>\n    <loc>${homeUrl(lang)}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n${homeAlternates}\n  </url>`);
+    rows.push(`  <url>\n    <loc>${homeUrl(lang)}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n${homeAlternates}\n  </url>`);
   });
 
   entries.forEach(e => {
@@ -687,18 +729,19 @@ function main() {
     });
   });
 
-  // Per-language homepage shells (PT is the real app at the repo root already).
-  LANGS.filter(l => l !== 'pt').forEach(lang => {
+  // Per-language homepage hubs, including pt/ for symmetry with the others
+  // (the actual interactive app stays at the repo root, index.html).
+  LANGS.forEach(lang => {
     const dir = path.join(ROOT, lang);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), homepageTemplate(lang));
+    fs.writeFileSync(path.join(dir, 'index.html'), homepageTemplate(lang, entries));
   });
 
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(entries));
 
   console.log(`Generated ${written} category pages (${entries.length} categories × ${LANGS.length} languages)`);
-  console.log(`Generated ${LANGS.length - 1} translated homepages (en/es/fr/de/zh)`);
-  console.log(`Regenerated sitemap.xml with ${entries.length * LANGS.length + LANGS.length} URLs`);
+  console.log(`Generated ${LANGS.length} homepage hubs (pt/en/es/fr/de/zh)`);
+  console.log(`Regenerated sitemap.xml with ${entries.length * LANGS.length + LANGS.length + 1} URLs`);
   if (MISSING_TRANSLATIONS.size) {
     const list = [...MISSING_TRANSLATIONS].sort();
     fs.writeFileSync(path.join(__dirname, 'still-missing-translations.txt'), list.join('\n'));

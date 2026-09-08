@@ -1,6 +1,6 @@
 # Universal Unit Converter
 
-**+1300 units · 140+ categories · 6 languages · 100% free · no ads · single HTML file**
+**+1300 units · 150+ categories & calculators · 6 languages · 100% free · no ads · single HTML file**
 
 A comprehensive unit converter and calculator suite that runs entirely in the browser — no server, no installation, no dependencies. Just open the file.
 
@@ -8,7 +8,7 @@ A comprehensive unit converter and calculator suite that runs entirely in the br
 
 ## Features
 
-### Unit Conversion (125 categories, 1300+ units)
+### Unit Conversion (126 categories, 1300+ units)
 
 | Group | Categories |
 |---|---|
@@ -26,9 +26,10 @@ A comprehensive unit converter and calculator suite that runs entirely in the br
 | **Paper / Screen** | ISO Paper (A/B/C), NA/JIS Paper, Monitor/TV sizes |
 | **Cooking** | Volume, Weight, Wine Bottles |
 | **Mathematics** | Roman Numerals (up to 3,999,999), Percentages, Z-score, Probability |
+| **Time** | Age / Birthdate (full age, days to next birthday, day of week born, zodiac sign), Date Difference (days/weeks/months/business days between two dates) |
 | **Materials** | Gold/Metals, Alternative Fuels, Agrarian Measures, Batteries |
 
-### Interactive Calculators (15 cards)
+### Interactive Calculators (23 cards)
 
 | Calculator | Description |
 |---|---|
@@ -47,6 +48,14 @@ A comprehensive unit converter and calculator suite that runs entirely in the br
 | 🌡️ **Wind Chill** | Feels-like temperature (wind chill + heat index + humidex) |
 | ⛽ **Trip Cost** | Fuel cost calculator with multi-fuel comparison |
 | 🎨 **Paint** | Litres needed per room with coverage and can sizes |
+| 💡 **Tip / Bill Split** | Tip amount, total, per-person split, with quick 10/15/18/20/25% presets |
+| 🏷️ **Discount / Sale Price** | Final price and savings, with quick 10/20/30/50% presets |
+| 🛒 **Unit Price Compare** | Compares price-per-kg/L/unit between two products, shows the cheaper one and % saved |
+| 😴 **Sleep Calculator** | Ideal bed/wake-up times in 90-min cycles, either direction |
+| ⏳ **Countdown** | Days/weeks/months remaining (or elapsed) until any date |
+| 📏 **Body Fat %** | US Navy circumference method (height/neck/waist/hip), by sex |
+| 🎓 **Weighted Average / GPA** | Grades + weights/credits table → weighted average |
+| 🖥️ **Aspect Ratio** | Simplifies width×height to a ratio, decimal value, megapixels, common presets |
 
 ### Sport & Fitness Calculators
 
@@ -80,7 +89,7 @@ All category names, unit labels, calculator outputs, badges, buttons, and toolti
 ## Technical Details
 
 - **Single HTML file** — zero external dependencies at runtime (fonts load from Google Fonts)
-- **~535 KB** — everything included: all data, all logic, all styles
+- **~630 KB** — everything included: all data, all logic, all styles
 - **No build step** — edit and open directly in any browser
 - **Local storage** — saves language, theme, favourites, conversion history, active timezone clocks
 - **Live data** — currency rates fetched from `open.er-api.com` with 1h localStorage cache; falls back to hardcoded rates if offline
@@ -93,16 +102,16 @@ All category names, unit labels, calculator outputs, badges, buttons, and toolti
 ```
 index.html
 ├── <style>          CSS variables, layout, components (~700 lines)
-├── <body>           All card HTML (~600 lines)
-└── <script>         All logic (~7200 lines)
-    ├── CATEGORIES   125 category definitions with unit conversion factors
-    ├── C dict       147 entries for category name translations
-    ├── HTML_LBL     162 entries for static label translations
+├── <body>           All card HTML (~900 lines)
+└── <script>         All logic (~9500 lines)
+    ├── CATEGORIES   126 category definitions with unit conversion factors
+    ├── C dict       ~157 entries for category name translations
+    ├── HTML_LBL     ~197 entries for static label translations
     ├── VCAT_NAMES   24 virtual category name translations
-    ├── NEW_VCATS    15 virtual calculator cards
+    ├── NEW_VCATS    24 virtual calculator cards
     ├── CAT_GROUPS   Group definitions in 6 languages
     ├── Converters   toBase/fromBase, special converters (roman, rgb, ascii...)
-    ├── Calculators  15 interactive calculator functions
+    ├── Calculators  23 interactive calculator functions
     └── applyLang()  Full UI re-render on language switch
 ```
 

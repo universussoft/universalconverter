@@ -1603,6 +1603,143 @@
     <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:.75rem 0 .4rem;" id="sec-dpi-resolutions">Resoluções comuns de impressão</div>
     <div class="vcalc-grid" id="dpi-grid"></div>
   </div>
+
+  <!-- 🗓️ DIFERENÇA DE DATAS -->
+  <div class="vcalc-card" id="card-datediff">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-datediff">🗓️ Diferença de Datas</span></div>
+    <div class="vcalc-row vcalc-row-2">
+      <div><div class="vcalc-label" id="lbl-data-inicial">Data inicial</div><input class="vcalc-input" type="date" id="dd-start" oninput="calcDateDiff()"></div>
+      <div><div class="vcalc-label" id="lbl-data-final">Data final</div><input class="vcalc-input" type="date" id="dd-end" oninput="calcDateDiff()"></div>
+    </div>
+    <div class="vcalc-result" id="datediff-result">
+      <div class="vcalc-result-val" id="datediff-res-val"></div>
+      <div class="vcalc-result-desc" id="datediff-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="datediff-grid"></div>
+  </div>
+
+  <!-- 💡 GORJETA / DIVIDIR CONTA -->
+  <div class="vcalc-card" id="card-tip">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-tip">💡 Gorjeta / Dividir Conta</span></div>
+    <div class="vcalc-tabs" id="tip-preset-tabs"></div>
+    <div class="vcalc-row vcalc-row-3">
+      <div><div class="vcalc-label" id="lbl-valor-da-conta">Valor da conta</div><input class="vcalc-input" type="number" id="tip-bill" value="50" min="0" step="0.01" oninput="calcTip()"></div>
+      <div><div class="vcalc-label" id="lbl-gorjeta-pct">Gorjeta (%)</div><input class="vcalc-input" type="number" id="tip-pct" value="10" min="0" max="100" step="1" oninput="calcTip()"></div>
+      <div><div class="vcalc-label" id="lbl-numero-de-pessoas">Nº de pessoas</div><input class="vcalc-input" type="number" id="tip-people" value="1" min="1" step="1" oninput="calcTip()"></div>
+    </div>
+    <div class="vcalc-result" id="tip-result">
+      <div class="vcalc-result-val" id="tip-res-val"></div>
+      <div class="vcalc-result-desc" id="tip-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="tip-grid"></div>
+  </div>
+
+  <!-- 🏷️ DESCONTO / PREÇO FINAL -->
+  <div class="vcalc-card" id="card-discount">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-discount">🏷️ Desconto / Preço Final</span></div>
+    <div class="vcalc-tabs" id="disc-preset-tabs"></div>
+    <div class="vcalc-row vcalc-row-2">
+      <div><div class="vcalc-label" id="lbl-preco-original">Preço original</div><input class="vcalc-input" type="number" id="disc-price" value="100" min="0" step="0.01" oninput="calcDiscount()"></div>
+      <div><div class="vcalc-label" id="lbl-desconto-pct">Desconto (%)</div><input class="vcalc-input" type="number" id="disc-pct" value="20" min="0" max="100" step="0.1" oninput="calcDiscount()"></div>
+    </div>
+    <div class="vcalc-result" id="discount-result">
+      <div class="vcalc-result-val" id="discount-res-val"></div>
+      <div class="vcalc-result-desc" id="discount-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="discount-grid"></div>
+  </div>
+
+  <!-- 🛒 COMPARADOR DE PREÇO UNITÁRIO -->
+  <div class="vcalc-card" id="card-unitprice">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-unitprice">🛒 Comparador de Preço</span></div>
+    <div class="vcalc-row vcalc-row-3">
+      <div><div class="vcalc-label" id="lbl-unidade-medida">Unidade</div><select class="vcalc-select" id="up-unit" onchange="calcUnitPrice()">
+        <option value="kg">kg</option><option value="g">g</option><option value="L">L</option><option value="mL">mL</option><option value="un">un.</option>
+      </select></div>
+    </div>
+    <div class="vcalc-row vcalc-row-2">
+      <div><div class="vcalc-label" id="lbl-produto-a-preco">Produto A — Preço</div><input class="vcalc-input" type="number" id="up-a-price" value="2.50" min="0" step="0.01" oninput="calcUnitPrice()"></div>
+      <div><div class="vcalc-label" id="lbl-produto-a-qtd">Produto A — Quantidade</div><input class="vcalc-input" type="number" id="up-a-qty" value="1" min="0" step="0.01" oninput="calcUnitPrice()"></div>
+    </div>
+    <div class="vcalc-row vcalc-row-2">
+      <div><div class="vcalc-label" id="lbl-produto-b-preco">Produto B — Preço</div><input class="vcalc-input" type="number" id="up-b-price" value="4.20" min="0" step="0.01" oninput="calcUnitPrice()"></div>
+      <div><div class="vcalc-label" id="lbl-produto-b-qtd">Produto B — Quantidade</div><input class="vcalc-input" type="number" id="up-b-qty" value="1.5" min="0" step="0.01" oninput="calcUnitPrice()"></div>
+    </div>
+    <div class="vcalc-result" id="unitprice-result">
+      <div class="vcalc-result-val" id="unitprice-res-val"></div>
+      <div class="vcalc-result-desc" id="unitprice-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="unitprice-grid"></div>
+  </div>
+
+  <!-- 😴 CALCULADORA DE SONO -->
+  <div class="vcalc-card" id="card-sleep">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-sleep">😴 Calculadora de Sono</span></div>
+    <div class="vcalc-tabs" id="sleep-mode-tabs"></div>
+    <div style="max-width:220px;margin-bottom:.75rem;"><div class="vcalc-label" id="lbl-hora">Hora</div><input class="vcalc-input" type="time" id="sleep-time" value="07:00" oninput="calcSleep()"></div>
+    <div class="vcalc-result" id="sleep-result">
+      <div class="vcalc-result-val" id="sleep-res-val"></div>
+      <div class="vcalc-result-desc" id="sleep-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="sleep-grid"></div>
+  </div>
+
+  <!-- ⏳ CONTAGEM DECRESCENTE -->
+  <div class="vcalc-card" id="card-countdown">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-countdown">⏳ Contagem Decrescente</span></div>
+    <div style="max-width:260px;margin-bottom:.75rem;"><div class="vcalc-label" id="lbl-data-do-evento">Data do evento</div><input class="vcalc-input" type="date" id="cd-date" oninput="calcCountdown()"></div>
+    <div class="vcalc-result" id="countdown-result">
+      <div class="vcalc-result-val" id="countdown-res-val"></div>
+      <div class="vcalc-result-desc" id="countdown-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="countdown-grid"></div>
+  </div>
+
+  <!-- 📏 % GORDURA CORPORAL -->
+  <div class="vcalc-card" id="card-bodyfat">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-bodyfat">📏 % Gordura Corporal</span></div>
+    <div class="vcalc-tabs" id="bf-sex-tabs"></div>
+    <div class="vcalc-row vcalc-row-3">
+      <div><div class="vcalc-label" id="lbl-altura-cm">Altura (cm)</div><input class="vcalc-input" type="number" id="bf-height" value="170" min="1" step="0.1" oninput="calcBodyFat()"></div>
+      <div><div class="vcalc-label" id="lbl-pescoco-cm">Pescoço (cm)</div><input class="vcalc-input" type="number" id="bf-neck" value="36" min="1" step="0.1" oninput="calcBodyFat()"></div>
+      <div><div class="vcalc-label" id="lbl-cintura-cm">Cintura (cm)</div><input class="vcalc-input" type="number" id="bf-waist" value="85" min="1" step="0.1" oninput="calcBodyFat()"></div>
+    </div>
+    <div class="vcalc-row vcalc-row-2" id="bf-hip-row">
+      <div><div class="vcalc-label" id="lbl-anca-cm">Anca (cm)</div><input class="vcalc-input" type="number" id="bf-hip" value="95" min="1" step="0.1" oninput="calcBodyFat()"></div>
+    </div>
+    <div class="vcalc-result" id="bodyfat-result">
+      <div class="vcalc-result-val" id="bodyfat-res-val"></div>
+      <div class="vcalc-result-desc" id="bodyfat-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="bodyfat-grid"></div>
+  </div>
+
+  <!-- 🎓 MÉDIA PONDERADA -->
+  <div class="vcalc-card" id="card-gpa">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-gpa">🎓 Média Ponderada</span></div>
+    <table class="vcalc-table" id="gpa-table">
+      <thead><tr><th id="th-gpa-nota">Nota</th><th id="th-gpa-peso">Peso / Créditos</th></tr></thead>
+      <tbody id="gpa-tbody"></tbody>
+    </table>
+    <div class="vcalc-result" id="gpa-result">
+      <div class="vcalc-result-val" id="gpa-res-val"></div>
+      <div class="vcalc-result-desc" id="gpa-res-desc"></div>
+    </div>
+  </div>
+
+  <!-- 🖥️ RÁCIO DE ASPETO -->
+  <div class="vcalc-card" id="card-aspect">
+    <div class="lookup-header"><span class="lookup-badge" id="badge-aspect">🖥️ Rácio de Aspeto</span></div>
+    <div class="vcalc-row vcalc-row-2">
+      <div><div class="vcalc-label" id="lbl-largura-px-ar">Largura (px)</div><input class="vcalc-input" type="number" id="ar-w" value="1920" min="1" oninput="calcAspect()"></div>
+      <div><div class="vcalc-label" id="lbl-altura-px-ar">Altura (px)</div><input class="vcalc-input" type="number" id="ar-h" value="1080" min="1" oninput="calcAspect()"></div>
+    </div>
+    <div class="vcalc-result" id="aspect-result">
+      <div class="vcalc-result-val" id="aspect-res-val"></div>
+      <div class="vcalc-result-desc" id="aspect-res-desc"></div>
+    </div>
+    <div class="vcalc-grid" id="aspect-grid"></div>
+  </div>
   <div class="all-grid" id="allGrid"></div>
   <div class="support-banner">
     <div class="support-text">
@@ -1798,7 +1935,17 @@ const C={
   "🚴 Ciclismo Potência":"🚴 Cycling Power|🚴 Ciclismo Potencia|🚴 Puissance Cyclisme|🚴 Radleistung|🚴 自行车功率",
   "🏊 Natação":"🏊 Swimming|🏊 Natación|🏊 Natation|🏊 Schwimmen|🏊 游泳",
   "🏔️ Altitude Hipóxia":"🏔️ Altitude & Hypoxia|🏔️ Altitud e Hipoxia|🏔️ Altitude & Hypoxie|🏔️ Höhe & Hypoxie|🏔️ 海拔与缺氧",
-  "🖨️ DPI Impressão":"🖨️ DPI / Print|🖨️ DPI / Impresión|🖨️ DPI / Impression|🖨️ DPI / Druck|🖨️ DPI 打印"
+  "🖨️ DPI Impressão":"🖨️ DPI / Print|🖨️ DPI / Impresión|🖨️ DPI / Impression|🖨️ DPI / Druck|🖨️ DPI 打印",
+  "🎂 Idade / Nascimento":"🎂 Age / Birthdate|🎂 Edad / Nacimiento|🎂 Âge / Naissance|🎂 Alter / Geburtsdatum|🎂 年龄/出生日期",
+  "🗓️ Diferença de Datas":"🗓️ Date Difference|🗓️ Diferencia de Fechas|🗓️ Différence de Dates|🗓️ Datumsdifferenz|🗓️ 日期差计算",
+  "💡 Gorjeta / Dividir Conta":"💡 Tip / Bill Split|💡 Propina / Dividir Cuenta|💡 Pourboire / Partage|💡 Trinkgeld / Rechnung teilen|💡 小费/分账",
+  "🏷️ Desconto / Preço Final":"🏷️ Discount / Sale Price|🏷️ Descuento / Precio Final|🏷️ Remise / Prix Final|🏷️ Rabatt / Endpreis|🏷️ 折扣/最终价格",
+  "🛒 Comparador de Preço":"🛒 Unit Price Compare|🛒 Comparador de Precio|🛒 Comparateur de Prix|🛒 Preisvergleich|🛒 单价比较",
+  "😴 Calculadora de Sono":"😴 Sleep Calculator|😴 Calculadora de Sueño|😴 Calculateur de Sommeil|😴 Schlafrechner|😴 睡眠计算器",
+  "⏳ Contagem Decrescente":"⏳ Countdown|⏳ Cuenta Regresiva|⏳ Compte à Rebours|⏳ Countdown|⏳ 倒计时",
+  "📏 % Gordura Corporal":"📏 Body Fat %|📏 % Grasa Corporal|📏 % Masse Grasse|📏 Körperfettanteil|📏 体脂率",
+  "🎓 Média Ponderada":"🎓 Weighted Average|🎓 Media Ponderada|🎓 Moyenne Pondérée|🎓 Gewichteter Durchschnitt|🎓 加权平均",
+  "🖥️ Rácio de Aspeto":"🖥️ Aspect Ratio|🖥️ Relación de Aspecto|🖥️ Format d’Image|🖥️ Seitenverhältnis|🖥️ 宽高比"
 
 };
 
@@ -3231,6 +3378,13 @@ const CATEGORIES={
 // ── JUROS SIMPLES / COMPOSTOS ─────────────────────────────────────────────────
 "💰 Juros":{special:"interestcalc",u:["placeholder"]},
 
+// ── IDADE / DATA DE NASCIMENTO ────────────────────────────────────────────────
+"🎂 Idade / Nascimento":{special:"agecalc",u:[
+  "Data Nascimento (AAAA-MM-DD)","Idade (anos)","Idade completa (anos, meses, dias)",
+  "Idade (meses)","Idade (semanas)","Idade (dias)","Idade (horas)",
+  "Dias até próximo aniversário","Dia da semana (nascimento)","Signo do Zodíaco"
+]},
+
 // ── FUSO HORÁRIO ─────────────────────────────────────────────────────────────
 "🕐 Fuso Horário":{fashion:true,base:"UTC offset horas",rows:[
   ["UTC−12:00 (Ilhas Baker/Howland)",-12],
@@ -4034,7 +4188,7 @@ function toBase(v,unit){
   if(cat.special==="cidr") return n;
   if(cat.special==="bandwidth") return n;
   if(cat.special==="pct") return n;
-  if(cat.special==="ascii"||cat.special==="gps") return v;
+  if(cat.special==="ascii"||cat.special==="gps"||cat.special==="agecalc") return v;
   if(cat.special==="rgb") return v;
   if(cat.special==="interestcalc"||cat.special==="hrzone") return n;
   return n*cat.u[unit];
@@ -4061,7 +4215,7 @@ function fromBase(base,unit){
   if(cat.special==="cidr") return cidrConvert(base,"Prefixo CIDR (/n)",unit);
   if(cat.special==="bandwidth") return bandwidthConvert(base,"Mbps (megabits/s)",unit);
   if(cat.special==="pct") return pctConvert(base,"Percentagem (%)",unit);
-  if(cat.special==="ascii"||cat.special==="gps") return base;
+  if(cat.special==="ascii"||cat.special==="gps"||cat.special==="agecalc") return base;
   if(cat.special==="rgb") return rgbConvert(base,"HEX (#RRGGBB)",unit);
   if(cat.special==="interestcalc"||cat.special==="hrzone") return base;
   return base/cat.u[unit];
@@ -4129,6 +4283,17 @@ function applyLang(){
   if(typeof calcBrocas==='function') calcBrocas();
   if(typeof calcIVA==='function') calcIVA();
   if(typeof calcDPI==='function') calcDPI();
+  if(typeof calcDateDiff==='function') calcDateDiff();
+  if(typeof calcTip==='function') calcTip();
+  if(typeof calcDiscount==='function') calcDiscount();
+  if(typeof calcUnitPrice==='function') calcUnitPrice();
+  if(typeof initSleepTabs==='function') initSleepTabs();
+  if(typeof calcSleep==='function') calcSleep();
+  if(typeof calcCountdown==='function') calcCountdown();
+  if(typeof initBfTabs==='function') initBfTabs();
+  if(typeof calcBodyFat==='function') calcBodyFat();
+  if(typeof calcGPA==='function') calcGPA();
+  if(typeof calcAspect==='function') calcAspect();
   if(typeof calcRule3==='function') calcRule3();
   if(typeof calcAWG==='function') calcAWG();
   if(typeof calcAltitude==='function') calcAltitude();
@@ -4413,6 +4578,10 @@ function populateSelects(){
 
   mainCard.classList.remove('hidden');
   allLabel.style.display='';
+  if(cat.special==="agecalc"){
+    const inp=document.getElementById('fromVal');
+    if(inp && (!inp.value || !ageInfoFromString(inp.value))) inp.value='1990-01-01';
+  }
   const units=ulist(cat);
   const fS=document.getElementById('fromUnit'),tS=document.getElementById('toUnit');
   fS.innerHTML='';tS.innerHTML='';
@@ -4948,6 +5117,50 @@ function convert(){
       chip.className='res-chip';
       chip.innerHTML=`<div class="rv" style="font-size:.85rem;font-family:'DM Mono',monospace;">${val}</div><div class="ru">${name}</div>`;
       chip.onclick=()=>{document.getElementById('toUnit').value=name;convert();};
+      grid.appendChild(chip);
+    });
+    return;
+  }
+
+  // ── IDADE / DATA DE NASCIMENTO ─────────────────────────────────────────────
+  if(cat.special==="agecalc"){
+    const grid=document.getElementById('allGrid');
+    grid.innerHTML='';
+    const info=ageInfoFromString(fv);
+    const L=k=>(AGE_LBL[k]&&(AGE_LBL[k][currentLang]||AGE_LBL[k].pt))||k;
+    if(!info){
+      document.getElementById('resBig').textContent=L('invalid');
+      document.getElementById('resUnit').textContent='';
+      document.getElementById('toVal').value='';
+      return;
+    }
+    if(info.future){
+      document.getElementById('resBig').textContent=L('future');
+      document.getElementById('resUnit').textContent='';
+      document.getElementById('toVal').value='';
+      return;
+    }
+    const fullAge=`${info.years} ${L('yWord')}, ${info.months} ${L('mWord')}, ${info.days} ${L('dWord')}`;
+    document.getElementById('resBig').textContent=fullAge;
+    document.getElementById('resUnit').textContent=L('ymd');
+    document.getElementById('toVal').value='';
+    const rows=[
+      ['Idade (anos)', L('years'), `${info.years} ${L('yWord')}`],
+      ['Idade completa (anos, meses, dias)', L('ymd'), fullAge],
+      ['Idade (meses)', L('months'), `${info.totalMonths} ${L('mWord')}`],
+      ['Idade (semanas)', L('weeks'), `${info.totalWeeks} ${L('wWord')}`],
+      ['Idade (dias)', L('days'), `${info.totalDays} ${L('dWord')}`],
+      ['Idade (horas)', L('hours'), `${info.totalHours.toLocaleString(undefined,{maximumFractionDigits:0})} ${L('hWord')}`],
+      ['Dias até próximo aniversário', L('nextBday'), info.daysToNext===0?L('todayBday'):`${info.daysToNext} ${L('dWord')}`],
+      ['Dia da semana (nascimento)', L('weekday'), WEEKDAY_NAMES[info.weekday][currentLang]||WEEKDAY_NAMES[info.weekday].pt],
+      ['Signo do Zodíaco', L('zodiac'), `${info.zodiacSym} ${(ZODIAC_NAME_I18N[info.zodiacName]&&ZODIAC_NAME_I18N[info.zodiacName][currentLang])||info.zodiacName}`],
+    ];
+    rows.forEach(([unitKey,label,val])=>{
+      if(unitKey===fu)return;
+      const chip=document.createElement('div');
+      chip.className='res-chip';
+      chip.innerHTML=`<div class="rv" style="font-size:.85rem;">${val}</div><div class="ru">${label}</div>`;
+      chip.onclick=()=>{document.getElementById('toUnit').value=unitKey;convert();};
       grid.appendChild(chip);
     });
     return;
@@ -5661,6 +5874,16 @@ let calcCommittedValue = null; // last value we committed to convert()
 
 function handleCalcInput() {
   const raw = fromValInput.value;
+  const curCat = CATEGORIES[currentCat];
+
+  if(curCat && curCat.special==="agecalc") {
+    // Dates contain "-" and "/" — never treat them as arithmetic expressions
+    calcPreview.classList.remove('visible','ok','err');
+    fromValInput.classList.remove('calc-mode','calc-err');
+    calcCommittedValue = null;
+    convert();
+    return;
+  }
 
   if(!isExpression(raw)) {
     // Plain number — hide preview, run convert normally
@@ -5777,7 +6000,7 @@ const CAT_GROUPS = {
     '📄 Papel / Monitor':  ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 Culinária':        ['🍷 Garrafas Vinho','🍳 Culinária'],
     '💰 Finanças':         ['💰 Juros','💱 Moedas'],
-    '🕐 Tempo / Zona':     ['🕐 Fuso Horário'],
+    '🕐 Tempo / Zona':     ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 Matemática':       ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ Materiais':        ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -5798,7 +6021,7 @@ const CAT_GROUPS = {
     '📄 Paper / Screen':   ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 Cooking':          ['🍷 Garrafas Vinho'],
     '💰 Finance':          ['💰 Juros','💱 Moedas'],
-    '🕐 Time / Zone':      ['🕐 Fuso Horário'],
+    '🕐 Time / Zone':      ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 Mathematics':      ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ Materials':        ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -5819,7 +6042,7 @@ const CAT_GROUPS = {
     '📄 Papel / Pantalla': ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 Cocina':        ['🍷 Garrafas Vinho','🍳 Culinária'],
     '💰 Finanzas':         ['💰 Juros','💱 Moedas'],
-    '🕐 Tiempo / Zona':    ['🕐 Fuso Horário'],
+    '🕐 Tiempo / Zona':    ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 Matemáticas':      ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ Materiales':       ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -5840,7 +6063,7 @@ const CAT_GROUPS = {
     '📄 Papier / Écran':   ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 Cuisine':        ['🍷 Garrafas Vinho','🍳 Culinária'],
     '💰 Finance':          ['💰 Juros','💱 Moedas'],
-    '🕐 Temps / Fuseau':   ['🕐 Fuso Horário'],
+    '🕐 Temps / Fuseau':   ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 Mathématiques':    ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ Matériaux':        ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -5861,7 +6084,7 @@ const CAT_GROUPS = {
     '📄 Papier / Monitor': ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 Küche':        ['🍷 Garrafas Vinho','🍳 Culinária'],
     '💰 Finanzen':         ['💰 Juros','💱 Moedas'],
-    '🕐 Zeit / Zone':      ['🕐 Fuso Horário'],
+    '🕐 Zeit / Zone':      ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 Mathematik':       ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ Materialien':      ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -5882,7 +6105,7 @@ const CAT_GROUPS = {
     '📄 纸张/屏幕':        ['📄 Papel ISO (A/B/C)','📋 Papel NA / JIS','🖥️ Monitor / TV'],
     '🍳 烹饪':        ['🍷 Garrafas Vinho','🍳 Culinária'],
     '💰 金融':             ['💰 Juros','💱 Moedas'],
-    '🕐 时间/时区':        ['🕐 Fuso Horário'],
+    '🕐 时间/时区':        ['🕐 Fuso Horário','🎂 Idade / Nascimento','🗓️ Diferença de Datas','⏳ Contagem Decrescente'],
     '🔢 数学':             ['🔢 Números Romanos','📊 Percentagens','📉 Z-score','🎲 Probabilidade','⚖️ Proporções'],
     '⛏️ 材料':             ['🥇 Ouro / Metais','⛽ Combust. Alt.','🌾 Medidas Agrárias','🔋 Baterias'],
   },
@@ -6271,6 +6494,37 @@ const HTML_LBL={
   'badge-swim':      {pt:'🏊 Natação & Piscina',       en:'🏊 Swimming & Pool',        es:'🏊 Natación & Piscina',    fr:'🏊 Natation & Piscine',     de:'🏊 Schwimmen & Becken',  zh:'🏊 游泳与泳池'},
   'badge-altitude':  {pt:'🏔️ Altitude & Hipóxia',     en:'🏔️ Altitude & Hypoxia',    es:'🏔️ Altitud & Hipoxia',    fr:'🏔️ Altitude & Hypoxie',    de:'🏔️ Höhe & Hypoxie',     zh:'🏔️ 海拔与缺氧'},
   'badge-dpi':       {pt:'🖨️ DPI & Impressão',        en:'🖨️ DPI & Printing',        es:'🖨️ DPI & Impresión',       fr:'🖨️ DPI & Impression',      de:'🖨️ DPI & Druck',        zh:'🖨️ DPI与打印'},
+  'badge-datediff':  {pt:'🗓️ Diferença de Datas',     en:'🗓️ Date Difference',       es:'🗓️ Diferencia de Fechas', fr:'🗓️ Différence de Dates',   de:'🗓️ Datumsdifferenz',    zh:'🗓️ 日期差计算'},
+  'lbl-data-inicial':{pt:'Data inicial',en:'Start date',es:'Fecha inicial',fr:'Date de début',de:'Startdatum',zh:'起始日期'},
+  'lbl-data-final':  {pt:'Data final',en:'End date',es:'Fecha final',fr:'Date de fin',de:'Enddatum',zh:'结束日期'},
+  'badge-tip':       {pt:'💡 Gorjeta & Dividir Conta', en:'💡 Tip & Bill Split',       es:'💡 Propina & Dividir Cuenta',fr:'💡 Pourboire & Partage',   de:'💡 Trinkgeld & Rechnung teilen', zh:'💡 小费与分账'},
+  'lbl-valor-da-conta':{pt:'Valor da conta',en:'Bill amount',es:'Importe de la cuenta',fr:'Montant de l’addition',de:'Rechnungsbetrag',zh:'账单金额'},
+  'lbl-gorjeta-pct': {pt:'Gorjeta (%)',en:'Tip (%)',es:'Propina (%)',fr:'Pourboire (%)',de:'Trinkgeld (%)',zh:'小费 (%)'},
+  'lbl-numero-de-pessoas':{pt:'Nº de pessoas',en:'Number of people',es:'Nº de personas',fr:'Nombre de personnes',de:'Anzahl Personen',zh:'人数'},
+  'badge-discount':  {pt:'🏷️ Desconto & Preço Final', en:'🏷️ Discount & Sale Price',  es:'🏷️ Descuento & Precio Final',fr:'🏷️ Remise & Prix Final', de:'🏷️ Rabatt & Endpreis',  zh:'🏷️ 折扣与最终价格'},
+  'lbl-preco-original':{pt:'Preço original',en:'Original price',es:'Precio original',fr:'Prix original',de:'Originalpreis',zh:'原价'},
+  'lbl-desconto-pct':{pt:'Desconto (%)',en:'Discount (%)',es:'Descuento (%)',fr:'Remise (%)',de:'Rabatt (%)',zh:'折扣 (%)'},
+  'badge-unitprice': {pt:'🛒 Comparador de Preço',  en:'🛒 Unit Price Compare',   es:'🛒 Comparador de Precio', fr:'🛒 Comparateur de Prix',  de:'🛒 Preisvergleich',       zh:'🛒 单价比较'},
+  'lbl-unidade-medida':{pt:'Unidade',en:'Unit',es:'Unidad',fr:'Unité',de:'Einheit',zh:'单位'},
+  'lbl-produto-a-preco':{pt:'Produto A — Preço',en:'Product A — Price',es:'Producto A — Precio',fr:'Produit A — Prix',de:'Produkt A — Preis',zh:'产品A — 价格'},
+  'lbl-produto-a-qtd':{pt:'Produto A — Quantidade',en:'Product A — Quantity',es:'Producto A — Cantidad',fr:'Produit A — Quantité',de:'Produkt A — Menge',zh:'产品A — 数量'},
+  'lbl-produto-b-preco':{pt:'Produto B — Preço',en:'Product B — Price',es:'Producto B — Precio',fr:'Produit B — Prix',de:'Produkt B — Preis',zh:'产品B — 价格'},
+  'lbl-produto-b-qtd':{pt:'Produto B — Quantidade',en:'Product B — Quantity',es:'Producto B — Cantidad',fr:'Produit B — Quantité',de:'Produkt B — Menge',zh:'产品B — 数量'},
+  'badge-sleep':     {pt:'😴 Calculadora de Sono',  en:'😴 Sleep Calculator',     es:'😴 Calculadora de Sueño', fr:'😴 Calculateur de Sommeil',de:'😴 Schlafrechner',        zh:'😴 睡眠计算器'},
+  'lbl-hora':{pt:'Hora',en:'Time',es:'Hora',fr:'Heure',de:'Uhrzeit',zh:'时间'},
+  'badge-countdown': {pt:'⏳ Contagem Decrescente', en:'⏳ Countdown',            es:'⏳ Cuenta Regresiva',    fr:'⏳ Compte à Rebours',     de:'⏳ Countdown',            zh:'⏳ 倒计时'},
+  'lbl-data-do-evento':{pt:'Data do evento',en:'Event date',es:'Fecha del evento',fr:'Date de l’événement',de:'Datum des Ereignisses',zh:'活动日期'},
+  'badge-bodyfat':   {pt:'📏 % Gordura Corporal',   en:'📏 Body Fat %',           es:'📏 % Grasa Corporal',    fr:'📏 % Masse Grasse',       de:'📏 Körperfettanteil',     zh:'📏 体脂率'},
+  'lbl-altura-cm':{pt:'Altura (cm)',en:'Height (cm)',es:'Altura (cm)',fr:'Taille (cm)',de:'Größe (cm)',zh:'身高 (cm)'},
+  'lbl-pescoco-cm':{pt:'Pescoço (cm)',en:'Neck (cm)',es:'Cuello (cm)',fr:'Cou (cm)',de:'Hals (cm)',zh:'颈围 (cm)'},
+  'lbl-cintura-cm':{pt:'Cintura (cm)',en:'Waist (cm)',es:'Cintura (cm)',fr:'Taille (cm)',de:'Taille (cm)',zh:'腰围 (cm)'},
+  'lbl-anca-cm':{pt:'Anca (cm)',en:'Hip (cm)',es:'Cadera (cm)',fr:'Hanches (cm)',de:'Hüfte (cm)',zh:'臀围 (cm)'},
+  'badge-gpa':       {pt:'🎓 Média Ponderada',      en:'🎓 Weighted Average',     es:'🎓 Media Ponderada',     fr:'🎓 Moyenne Pondérée',     de:'🎓 Gewichteter Durchschnitt', zh:'🎓 加权平均'},
+  'th-gpa-nota':{pt:'Nota',en:'Grade',es:'Nota',fr:'Note',de:'Note',zh:'成绩'},
+  'th-gpa-peso':{pt:'Peso / Créditos',en:'Weight / Credits',es:'Peso / Créditos',fr:'Poids / Crédits',de:'Gewicht / Credits',zh:'权重/学分'},
+  'badge-aspect':    {pt:'🖥️ Rácio de Aspeto',      en:'🖥️ Aspect Ratio',        es:'🖥️ Relación de Aspecto', fr:'🖥️ Format d’Image',      de:'🖥️ Seitenverhältnis',    zh:'🖥️ 宽高比'},
+  'lbl-largura-px-ar':{pt:'Largura (px)',en:'Width (px)',es:'Ancho (px)',fr:'Largeur (px)',de:'Breite (px)',zh:'宽度(px)'},
+  'lbl-altura-px-ar':{pt:'Altura (px)',en:'Height (px)',es:'Alto (px)',fr:'Hauteur (px)',de:'Höhe (px)',zh:'高度(px)'},
   'lbl-altitude':{pt:'Altitude',en:'Altitude',es:'Altitud',fr:'Altitude',de:'Höhe',zh:'海拔'},
   'lbl-altura-m':{pt:'Altura (m)',en:'Height (m)',es:'Altura (m)',fr:'Hauteur (m)',de:'Höhe (m)',zh:'高度(m)'},
   'lbl-altura-px':{pt:'Altura (px)',en:'Height (px)',es:'Altura (px)',fr:'Hauteur (px)',de:'Höhe (px)',zh:'高度(px)'},
@@ -7837,6 +8091,410 @@ function calcDPI(){
 }
 calcDPI();
 
+// ── 🗓️ DIFERENÇA DE DATAS ─────────────────────────────────────────────────────
+const DATEDIFF_I18N={
+  days:     {pt:'dias',en:'days',es:'días',fr:'jours',de:'Tage',zh:'天'},
+  weeks:    {pt:'Semanas',en:'Weeks',es:'Semanas',fr:'Semaines',de:'Wochen',zh:'周数'},
+  months:   {pt:'Meses',en:'Months',es:'Meses',fr:'Mois',de:'Monate',zh:'月数'},
+  business: {pt:'Dias úteis',en:'Business days',es:'Días hábiles',fr:'Jours ouvrés',de:'Werktage',zh:'工作日'},
+  hours:    {pt:'Horas',en:'Hours',es:'Horas',fr:'Heures',de:'Stunden',zh:'小时数'},
+  yWord:    {pt:'anos',en:'years',es:'años',fr:'ans',de:'Jahre',zh:'年'},
+  mWord:    {pt:'meses',en:'months',es:'meses',fr:'mois',de:'Monate',zh:'个月'},
+  wWord:    {pt:'semanas',en:'weeks',es:'semanas',fr:'semaines',de:'Wochen',zh:'周'},
+  dWord:    {pt:'dias',en:'days',es:'días',fr:'jours',de:'Tage',zh:'天'},
+  hWord:    {pt:'horas',en:'hours',es:'horas',fr:'heures',de:'Stunden',zh:'小时'},
+  reversed: {pt:'datas invertidas',en:'dates reversed',es:'fechas invertidas',fr:'dates inversées',de:'Daten vertauscht',zh:'日期已互换'},
+};
+function businessDaysBetween(start,end,totalDays){
+  const fullWeeks=Math.floor(totalDays/7);
+  let biz=fullWeeks*5;
+  const remainder=totalDays-fullWeeks*7;
+  const startDay=start.getUTCDay();
+  for(let i=1;i<=remainder;i++){
+    const d=(startDay+i)%7;
+    if(d!==0&&d!==6) biz++;
+  }
+  return biz;
+}
+function calcDateDiff(){
+  const s1=s('dd-start'), s2=s('dd-end');
+  const L=currentLang;
+  const resVal=document.getElementById('datediff-res-val');
+  const resDesc=document.getElementById('datediff-res-desc');
+  document.getElementById('datediff-grid').innerHTML='';
+  if(!s1||!s2){ resVal.textContent=''; resDesc.textContent=''; return; }
+  const [y1,m1,d1]=s1.split('-').map(Number);
+  const [y2,m2,d2]=s2.split('-').map(Number);
+  let start=new Date(Date.UTC(y1,m1-1,d1));
+  let end=new Date(Date.UTC(y2,m2-1,d2));
+  const swapped=start>end;
+  if(swapped){ const t=start; start=end; end=t; }
+  const totalDays=Math.round((end-start)/86400000);
+  let years=end.getUTCFullYear()-start.getUTCFullYear();
+  let months=end.getUTCMonth()-start.getUTCMonth();
+  let days=end.getUTCDate()-start.getUTCDate();
+  if(days<0){ months--; days+=new Date(Date.UTC(end.getUTCFullYear(),end.getUTCMonth(),0)).getUTCDate(); }
+  if(months<0){ years--; months+=12; }
+  const totalWeeks=Math.floor(totalDays/7);
+  const totalMonths=years*12+months;
+  const businessDays=businessDaysBetween(start,end,totalDays);
+  document.getElementById('datediff-result').classList.add('visible');
+  const dLbl=DATEDIFF_I18N.days[L]||DATEDIFF_I18N.days.pt;
+  resVal.textContent=`${totalDays.toLocaleString()} ${dLbl}`;
+  resDesc.innerHTML=`${years} ${DATEDIFF_I18N.yWord[L]||DATEDIFF_I18N.yWord.pt}, ${months} ${DATEDIFF_I18N.mWord[L]||DATEDIFF_I18N.mWord.pt}, ${days} ${DATEDIFF_I18N.dWord[L]||DATEDIFF_I18N.dWord.pt}`+
+    (swapped?` <span style="opacity:.6">(${DATEDIFF_I18N.reversed[L]||DATEDIFF_I18N.reversed.pt})</span>`:'');
+  makeChips('datediff-grid',[
+    {label:DATEDIFF_I18N.weeks[L]||DATEDIFF_I18N.weeks.pt, val:totalWeeks.toLocaleString()},
+    {label:DATEDIFF_I18N.months[L]||DATEDIFF_I18N.months.pt, val:totalMonths.toLocaleString()},
+    {label:DATEDIFF_I18N.business[L]||DATEDIFF_I18N.business.pt, val:businessDays.toLocaleString()},
+    {label:DATEDIFF_I18N.hours[L]||DATEDIFF_I18N.hours.pt, val:(totalDays*24).toLocaleString()},
+  ]);
+}
+(function initDateDiff(){
+  const end=new Date();
+  const start=new Date(end.getTime()-30*86400000);
+  const iso=d=>d.toISOString().slice(0,10);
+  document.getElementById('dd-start').value=iso(start);
+  document.getElementById('dd-end').value=iso(end);
+  calcDateDiff();
+})();
+
+// ── 💡 GORJETA / DIVIDIR CONTA ────────────────────────────────────────────────
+const TIP_I18N={
+  total:      {pt:'Total a pagar',en:'Total to pay',es:'Total a pagar',fr:'Total à payer',de:'Gesamtbetrag',zh:'应付总额'},
+  tip:        {pt:'Gorjeta',en:'Tip',es:'Propina',fr:'Pourboire',de:'Trinkgeld',zh:'小费'},
+  perPerson:  {pt:'Por pessoa',en:'Per person',es:'Por persona',fr:'Par personne',de:'Pro Person',zh:'每人'},
+  billPerPerson:{pt:'Conta/pessoa (s/ gorjeta)',en:'Bill/person (before tip)',es:'Cuenta/persona (sin propina)',fr:'Addition/personne (hors pourboire)',de:'Rechnung/Person (ohne Trinkgeld)',zh:'人均账单（不含小费）'},
+};
+const TIP_PRESETS=[10,15,18,20,25];
+function syncPresetTabs(containerId, presets, value){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  const idx=presets.indexOf(value);
+  [...c.querySelectorAll('.vcalc-tab')].forEach((el,i)=>el.classList.toggle('active', i===idx));
+}
+function calcTip(){
+  const bill=n('tip-bill');
+  const pct=n('tip-pct');
+  const people=Math.max(1,Math.round(n('tip-people'))||1);
+  const tipAmount=bill*pct/100;
+  const total=bill+tipAmount;
+  const perPerson=total/people;
+  const billPerPerson=bill/people;
+  syncPresetTabs('tip-preset-tabs', TIP_PRESETS, pct);
+  const L=currentLang;
+  const totLbl=TIP_I18N.total[L]||TIP_I18N.total.pt;
+  const tipLbl=TIP_I18N.tip[L]||TIP_I18N.tip.pt;
+  const ppLbl=TIP_I18N.perPerson[L]||TIP_I18N.perPerson.pt;
+  document.getElementById('tip-result').classList.add('visible');
+  document.getElementById('tip-res-val').textContent=fmtMoney(total)+' '+totLbl.toLowerCase();
+  document.getElementById('tip-res-desc').innerHTML=
+    `${tipLbl} (${fmtN(pct,1)}%): <b>${fmtMoney(tipAmount)}</b>`+(people>1?` &nbsp;·&nbsp; ${ppLbl}: <b>${fmtMoney(perPerson)}</b>`:'');
+  makeChips('tip-grid',[
+    {label:TIP_I18N.tip[L]||TIP_I18N.tip.pt, val:fmtMoney(tipAmount)},
+    {label:TIP_I18N.total[L]||TIP_I18N.total.pt, val:fmtMoney(total)},
+    {label:TIP_I18N.perPerson[L]||TIP_I18N.perPerson.pt, val:fmtMoney(perPerson)},
+    {label:TIP_I18N.billPerPerson[L]||TIP_I18N.billPerPerson.pt, val:fmtMoney(billPerPerson)},
+  ]);
+}
+function initTipTabs(){
+  const idx=Math.max(0,TIP_PRESETS.indexOf(n('tip-pct')));
+  makeTabs('tip-preset-tabs', TIP_PRESETS.map(p=>({label:p+'%',pct:p})), idx, t=>{
+    document.getElementById('tip-pct').value=t.pct;
+    calcTip();
+  });
+}
+initTipTabs();
+calcTip();
+
+// ── 🏷️ DESCONTO / PREÇO FINAL ─────────────────────────────────────────────────
+const DISCOUNT_I18N={
+  final:  {pt:'Preço final',en:'Final price',es:'Precio final',fr:'Prix final',de:'Endpreis',zh:'最终价格'},
+  saved:  {pt:'Poupança',en:'You save',es:'Ahorro',fr:'Économie',de:'Ersparnis',zh:'节省金额'},
+};
+const DISCOUNT_PRESETS=[10,20,30,50];
+function calcDiscount(){
+  const price=n('disc-price');
+  const pct=n('disc-pct');
+  const saved=price*pct/100;
+  const final=price-saved;
+  syncPresetTabs('disc-preset-tabs', DISCOUNT_PRESETS, pct);
+  const L=currentLang;
+  const finalLbl=DISCOUNT_I18N.final[L]||DISCOUNT_I18N.final.pt;
+  const savedLbl=DISCOUNT_I18N.saved[L]||DISCOUNT_I18N.saved.pt;
+  document.getElementById('discount-result').classList.add('visible');
+  document.getElementById('discount-res-val').textContent=fmtMoney(final)+' '+finalLbl.toLowerCase();
+  document.getElementById('discount-res-desc').innerHTML=
+    `${savedLbl} (${fmtN(pct,1)}%): <b>${fmtMoney(saved)}</b>`;
+  makeChips('discount-grid', DISCOUNT_PRESETS.map(p=>({
+    label:p+'%', val:fmtMoney(price-price*p/100),
+    onclick:()=>{document.getElementById('disc-pct').value=p;calcDiscount();}
+  })));
+}
+function initDiscountTabs(){
+  const idx=Math.max(0,DISCOUNT_PRESETS.indexOf(n('disc-pct')));
+  makeTabs('disc-preset-tabs', DISCOUNT_PRESETS.map(p=>({label:p+'%',pct:p})), idx, t=>{
+    document.getElementById('disc-pct').value=t.pct;
+    calcDiscount();
+  });
+}
+initDiscountTabs();
+calcDiscount();
+
+// ── 🛒 COMPARADOR DE PREÇO UNITÁRIO ───────────────────────────────────────────
+const UNITPRICE_I18N={
+  cheaper:  {pt:'mais barato',en:'cheaper',es:'más barato',fr:'moins cher',de:'günstiger',zh:'更便宜'},
+  productA: {pt:'Produto A',en:'Product A',es:'Producto A',fr:'Produit A',de:'Produkt A',zh:'产品A'},
+  productB: {pt:'Produto B',en:'Product B',es:'Producto B',fr:'Produit B',de:'Produkt B',zh:'产品B'},
+  perUnit:  {pt:'por',en:'per',es:'por',fr:'par',de:'pro',zh:'每'},
+  tie:      {pt:'Mesmo preço por unidade',en:'Same price per unit',es:'Mismo precio por unidad',fr:'Même prix par unité',de:'Gleicher Preis pro Einheit',zh:'单价相同'},
+  save:     {pt:'Poupas',en:'You save',es:'Ahorras',fr:'Tu économises',de:'Du sparst',zh:'你可省'},
+};
+function calcUnitPrice(){
+  const unit=s('up-unit');
+  const aPrice=n('up-a-price'), aQty=n('up-a-qty')||1;
+  const bPrice=n('up-b-price'), bQty=n('up-b-qty')||1;
+  const aUnit=aPrice/aQty, bUnit=bPrice/bQty;
+  const L=currentLang;
+  const aLbl=UNITPRICE_I18N.productA[L]||UNITPRICE_I18N.productA.pt;
+  const bLbl=UNITPRICE_I18N.productB[L]||UNITPRICE_I18N.productB.pt;
+  const perLbl=UNITPRICE_I18N.perUnit[L]||UNITPRICE_I18N.perUnit.pt;
+  document.getElementById('unitprice-result').classList.add('visible');
+  if(Math.abs(aUnit-bUnit)<1e-9){
+    document.getElementById('unitprice-res-val').textContent=UNITPRICE_I18N.tie[L]||UNITPRICE_I18N.tie.pt;
+    document.getElementById('unitprice-res-desc').textContent='';
+  } else {
+    const cheaperLbl=UNITPRICE_I18N.cheaper[L]||UNITPRICE_I18N.cheaper.pt;
+    const saveLbl=UNITPRICE_I18N.save[L]||UNITPRICE_I18N.save.pt;
+    const winner=aUnit<bUnit?aLbl:bLbl;
+    const cheaperUnit=Math.min(aUnit,bUnit), pricierUnit=Math.max(aUnit,bUnit);
+    const pctSave=pricierUnit>0?(1-cheaperUnit/pricierUnit)*100:0;
+    document.getElementById('unitprice-res-val').textContent=`${winner} — ${cheaperLbl}`;
+    document.getElementById('unitprice-res-desc').innerHTML=`${saveLbl} ${fmtN(pctSave,1)}% ${perLbl} ${unit}`;
+  }
+  makeChips('unitprice-grid',[
+    {label:`${aLbl} (€/${unit})`, val:fmtMoney(aUnit)},
+    {label:`${bLbl} (€/${unit})`, val:fmtMoney(bUnit)},
+  ]);
+}
+calcUnitPrice();
+
+// ── 😴 CALCULADORA DE SONO ────────────────────────────────────────────────────
+let sleepMode='wake';
+const SLEEP_I18N={
+  modeWake:  {pt:'Acordar às',en:'Wake up at',es:'Despertar a las',fr:'Se réveiller à',de:'Aufwachen um',zh:'起床时间'},
+  modeNow:   {pt:'Dormir agora',en:'Sleep now',es:'Dormir ahora',fr:'Dormir maintenant',de:'Jetzt schlafen',zh:'现在入睡'},
+  bedtimes:  {pt:'Horários ideais para dormir',en:'Ideal bedtimes',es:'Horarios ideales para dormir',fr:'Heures de coucher idéales',de:'Ideale Schlafenszeiten',zh:'理想入睡时间'},
+  waketimes: {pt:'Horários ideais para acordar',en:'Ideal wake-up times',es:'Horarios ideales para despertar',fr:'Heures de réveil idéales',de:'Ideale Aufwachzeiten',zh:'理想起床时间'},
+  cycles:    {pt:'ciclos',en:'cycles',es:'ciclos',fr:'cycles',de:'Zyklen',zh:'个周期'},
+  fallAsleep:{pt:'(inclui ~14 min para adormecer)',en:'(includes ~14 min to fall asleep)',es:'(incluye ~14 min para dormirse)',fr:'(inclut ~14 min pour s’endormir)',de:'(inkl. ~14 Min. zum Einschlafen)',zh:'（含约14分钟入睡时间）'},
+};
+function calcSleep(){
+  const timeStr=s('sleep-time');
+  const grid=document.getElementById('sleep-grid');
+  grid.innerHTML='';
+  if(!timeStr){ document.getElementById('sleep-res-val').textContent=''; document.getElementById('sleep-res-desc').textContent=''; return; }
+  const [hh,mm]=timeStr.split(':').map(Number);
+  const base=new Date(); base.setHours(hh,mm,0,0);
+  const L=currentLang;
+  const FALL_ASLEEP=14, CYCLE=90;
+  const cyclesList=[6,5,4,3];
+  const times=cyclesList.map(c=>{
+    const t=new Date(base);
+    const delta=c*CYCLE+FALL_ASLEEP;
+    t.setMinutes(t.getMinutes()+(sleepMode==='wake'?-delta:delta));
+    return {c,t};
+  });
+  const fmtTime=d=>d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit',hour12:false});
+  document.getElementById('sleep-result').classList.add('visible');
+  document.getElementById('sleep-res-val').textContent=sleepMode==='wake'?(SLEEP_I18N.bedtimes[L]||SLEEP_I18N.bedtimes.pt):(SLEEP_I18N.waketimes[L]||SLEEP_I18N.waketimes.pt);
+  document.getElementById('sleep-res-desc').textContent=SLEEP_I18N.fallAsleep[L]||SLEEP_I18N.fallAsleep.pt;
+  makeChips('sleep-grid', times.map(({c,t})=>({label:`${c} ${SLEEP_I18N.cycles[L]||SLEEP_I18N.cycles.pt} (${(c*1.5).toFixed(1)}h)`, val:fmtTime(t)})));
+}
+function initSleepTabs(){
+  const idx=sleepMode==='wake'?0:1;
+  const L=currentLang;
+  makeTabs('sleep-mode-tabs',[
+    {label:SLEEP_I18N.modeWake[L]||SLEEP_I18N.modeWake.pt, mode:'wake'},
+    {label:SLEEP_I18N.modeNow[L]||SLEEP_I18N.modeNow.pt, mode:'now'},
+  ], idx, t=>{ sleepMode=t.mode; calcSleep(); });
+}
+initSleepTabs();
+calcSleep();
+
+// ── ⏳ CONTAGEM DECRESCENTE ────────────────────────────────────────────────────
+const COUNTDOWN_I18N={
+  remaining:{pt:'dias restantes',en:'days remaining',es:'días restantes',fr:'jours restants',de:'verbleibende Tage',zh:'剩余天数'},
+  ago:      {pt:'dias atrás',en:'days ago',es:'días atrás',fr:'jours plus tôt',de:'Tage her',zh:'天前'},
+  today:    {pt:'É hoje! 🎉',en:"It's today! 🎉",es:'¡Es hoy! 🎉',fr:"C'est aujourd'hui ! 🎉",de:'Heute ist es soweit! 🎉',zh:'就是今天！🎉'},
+  weeks:    {pt:'Semanas',en:'Weeks',es:'Semanas',fr:'Semaines',de:'Wochen',zh:'周数'},
+  months:   {pt:'Meses',en:'Months',es:'Meses',fr:'Mois',de:'Monate',zh:'月数'},
+  weekday:  {pt:'Dia da semana',en:'Day of week',es:'Día de la semana',fr:'Jour de la semaine',de:'Wochentag',zh:'星期'},
+};
+const CD_WEEKDAY_NAMES=[
+  {pt:'Domingo',en:'Sunday',es:'Domingo',fr:'Dimanche',de:'Sonntag',zh:'星期日'},
+  {pt:'Segunda-feira',en:'Monday',es:'Lunes',fr:'Lundi',de:'Montag',zh:'星期一'},
+  {pt:'Terça-feira',en:'Tuesday',es:'Martes',fr:'Mardi',de:'Dienstag',zh:'星期二'},
+  {pt:'Quarta-feira',en:'Wednesday',es:'Miércoles',fr:'Mercredi',de:'Mittwoch',zh:'星期三'},
+  {pt:'Quinta-feira',en:'Thursday',es:'Jueves',fr:'Jeudi',de:'Donnerstag',zh:'星期四'},
+  {pt:'Sexta-feira',en:'Friday',es:'Viernes',fr:'Vendredi',de:'Freitag',zh:'星期五'},
+  {pt:'Sábado',en:'Saturday',es:'Sábado',fr:'Samedi',de:'Samstag',zh:'星期六'},
+];
+function calcCountdown(){
+  const ds=s('cd-date');
+  const resVal=document.getElementById('countdown-res-val');
+  const resDesc=document.getElementById('countdown-res-desc');
+  document.getElementById('countdown-grid').innerHTML='';
+  if(!ds){resVal.textContent='';resDesc.textContent='';return;}
+  const [y,m,d]=ds.split('-').map(Number);
+  const target=new Date(Date.UTC(y,m-1,d));
+  const now=new Date();
+  const today=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));
+  const diffDays=Math.round((target-today)/86400000);
+  const L=currentLang;
+  document.getElementById('countdown-result').classList.add('visible');
+  resDesc.textContent='';
+  if(diffDays===0) resVal.textContent=COUNTDOWN_I18N.today[L]||COUNTDOWN_I18N.today.pt;
+  else if(diffDays>0) resVal.textContent=`${diffDays.toLocaleString()} ${COUNTDOWN_I18N.remaining[L]||COUNTDOWN_I18N.remaining.pt}`;
+  else resVal.textContent=`${Math.abs(diffDays).toLocaleString()} ${COUNTDOWN_I18N.ago[L]||COUNTDOWN_I18N.ago.pt}`;
+  const absDays=Math.abs(diffDays);
+  makeChips('countdown-grid',[
+    {label:COUNTDOWN_I18N.weeks[L]||COUNTDOWN_I18N.weeks.pt, val:Math.floor(absDays/7).toLocaleString()},
+    {label:COUNTDOWN_I18N.months[L]||COUNTDOWN_I18N.months.pt, val:Math.round(absDays/30.44).toLocaleString()},
+    {label:COUNTDOWN_I18N.weekday[L]||COUNTDOWN_I18N.weekday.pt, val:(CD_WEEKDAY_NAMES[target.getUTCDay()][L]||CD_WEEKDAY_NAMES[target.getUTCDay()].pt)},
+  ]);
+}
+(function initCountdown(){
+  const now=new Date();
+  const target=new Date(Date.UTC(now.getUTCFullYear()+ (now.getUTCMonth()===0&&now.getUTCDate()===1?0:1),0,1));
+  document.getElementById('cd-date').value=target.toISOString().slice(0,10);
+  calcCountdown();
+})();
+
+// ── 📏 % GORDURA CORPORAL (MÉTODO NAVY) ───────────────────────────────────────
+let bfSex='m';
+const SEX_I18N={m:{pt:'♂ Homem',en:'♂ Man',es:'♂ Hombre',fr:'♂ Homme',de:'♂ Mann',zh:'♂ 男性'},f:{pt:'♀ Mulher',en:'♀ Woman',es:'♀ Mujer',fr:'♀ Femme',de:'♀ Frau',zh:'♀ 女性'}};
+const BODYFAT_I18N={
+  cat_essential:{pt:'Gordura essencial',en:'Essential fat',es:'Grasa esencial',fr:'Graisse essentielle',de:'Essentielles Fett',zh:'必需脂肪'},
+  cat_athletic: {pt:'Atlético',en:'Athletic',es:'Atlético',fr:'Athlétique',de:'Athletisch',zh:'运动员型'},
+  cat_fitness:  {pt:'Em forma',en:'Fitness',es:'En forma',fr:'Bonne forme',de:'Fit',zh:'健康型'},
+  cat_average:  {pt:'Média',en:'Average',es:'Promedio',fr:'Moyenne',de:'Durchschnitt',zh:'一般'},
+  cat_obese:    {pt:'Acima da média',en:'Above average',es:'Sobre el promedio',fr:'Au-dessus de la moyenne',de:'Über dem Durchschnitt',zh:'偏高'},
+  invalid:      {pt:'Medidas inválidas (cintura deve ser maior que pescoço)',en:'Invalid measurements (waist must exceed neck)',es:'Medidas inválidas (cintura debe ser mayor que cuello)',fr:'Mesures invalides (taille doit dépasser le cou)',de:'Ungültige Maße (Taille muss größer als Hals sein)',zh:'测量值无效（腰围需大于颈围）'},
+};
+function bfCategory(pct,sex){
+  const bounds=sex==='m'?[5,13,17,24]:[13,20,24,31];
+  const keys=['cat_essential','cat_athletic','cat_fitness','cat_average','cat_obese'];
+  let idx=bounds.findIndex(b=>pct<=b);
+  if(idx===-1) idx=4;
+  return keys[idx];
+}
+function calcBodyFat(){
+  const height=n('bf-height'), neck=n('bf-neck'), waist=n('bf-waist'), hip=n('bf-hip');
+  const L=currentLang;
+  let pct;
+  if(bfSex==='m') pct=495/(1.0324-0.19077*Math.log10(waist-neck)+0.15456*Math.log10(height))-450;
+  else pct=495/(1.29579-0.35004*Math.log10(waist+hip-neck)+0.22100*Math.log10(height))-450;
+  document.getElementById('bodyfat-result').classList.add('visible');
+  if(!isFinite(pct)||pct<=0||pct>70){
+    document.getElementById('bodyfat-res-val').textContent='—';
+    document.getElementById('bodyfat-res-desc').textContent=BODYFAT_I18N.invalid[L]||BODYFAT_I18N.invalid.pt;
+    document.getElementById('bodyfat-grid').innerHTML='';
+    return;
+  }
+  const catKey=bfCategory(pct,bfSex);
+  document.getElementById('bodyfat-res-val').textContent=fmtN(pct,1)+'%';
+  document.getElementById('bodyfat-res-desc').textContent=BODYFAT_I18N[catKey][L]||BODYFAT_I18N[catKey].pt;
+  makeChips('bodyfat-grid',[
+    {label:BODYFAT_I18N.cat_athletic[L]||BODYFAT_I18N.cat_athletic.pt, val:(bfSex==='m'?'6–13%':'14–20%')},
+    {label:BODYFAT_I18N.cat_fitness[L]||BODYFAT_I18N.cat_fitness.pt, val:(bfSex==='m'?'14–17%':'21–24%')},
+    {label:BODYFAT_I18N.cat_average[L]||BODYFAT_I18N.cat_average.pt, val:(bfSex==='m'?'18–24%':'25–31%')},
+  ]);
+}
+function initBfTabs(){
+  const idx=bfSex==='m'?0:1;
+  const L=currentLang;
+  makeTabs('bf-sex-tabs',[
+    {label:SEX_I18N.m[L]||SEX_I18N.m.pt, sex:'m'},
+    {label:SEX_I18N.f[L]||SEX_I18N.f.pt, sex:'f'},
+  ], idx, t=>{ bfSex=t.sex; document.getElementById('bf-hip-row').style.display=bfSex==='f'?'':'none'; calcBodyFat(); });
+  document.getElementById('bf-hip-row').style.display=bfSex==='f'?'':'none';
+}
+initBfTabs();
+calcBodyFat();
+
+// ── 🎓 MÉDIA PONDERADA ────────────────────────────────────────────────────────
+const GPA_ROWS=6;
+const GPA_I18N={
+  result:{pt:'Média ponderada',en:'Weighted average',es:'Media ponderada',fr:'Moyenne pondérée',de:'Gewichteter Durchschnitt',zh:'加权平均'},
+  totalWeight:{pt:'Peso total',en:'Total weight',es:'Peso total',fr:'Poids total',de:'Gesamtgewicht',zh:'总权重'},
+  empty:{pt:'Preenche pelo menos uma linha',en:'Fill in at least one row',es:'Rellena al menos una fila',fr:'Remplis au moins une ligne',de:'Fülle mindestens eine Zeile aus',zh:'请至少填写一行'},
+};
+const GPA_DEFAULTS=[[16,6],[14,4],[18,5],[null,null],[null,null],[null,null]];
+function buildGpaTable(){
+  const tbody=document.getElementById('gpa-tbody');
+  tbody.innerHTML='';
+  const cellStyle="width:100%;padding:5px 7px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:.8rem;";
+  for(let i=0;i<GPA_ROWS;i++){
+    const [g,w]=GPA_DEFAULTS[i]||[null,null];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><input type="number" id="gpa-grade-${i}" step="0.01" min="0" value="${g??''}" style="${cellStyle}" oninput="calcGPA()"></td>`+
+      `<td><input type="number" id="gpa-weight-${i}" step="0.1" min="0" value="${w??''}" style="${cellStyle}" oninput="calcGPA()"></td>`;
+    tbody.appendChild(tr);
+  }
+}
+function calcGPA(){
+  let sumW=0,sumWG=0,anyFilled=false;
+  for(let i=0;i<GPA_ROWS;i++){
+    const g=parseFloat(document.getElementById('gpa-grade-'+i)?.value);
+    const w=parseFloat(document.getElementById('gpa-weight-'+i)?.value);
+    if(!isNaN(g)&&!isNaN(w)&&w>0){ sumW+=w; sumWG+=g*w; anyFilled=true; }
+  }
+  const L=currentLang;
+  document.getElementById('gpa-result').classList.add('visible');
+  if(!anyFilled||sumW===0){
+    document.getElementById('gpa-res-val').textContent='—';
+    document.getElementById('gpa-res-desc').textContent=GPA_I18N.empty[L]||GPA_I18N.empty.pt;
+    return;
+  }
+  const avg=sumWG/sumW;
+  document.getElementById('gpa-res-val').textContent=fmtN(avg,2);
+  document.getElementById('gpa-res-desc').textContent=`${GPA_I18N.result[L]||GPA_I18N.result.pt} · ${GPA_I18N.totalWeight[L]||GPA_I18N.totalWeight.pt}: ${fmtN(sumW,1)}`;
+}
+buildGpaTable();
+calcGPA();
+
+// ── 🖥️ RÁCIO DE ASPETO ────────────────────────────────────────────────────────
+const ASPECT_I18N={
+  decimal:{pt:'Rácio decimal',en:'Decimal ratio',es:'Relación decimal',fr:'Ratio décimal',de:'Dezimalverhältnis',zh:'十进制比例'},
+  megapixels:{pt:'Megapixels',en:'Megapixels',es:'Megapíxeles',fr:'Mégapixels',de:'Megapixel',zh:'百万像素'},
+};
+const ASPECT_PRESETS=[
+  {w:1920,h:1080,label:'Full HD'},{w:3840,h:2160,label:'4K UHD'},{w:1280,h:720,label:'HD'},
+  {w:1080,h:1920,label:'Stories 9:16'},{w:1080,h:1080,label:'1:1'},{w:1200,h:630,label:'Social OG'},
+];
+function gcd(a,b){ a=Math.abs(Math.round(a)); b=Math.abs(Math.round(b)); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function calcAspect(){
+  const w=n('ar-w'), h=n('ar-h');
+  const L=currentLang;
+  document.getElementById('aspect-grid').innerHTML='';
+  if(w<=0||h<=0){ document.getElementById('aspect-res-val').textContent=''; document.getElementById('aspect-res-desc').textContent=''; return; }
+  const g=gcd(w,h);
+  const rw=Math.round(w)/g, rh=Math.round(h)/g;
+  const decimal=w/h;
+  document.getElementById('aspect-result').classList.add('visible');
+  document.getElementById('aspect-res-val').textContent=`${rw}:${rh}`;
+  document.getElementById('aspect-res-desc').textContent=`${ASPECT_I18N.decimal[L]||ASPECT_I18N.decimal.pt}: ${decimal.toFixed(3)}`;
+  const mp=(w*h/1e6).toFixed(2)+' MP';
+  const chips=[{label:ASPECT_I18N.megapixels[L]||ASPECT_I18N.megapixels.pt, val:mp}];
+  ASPECT_PRESETS.forEach(p=>chips.push({
+    label:`${p.label} (${p.w}×${p.h})`, val:`${p.w/gcd(p.w,p.h)}:${p.h/gcd(p.w,p.h)}`,
+    onclick:()=>{document.getElementById('ar-w').value=p.w;document.getElementById('ar-h').value=p.h;calcAspect();}
+  }));
+  makeChips('aspect-grid', chips);
+}
+calcAspect();
+
 // ══════════════════════════════════════════════════════════════════════════════
 // ── WIRE ALL NEW CATS INTO populateSelects ────────────────────────────────────
 // ══════════════════════════════════════════════════════════════════════════════
@@ -7856,6 +8514,15 @@ const NEW_VCATS = {
   '🏊 Natação':           'card-swim',
   '🏔️ Altitude Hipóxia':  'card-altitude',
   '🖨️ DPI Impressão':     'card-dpi',
+  '🗓️ Diferença de Datas':'card-datediff',
+  '💡 Gorjeta / Dividir Conta':'card-tip',
+  '🏷️ Desconto / Preço Final':'card-discount',
+  '🛒 Comparador de Preço':'card-unitprice',
+  '😴 Calculadora de Sono':'card-sleep',
+  '⏳ Contagem Decrescente':'card-countdown',
+  '📏 % Gordura Corporal':'card-bodyfat',
+  '🎓 Média Ponderada':'card-gpa',
+  '🖥️ Rácio de Aspeto':'card-aspect',
 };
 const ALL_VCAT_KEYS = Object.keys(NEW_VCATS);
 
@@ -7879,46 +8546,52 @@ populateSelects = function(){
 
 // ── Add all new cats to CAT_GROUPS (all languages) ───────────────────────────
 const _newGroupsPt = {
-  '💰 Finanças': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 Casa & Quotidiano': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 Saúde': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 Finanças': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 Casa & Quotidiano': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 Saúde': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 Desporto': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 Educação': ['🎓 Média Ponderada'],
 };
 const _newGroupsEn = {
-  '💰 Finance': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 Home & Daily': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 Health': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 Finance': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 Home & Daily': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 Health': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 Sport': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 Education': ['🎓 Média Ponderada'],
 };
 const _newGroupsEs = {
-  '💰 Finanzas': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 Casa & Cotidiano': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 Salud': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 Finanzas': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 Casa & Cotidiano': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 Salud': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 Deporte': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 Educación': ['🎓 Média Ponderada'],
 };
 const _newGroupsFr = {
-  '💰 Finance': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 Maison & Quotidien': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 Santé': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 Finance': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 Maison & Quotidien': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 Santé': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 Sport': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 Numérique': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 Numérique': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 Éducation': ['🎓 Média Ponderada'],
 };
 const _newGroupsDe = {
-  '💰 Finanzen': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 Haus & Alltag': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 Gesundheit': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 Finanzen': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 Haus & Alltag': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 Gesundheit': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 Sport': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 Digital': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 Bildung': ['🎓 Média Ponderada'],
 };
 const _newGroupsZh = {
-  '💰 金融': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito'],
-  '🏠 家居日常': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica'],
-  '🧍 健康': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação'],
+  '💰 金融': ['💰 Juros','💱 Moedas','🧾 IVA','📈 Margem','🏦 Prestação Crédito','🏷️ Desconto / Preço Final'],
+  '🏠 家居日常': ['⚡ Consumo Elét.','⚡ Custo Eletricidade','🎨 Tinta Pintura','⛽ Custo Viagem','🌡️ Sensação Térmica','💡 Gorjeta / Dividir Conta','🛒 Comparador de Preço'],
+  '🧍 健康': ['🩸 Glicose','💉 Colesterol','🩺 HbA1c','❤️ Pressão Arterial','🧍 Corpo Humano','🏃 Pace / Corrida','🫁 VO₂max','❤️‍🔥 FC / Zonas Treino','🧮 IMC','🔥 Calorias TDEE','💊 Vitaminas','💧 Hidratação','😴 Calculadora de Sono','📏 % Gordura Corporal'],
   '🏅 运动': ['🏋️ 1RM Força','🚴 Ciclismo Potência','🏊 Natação','🏔️ Altitude Hipóxia'],
-  '💻 数字': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão'],
+  '💻 数字': ['Dados','Veloc. Dados','📶 Banda / Transferência','🔢 Bases Numéricas','🔤 ASCII / Unicode','🌐 Redes IP / CIDR','📶 dBm / RF','🖨️ DPI Impressão','🖥️ Rácio de Aspeto'],
+  '🎓 教育': ['🎓 Média Ponderada'],
 };
 Object.assign(CAT_GROUPS.pt, _newGroupsPt);
 Object.assign(CAT_GROUPS.en, _newGroupsEn);
@@ -8108,6 +8781,78 @@ function signFromDate(month,day){
 // Approximate planet sign (mean orbital periods)
 function planetSign(jd, period_days, ref_jd, ref_lon){
   return signFromLon(((jd-ref_jd)/period_days*360+ref_lon+3600)%360);
+}
+
+// ── IDADE / DATA DE NASCIMENTO ────────────────────────────────────────────────
+const AGE_LBL={
+  years:{pt:'Idade (anos)',en:'Age (years)',es:'Edad (años)',fr:'Âge (années)',de:'Alter (Jahre)',zh:'年龄（岁）'},
+  ymd:{pt:'Idade completa',en:'Full age',es:'Edad completa',fr:'Âge complet',de:'Vollständiges Alter',zh:'完整年龄'},
+  months:{pt:'Idade (meses)',en:'Age (months)',es:'Edad (meses)',fr:'Âge (mois)',de:'Alter (Monate)',zh:'年龄（月）'},
+  weeks:{pt:'Idade (semanas)',en:'Age (weeks)',es:'Edad (semanas)',fr:'Âge (semaines)',de:'Alter (Wochen)',zh:'年龄（周）'},
+  days:{pt:'Idade (dias)',en:'Age (days)',es:'Edad (días)',fr:'Âge (jours)',de:'Alter (Tage)',zh:'年龄（天）'},
+  hours:{pt:'Idade (horas)',en:'Age (hours)',es:'Edad (horas)',fr:'Âge (heures)',de:'Alter (Stunden)',zh:'年龄（小时）'},
+  nextBday:{pt:'Dias até próximo aniversário',en:'Days to next birthday',es:'Días al próximo cumpleaños',fr:"Jours avant l'anniversaire",de:'Tage bis Geburtstag',zh:'距下次生日天数'},
+  weekday:{pt:'Dia da semana (nascimento)',en:'Day of week (born)',es:'Día de la semana (nacimiento)',fr:'Jour de naissance',de:'Wochentag (Geburt)',zh:'出生星期'},
+  zodiac:{pt:'Signo do Zodíaco',en:'Zodiac Sign',es:'Signo Zodiacal',fr:'Signe du Zodiaque',de:'Sternzeichen',zh:'星座'},
+  invalid:{pt:'Data inválida — usa AAAA-MM-DD',en:'Invalid date — use YYYY-MM-DD',es:'Fecha inválida — usa AAAA-MM-DD',fr:'Date invalide — AAAA-MM-JJ',de:'Ungültiges Datum — JJJJ-MM-TT',zh:'日期无效 — 请用 YYYY-MM-DD'},
+  future:{pt:'Data no futuro',en:'Date is in the future',es:'Fecha en el futuro',fr:'Date dans le futur',de:'Datum liegt in der Zukunft',zh:'日期在未来'},
+  todayBday:{pt:'🎉 Hoje é o aniversário!',en:"🎉 Birthday is today!",es:'🎉 ¡Hoy es el cumpleaños!',fr:"🎉 C'est l'anniversaire !",de:'🎉 Heute Geburtstag!',zh:'🎉 今天是生日！'},
+  yWord:{pt:'anos',en:'years',es:'años',fr:'ans',de:'Jahre',zh:'年'},
+  mWord:{pt:'meses',en:'months',es:'meses',fr:'mois',de:'Monate',zh:'个月'},
+  wWord:{pt:'semanas',en:'weeks',es:'semanas',fr:'semaines',de:'Wochen',zh:'周'},
+  dWord:{pt:'dias',en:'days',es:'días',fr:'jours',de:'Tage',zh:'天'},
+  hWord:{pt:'horas',en:'hours',es:'horas',fr:'heures',de:'Stunden',zh:'小时'},
+};
+const WEEKDAY_NAMES=[
+  {pt:'Domingo',en:'Sunday',es:'Domingo',fr:'Dimanche',de:'Sonntag',zh:'星期日'},
+  {pt:'Segunda-feira',en:'Monday',es:'Lunes',fr:'Lundi',de:'Montag',zh:'星期一'},
+  {pt:'Terça-feira',en:'Tuesday',es:'Martes',fr:'Mardi',de:'Dienstag',zh:'星期二'},
+  {pt:'Quarta-feira',en:'Wednesday',es:'Miércoles',fr:'Mercredi',de:'Mittwoch',zh:'星期三'},
+  {pt:'Quinta-feira',en:'Thursday',es:'Jueves',fr:'Jeudi',de:'Donnerstag',zh:'星期四'},
+  {pt:'Sexta-feira',en:'Friday',es:'Viernes',fr:'Vendredi',de:'Freitag',zh:'星期五'},
+  {pt:'Sábado',en:'Saturday',es:'Sábado',fr:'Samedi',de:'Samstag',zh:'星期六'},
+];
+const ZODIAC_NAME_I18N={
+  'Áries':{en:'Aries',es:'Aries',fr:'Bélier',de:'Widder',zh:'白羊座'},
+  'Touro':{en:'Taurus',es:'Tauro',fr:'Taureau',de:'Stier',zh:'金牛座'},
+  'Gémeos':{en:'Gemini',es:'Géminis',fr:'Gémeaux',de:'Zwillinge',zh:'双子座'},
+  'Caranguejo':{en:'Cancer',es:'Cáncer',fr:'Cancer',de:'Krebs',zh:'巨蟹座'},
+  'Leão':{en:'Leo',es:'Leo',fr:'Lion',de:'Löwe',zh:'狮子座'},
+  'Virgem':{en:'Virgo',es:'Virgo',fr:'Vierge',de:'Jungfrau',zh:'处女座'},
+  'Balança':{en:'Libra',es:'Libra',fr:'Balance',de:'Waage',zh:'天秤座'},
+  'Escorpião':{en:'Scorpio',es:'Escorpio',fr:'Scorpion',de:'Skorpion',zh:'天蝎座'},
+  'Sagitário':{en:'Sagittarius',es:'Sagitario',fr:'Sagittaire',de:'Schütze',zh:'射手座'},
+  'Capricórnio':{en:'Capricorn',es:'Capricornio',fr:'Capricorne',de:'Steinbock',zh:'摩羯座'},
+  'Aquário':{en:'Aquarius',es:'Acuario',fr:'Verseau',de:'Wassermann',zh:'水瓶座'},
+  'Peixes':{en:'Pisces',es:'Piscis',fr:'Poissons',de:'Fische',zh:'双鱼座'},
+};
+function ageInfoFromString(raw){
+  const s=String(raw||'').trim();
+  let y,mo,d,m;
+  if(m=/^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s)){ y=+m[1]; mo=+m[2]; d=+m[3]; }
+  else if(m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s)){ d=+m[1]; mo=+m[2]; y=+m[3]; }
+  else return null;
+  if(mo<1||mo>12||d<1||d>31) return null;
+  const birth=new Date(y,mo-1,d);
+  if(isNaN(birth.getTime())||birth.getMonth()!==mo-1||birth.getDate()!==d) return null;
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  if(birth>today) return {future:true};
+  let years=today.getFullYear()-birth.getFullYear();
+  let months=today.getMonth()-birth.getMonth();
+  let days=today.getDate()-birth.getDate();
+  if(days<0){ months--; days+=new Date(today.getFullYear(),today.getMonth(),0).getDate(); }
+  if(months<0){ years--; months+=12; }
+  const totalDays=Math.round((today-birth)/86400000);
+  const totalMonths=years*12+months;
+  const totalWeeks=Math.floor(totalDays/7);
+  const totalHours=totalDays*24;
+  let next=new Date(today.getFullYear(),mo-1,d);
+  if(next<today) next=new Date(today.getFullYear()+1,mo-1,d);
+  const daysToNext=Math.round((next-today)/86400000);
+  const sign=signFromDate(mo,d);
+  return {years,months,days,totalDays,totalMonths,totalWeeks,totalHours,daysToNext,
+    weekday:birth.getDay(),zodiacName:sign.name,zodiacSym:sign.sym};
 }
 
 // ── Mode switcher ─────────────────────────────────────────────────────────────
